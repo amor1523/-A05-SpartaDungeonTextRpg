@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace _A05_SpartaDungeonTextRpg
 {
@@ -19,21 +21,24 @@ namespace _A05_SpartaDungeonTextRpg
                 {
                     return choice;
                 }
-                Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
+                Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.\n");
             }
         }
 
+        // 타이틀 글씨 색상 변경(DarkYellow)
         internal static void ShowTitle(string title)
         {
-            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(title);
             Console.ResetColor();
         }
 
-        public static void PrintTextHighlights(string s1, string s2, string s3 = "")
+        // 바꾸고 싶은 색을 s0에 ConsoleColor로 입력하면 s2의 색깔이 지정한 색깔로 변경됨
+      
+        public static void PrintTextHighlights(ConsoleColor s0, string s1, string s2, string s3 = "")
         {
             Console.Write(s1);
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = s0;
             Console.Write(s2);
             Console.ResetColor();
             Console.WriteLine(s3);
