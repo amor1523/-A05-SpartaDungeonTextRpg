@@ -17,19 +17,16 @@ namespace _A05_SpartaDungeonTextRpg
         public int Def { get; }
         public int Hp { get; }
         public float Gold { get; set; }
-        public string? WeaponEquipe { get; set; }
-        public string? ArmorEquipe { get; set; }
-        public string? KeyEquipe { get; set; }
 
-    public Player(string name, string job, int level, int atk, int def, int hp, float gold)
+        public Player(string name, string job, int level, int atk, int def, int hp, float gold)
         {
-        Name = name;
-        Job = job;
-        Level = level;
-        Atk = atk;
-        Def = def;
-        Hp = hp;
-        Gold = gold;
+            Name = name;
+            Job = job;
+            Level = level;
+            Atk = atk;
+            Def = def;
+            Hp = hp;
+            Gold = gold;
         }
     }
 }
