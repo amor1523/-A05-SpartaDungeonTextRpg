@@ -27,3 +27,18 @@ C:\Unity 14\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0
 C:\Unity 14\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.pdb
 C:\Unity 14\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.genruntimeconfig.cache
 C:\Unity 14\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\ref\[A05]SpartaDungeonTextRpg.dll
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.exe
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.deps.json
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.runtimeconfig.json
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.dll
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.pdb
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.AssemblyInfoInputs.cache
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.AssemblyInfo.cs
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.csproj.CoreCompileInputs.cache
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.sourcelink.json
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.dll
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\refint\[A05]SpartaDungeonTextRpg.dll
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.pdb
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.genruntimeconfig.cache
+C:\Users\PC\source\repos\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\ref\[A05]SpartaDungeonTextRpg.dll

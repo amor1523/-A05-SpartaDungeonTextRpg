@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace _A05_SpartaDungeonTextRpg
 {
-
     public class Monster
     {
         public List<Monster> MonsterData = new List<Monster>(); // 몬스터 정보
@@ -50,18 +49,21 @@ namespace _A05_SpartaDungeonTextRpg
             Hp = hp;
             RewardGold = gold;
             RewardExp = exp;
-           
+
         }
+
+        public Monster()
+        {
+
+        }
+
         public void TakeDamage(int damage)
         {
             Hp -= damage;
             if (Hp < 0)
                 Hp = 0;
         }
-       public Monster()
-        {
-
-        }
+       
 
     }
 }
