@@ -1,5 +1,5 @@
 ﻿using System;
-
+using _A05_SpartaDungeonTextRpg;
 namespace _A05_SpartaDungeonTextRpg
 {
     public class Player
