@@ -1,0 +1,14 @@
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.exe
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.deps.json
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.runtimeconfig.json
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.dll
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\[A05]SpartaDungeonTextRpg.pdb
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.AssemblyInfoInputs.cache
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.AssemblyInfo.cs
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.csproj.CoreCompileInputs.cache
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.dll
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\refint\[A05]SpartaDungeonTextRpg.dll
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.pdb
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.genruntimeconfig.cache
+C:\Users\user\OneDrive\바탕 화면\TextRpg\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\ref\[A05]SpartaDungeonTextRpg.dll
