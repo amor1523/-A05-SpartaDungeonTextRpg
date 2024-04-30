@@ -30,15 +30,12 @@ namespace _A05_SpartaDungeonTextRpg
         public Player()
         {
             // 초기값
-<<<<<<< HEAD
             BeforeExp = 0;
             AfterExp = 0;
-=======
             Level = 1;
             Gold = 1500f;
-            Before_Exp = 0;
-            After_Exp = 0;
->>>>>>> JJH_Login
+            BeforeExp = 0;
+            AfterExp = 0;
             LevelUpExp = 10;
         }
 
