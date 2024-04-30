@@ -12,9 +12,9 @@ namespace _A05_SpartaDungeonTextRpg
         public int Level { get; set; }
         public int Atk { get; set; }
         public int Def { get; set; }
-        public int Hp { get; }
+        public int Hp { get; set; }
         public float Gold { get; set; }
-        public bool IsDead => HP <= 0;
+        public bool IsDead => Hp <= 0;
 
         // Exp, LevelUpExp 변수 추가
         public int Before_Exp { get; set; }
@@ -26,9 +26,9 @@ namespace _A05_SpartaDungeonTextRpg
             Name = name;
             Job = job;
             Level = level;
-            Atk = attack;
-            Def = defense;
-            HP = health;
+            Atk = atk;
+            Def = def;
+            Hp = hp;
             Gold = gold;
 
             // 초기값
@@ -38,9 +38,9 @@ namespace _A05_SpartaDungeonTextRpg
         }
         public void TakeDamage(int damage)
         {
-            HP -= damage;
-            if (HP < 0)
-                HP = 0;
+            Hp -= damage;
+            if (Hp < 0)
+                Hp = 0;
         }
       
 

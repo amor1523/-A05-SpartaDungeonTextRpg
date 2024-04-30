@@ -31,7 +31,7 @@ public class Battle
         Console.WriteLine();
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
-        Console.WriteLine($"HP {player.HP}\n");
+        Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("1. 공격\n");
 
         int input = ConsoleUtility.PromptMenuChoice(1, 1);
@@ -54,7 +54,7 @@ public class Battle
         Console.WriteLine();
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
-        Console.WriteLine($"HP {player.HP}\n");
+        Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("0.취소");
 
         int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
@@ -109,7 +109,7 @@ public class Battle
             Console.WriteLine();
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
             Thread.Sleep(500);
-            Console.WriteLine($"HP {player.HP}\n");
+            Console.WriteLine($"HP {player.Hp}\n");
             Thread.Sleep(1000);
         }
         else
@@ -121,20 +121,36 @@ public class Battle
 
     public void BattleResult(bool victory)
     {
+        // 레벨업 유무 확인
+        bool flagLevelUp = LevelUp();
+
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "전투 결과\n");
         if (victory)
         {
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리\n");
             Console.WriteLine("던전에서 몬스터를 잡았습니다.");
-            Console.WriteLine($"Lv.{player.Level} {player.Name}");
-            Console.WriteLine($"HP (전투 전 HP) -> {player.HP}\n");
+            if (!flagLevelUp)
+                Console.WriteLine($"Lv.{player.Level} {player.Name}");
+            else
+                Console.WriteLine($"Lv.{player.Level - 1} {player.Name} -> {player.Level} {player.Name}");
+
+            Thread.Sleep(1000);
+            Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
+            Thread.Sleep(1000);
+            Console.WriteLine($"exp {player.BeforeExp} -> {player.AfterExp}\n");
+            Thread.Sleep(1000);
+            Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.AfterExp}\n");
+            Thread.Sleep(1000);
+            Console.WriteLine("0. 다음\n");
         }
         else
         {
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "전투 패배\n");
+            Thread.Sleep(1000);
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
-            Console.WriteLine($"HP (전투 전 HP) -> {player.HP}\n");
+            Thread.Sleep(1000);
+            Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
         }
         Console.WriteLine("0. 다음\n");
         int input = ConsoleUtility.PromptMenuChoice(0, 0);
@@ -143,7 +159,32 @@ public class Battle
             case 0:
                 GameManager gameManager = new GameManager();
                 gameManager.MainMenu();
+                player.BeforeExp = player.AfterExp;
                 break;
         }
+    }
+
+    public bool LevelUp()
+    {
+        bool flagLevelUp;
+
+        if (player.AfterExp > player.LevelUpExp && (player.Level >= 1 && player.Level <= 5))
+        {
+            flagLevelUp = true;
+            player.Level += 1;
+            player.Atk += 1;
+            player.Def += 1;
+
+            if (player.Level == 2)
+                player.LevelUpExp = 35;
+            else if (player.Level == 3)
+                player.LevelUpExp = 65;
+            else if (player.Level == 4)
+                player.LevelUpExp = 100;
+        }
+        else
+            flagLevelUp = false;
+
+        return flagLevelUp;
     }
 }
