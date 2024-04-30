@@ -17,10 +17,11 @@ namespace _A05_SpartaDungeonTextRpg
             MonsterData.Add(new Monster(3, "거미", level, 10 + level * 2 + random.Next(-1, 2), 10 + level * 3 + random.Next(-1, 2), 10 + level * 2 + random.Next(-1, 2), 15 + level * 2, false));
         }
 
-        int monsterNumber = 3;
         Monster m;
         public void GenerateMonster() //몬스터 생성 메서드
         {
+            int monsterNumber = random.Next(1, 4); // 무작위로 1에서 3 사이의 몬스터 수 생성
+
             for (int i = 0; i < monsterNumber; i++)
             {
                 Monster monsterinfo = MonsterData[random.Next(0, MonsterData.Count)];
@@ -29,10 +30,11 @@ namespace _A05_SpartaDungeonTextRpg
             }
         }
 
+
         public int Id { get; }
         public string Name { get; }
         public int Level { get; }
-        public int Atk { get; }
+        public int Atk { get; set; }
         public int Hp { get; set; }
         public int RewardGold { get; }
         public int RewardExp { get; }
@@ -55,6 +57,10 @@ namespace _A05_SpartaDungeonTextRpg
             if (Hp < 0)
                 Hp = 0;
         }
+       
 
     }
 }
+
+    
+

@@ -3,11 +3,12 @@
 namespace _A05_SpartaDungeonTextRpg
 {
     public class Player
-    {
+    {   
+        Random rand  = new Random();
         public string Name { get; }
         public string Job { get; }
         public int Level { get; }
-        public int Atk { get; }
+        public int Atk { get; set; }
         public int Def { get; }
         public int HP { get; set; }
         public float Gold { get; set; }
@@ -29,9 +30,12 @@ namespace _A05_SpartaDungeonTextRpg
             if (HP < 0)
                 HP = 0;
         }
-    }
+      
 
+    }
 }
+    
+
 
 
 

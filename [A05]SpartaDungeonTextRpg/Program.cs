@@ -9,10 +9,11 @@ namespace SpartaDungeonTextRpg
     {
         private Player player;
         private List<Monster> monsters; // 몬스터 리스트 추가
-
+        private Random random = new Random();
         public GameManager()
         {
             InitializeGame();
+
         }
 
         private void InitializeGame()
@@ -77,7 +78,14 @@ namespace SpartaDungeonTextRpg
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
             for (int i = 0; i < monsters.Count; i++)
             {
-                Console.WriteLine($"Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
+                if (!monsters[i].IsDead)
+                {
+                    Console.WriteLine($"Lv.{monsters[i].Level} {monsters[i].Name} HP {(monsters[i].IsDead ? "Dead" : monsters[i].Hp.ToString())}");
+                }
+                else
+                {
+                    ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"Lv.{monsters[i].Level} {monsters[i].Name} HP Dead");
+                }
             }
             Console.WriteLine();
             Console.WriteLine("[내정보]");
@@ -114,6 +122,7 @@ namespace SpartaDungeonTextRpg
                 Console.Clear();
                 BattleMenu();
             }
+           
             Monster selectedMonster = monsters[input - 1];
             int damageDealt = player.Atk;
             selectedMonster.TakeDamage(damageDealt);
@@ -128,11 +137,13 @@ namespace SpartaDungeonTextRpg
             int inputs = ConsoleUtility.PromptMenuChoice(0, 0);
             if (inputs == 0)
             {
+                // 몬스터들이 플레이어를 한 번씩 공격
                 foreach (Monster monster in monsters)
                 {
                     Console.Clear();
                     EnemyAttack(monster);
                 }
+                // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
                 if (!player.IsDead)
                 {
                     BattleMenu();
@@ -142,15 +153,9 @@ namespace SpartaDungeonTextRpg
                     BattleResult(false);
                 }
             }
-            // 몬스터들이 플레이어를 한 번씩 공격
-
-
-            // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
-
         }
-
         public void EnemyAttack(Monster targetMonster)
-        {
+        {   //공격할 몬스터가  살아있는지 확인
             if (!targetMonster.IsDead)
             {
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "공격!!\n");
@@ -165,6 +170,10 @@ namespace SpartaDungeonTextRpg
                 Thread.Sleep(500);
                 Console.WriteLine($"HP {player.HP}\n");
                 Thread.Sleep(1000);
+            }
+            else
+            {
+                ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"{targetMonster.Name} 은/는 이미 죽었습니다.\n");
             }
 
         }
