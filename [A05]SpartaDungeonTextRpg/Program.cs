@@ -103,7 +103,7 @@ namespace SpartaDungeonTextRpg
             ConsoleUtility.ShowTitle("[상태보기]");
             Console.WriteLine("캐릭터의 정보를 표시합니다.\n");
             Console.WriteLine($"Lv. {player.Level}");
-            Console.WriteLine($"{player.Name} ({})");
+            Console.WriteLine($"{player.Name} ({dict[player.Job]})");
             Console.WriteLine($"공격력 :{player.Atk}");
             Console.WriteLine($"방어력 :{player.Def}");
             Console.WriteLine($"체력 :{player.Hp}");
