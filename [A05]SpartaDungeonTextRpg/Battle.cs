@@ -3,17 +3,22 @@ using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
 public class Battle
 {
-    
-        private Player player;
-        private List<Monster> monsters;
-        private Random random = new Random();
+    Dictionary<Job, string> dict = new Dictionary<Job, string>() // 플레이어 직업 딕셔너리
+            {
+                {Job.Knight, "전사" },
+                {Job.Mage, "마법사" },
+                {Job.Archer, "궁수" }
+            };
+    private Player player;
+    private List<Monster> monsters;
+    private Random random = new Random();
 
-        public Battle(Player player, List<Monster> monsters)
-        {
-            this.player = player;
-            this.monsters = monsters;
-        }
-        public void BattleMenu()
+    public Battle(Player player, List<Monster> monsters)
+    {
+        this.player = player;
+        this.monsters = monsters;
+    }
+    public void BattleMenu()
     {
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
@@ -30,7 +35,7 @@ public class Battle
         }
         Console.WriteLine();
         Console.WriteLine("[내정보]");
-        Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
+        Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
         Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("1. 공격\n");
 
@@ -46,24 +51,27 @@ public class Battle
     {
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
-        Thread.Sleep(500);
         for (int i = 0; i < monsters.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", $"[{i + 1}]", $"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
+            //Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
         }
         Console.WriteLine();
         Console.WriteLine("[내정보]");
-        Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
+        Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
         Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("0.취소");
 
         int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
-        if (input == 0)
+        switch (input)
         {
-            Console.Clear();
-            BattleMenu();
+            case 0:
+                Console.Clear();
+                BattleMenu();
+                break;
         }
 
+        Console.Clear();
         Monster selectedMonster = monsters[input - 1];
         int damageDealt = player.Atk;
         selectedMonster.TakeDamage(damageDealt);
@@ -76,6 +84,7 @@ public class Battle
         Thread.Sleep(1000);
         Console.WriteLine("0.다음");
         int inputs = ConsoleUtility.PromptMenuChoice(0, 0);
+
         if (inputs == 0)
         {
             // 몬스터들이 플레이어를 한 번씩 공격

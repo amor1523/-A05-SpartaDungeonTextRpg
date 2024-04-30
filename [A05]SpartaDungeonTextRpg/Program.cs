@@ -60,21 +60,21 @@ namespace SpartaDungeonTextRpg
                     player.Job = Job.Knight;
                     player.Atk = 10;
                     player.Def = 5;
-                    player.HP = 100;
+                    player.Hp = 100;
                     break;
 
                 case 2:
                     player.Job = Job.Mage;
                     player.Atk = 8;
                     player.Def = 3;
-                    player.HP = 80;
+                    player.Hp = 80;
                     break;
                 
                 case 3:
                     player.Job = Job.Archer;
                     player.Atk = 13;
                     player.Def = 4;
-                    player.HP = 90;
+                    player.Hp = 90;
                     break;
             }
     }
@@ -143,7 +143,7 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine();
             Console.WriteLine("[내정보]");
             Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
-            Console.WriteLine($"HP {player.HP}\n");
+            Console.WriteLine($"HP {player.Hp   }\n");
             Console.WriteLine("1. 공격\n");
 
             int input = ConsoleUtility.PromptMenuChoice(1, 1);
@@ -166,7 +166,7 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine();
             Console.WriteLine("[내정보]");
             Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
-            Console.WriteLine($"HP {player.HP}\n");
+            Console.WriteLine($"HP {player.Hp}\n");
             Console.WriteLine("0.취소");
 
             int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
@@ -221,7 +221,7 @@ namespace SpartaDungeonTextRpg
                 Console.WriteLine();
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
                 Thread.Sleep(500);
-                Console.WriteLine($"HP {player.HP}\n");
+                Console.WriteLine($"HP {player.Hp}\n");
                 Thread.Sleep(1000);
             }
             else
@@ -240,13 +240,13 @@ namespace SpartaDungeonTextRpg
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리\n");
                 Console.WriteLine("던전에서 몬스터를 잡았습니다.");
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
-                Console.WriteLine($"HP (전투 전 HP) -> {player.HP}\n");
+                Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
             }
             else
             {
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "전투 패배\n");
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
-                Console.WriteLine($"HP (전투 전 HP) -> {player.HP}\n");
+                Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
             }
             Console.WriteLine("0. 다음\n");
             int input = ConsoleUtility.PromptMenuChoice(0, 0);
