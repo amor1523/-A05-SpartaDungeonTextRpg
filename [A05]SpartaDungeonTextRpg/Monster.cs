@@ -51,10 +51,12 @@ namespace _A05_SpartaDungeonTextRpg
             RewardExp = exp;
 
         }
+
         public Monster()
         {
 
         }
+
         public void TakeDamage(int damage)
         {
             Hp -= damage;
