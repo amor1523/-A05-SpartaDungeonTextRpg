@@ -88,7 +88,7 @@ public class Battle
         // 선택한 몬스터가 이미 죽은 상태인지 확인
         if (selectedMonster.IsDead)
         {
-            Console.WriteLine("잘못된 입력입니다. 이미 죽은 몬스터를 공격할 수 없습니다.");
+            Console.WriteLine("잘못된 입력입니다.\n");
             Thread.Sleep(1000);
             PlayerAttack(); // 다시 공격 메뉴로 돌아감
             return;
