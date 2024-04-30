@@ -61,7 +61,7 @@ public class Battle
         List<Monster> aliveMonsters = monsters.Where(m => !m.IsDead).ToList();
         for (int i = 0; i < aliveMonsters.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. Lv.{aliveMonsters[i].Level} {aliveMonsters[i].Name} HP {aliveMonsters[i].Hp}");
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", $"[{i + 1}] ", $"Lv.{aliveMonsters[i].Level} {aliveMonsters[i].Name} HP {aliveMonsters[i].Hp}");
         }
 
         Console.WriteLine();
@@ -76,6 +76,9 @@ public class Battle
             Console.Clear();
             BattleMenu();
         }
+
+        Console.Clear();
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         int baseDamage = player.Atk;
         int missDamage = (int)Math.Ceiling(baseDamage * 0.1);
         int minDamage = baseDamage - missDamage;
