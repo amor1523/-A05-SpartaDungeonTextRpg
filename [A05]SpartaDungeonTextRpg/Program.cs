@@ -18,8 +18,13 @@ namespace SpartaDungeonTextRpg
         private void InitializeGame()
         {
             player = new Player("Chad", "전사", 1, 10, 5, 100, 1500f);
-        }
+            monsters = new List<Monster>(); // 몬스터 리스트 초기화
 
+            // 몬스터 생성 및 추가
+            Monster monster = new Monster(0, "고블린", 1, 20, 35, 20, 50);
+            monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
+            monster.GenerateMonster(); // 몬스터 생성
+            monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
         }
 
         public void MainMenu()
@@ -104,7 +109,7 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("0.취소");
 
             int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
-            if(input == 0)
+            if (input == 0)
             {
                 Console.Clear();
                 BattleMenu();
@@ -120,8 +125,8 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine($"HP {selectedMonster.Hp}\n");
             Thread.Sleep(1000);
             Console.WriteLine("0.다음");
-            int inputs = ConsoleUtility.PromptMenuChoice(0,0);
-            if (inputs == 0) 
+            int inputs = ConsoleUtility.PromptMenuChoice(0, 0);
+            if (inputs == 0)
             {
                 foreach (Monster monster in monsters)
                 {
@@ -138,10 +143,10 @@ namespace SpartaDungeonTextRpg
                 }
             }
             // 몬스터들이 플레이어를 한 번씩 공격
-            
+
 
             // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
-           
+
         }
 
         public void EnemyAttack(Monster targetMonster)
@@ -151,7 +156,7 @@ namespace SpartaDungeonTextRpg
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "공격!!\n");
                 Console.WriteLine($"{targetMonster.Name} 의 공격!");
                 Thread.Sleep(500);
-                int damageDealt = targetMonster.Attack;
+                int damageDealt = targetMonster.Atk;
                 player.TakeDamage(damageDealt);
                 Console.WriteLine($"Lv.{player.Level} {player.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]");
                 Thread.Sleep(1000);
@@ -161,7 +166,7 @@ namespace SpartaDungeonTextRpg
                 Console.WriteLine($"HP {player.HP}\n");
                 Thread.Sleep(1000);
             }
-                
+
         }
 
         public void BattleResult(bool victory)
