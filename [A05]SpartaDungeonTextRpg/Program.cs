@@ -64,7 +64,6 @@ namespace SpartaDungeonTextRpg
                     player.Atk = 10;
                     player.Def = 5;
                     player.Hp = 100;
-                    MainMenu();
                     break;
 
                 case 2:
@@ -72,17 +71,17 @@ namespace SpartaDungeonTextRpg
                     player.Atk = 8;
                     player.Def = 3;
                     player.Hp = 80;
-                    MainMenu();
                     break;
                 case 3:
                     player.Job = Job.Archer;
                     player.Atk = 13;
                     player.Def = 4;
                     player.Hp = 90;
-                    MainMenu();
                     break;
 
             }
+            battle = new Battle(player, monsters);
+            MainMenu();
         }
 
         public void MainMenu()
