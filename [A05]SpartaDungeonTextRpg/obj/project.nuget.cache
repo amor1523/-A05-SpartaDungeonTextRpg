@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "iPzFYU05b+r09KrmMg1fbRy+tTVSNVMUtKoUVhTr98LrilDabbNE9Yzg6AV1u1HWbnhv45yQaTewuBLgwBgC9A==",
+  "dgSpecHash": "4sNm3xnqKtn2TJLdPqmjmENMOj3TnPLcHel39r4UbVagG7l3KefJEOcgpzeJdhAwzeTUSCqZI8DCA2jusX/3vQ==",
   "success": true,
-  "projectFilePath": "C:\\Unity 14\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj",
+  "projectFilePath": "C:\\Users\\PC\\source\\repos\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "캐시 파일 C:\\Users\\PC\\source\\repos\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\obj\\project.nuget.cache을(를) 읽는 동안 문제가 발생했습니다. Unexpected character encountered while parsing value: <. Path '', line 0, position 0."
+    }
+  ]
 }
