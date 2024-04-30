@@ -61,9 +61,9 @@ namespace SpartaDungeonTextRpg
             {
                 case 1:
                     player.Job = Job.Knight;
-                    player.Atk = 10;
+                    player.Atk = 100;   // 10
                     player.Def = 5;
-                    player.Hp = 100;
+                    player.Hp = 1000;    // 100
                     break;
 
                 case 2:

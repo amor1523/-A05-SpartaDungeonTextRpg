@@ -104,6 +104,8 @@ public class Battle
             // 모든 몬스터가 죽었을 때 승리 처리
             if (monsters.All(m => m.IsDead))
             {
+                foreach (var monster in monsters)
+                    player.Exp += monster.RewardExp;
                 BattleResult(true);
             }
             else
@@ -145,6 +147,8 @@ public class Battle
     public void BattleResult(bool victory)
     {
         // 레벨업 유무 확인
+        int playerLevel = player.Level;
+        int playerExp = player.LevelUpExp;
         bool flagLevelUp = LevelUp();
 
         Console.Clear();
@@ -156,14 +160,14 @@ public class Battle
             if (!flagLevelUp)
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
             else
-                Console.WriteLine($"Lv.{player.Level - 1} {player.Name} -> {player.Level} {player.Name}");
+                Console.WriteLine($"Lv.{playerLevel} {player.Name} -> Lv. {player.Level} {player.Name}");
 
             Thread.Sleep(1000);
             Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
             Thread.Sleep(1000);
-            Console.WriteLine($"exp {player.BeforeExp} -> {player.AfterExp}\n");
+            Console.WriteLine($"exp {playerExp} -> {player.Exp}\n");
             Thread.Sleep(1000);
-            Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.AfterExp}\n");
+            Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
             Thread.Sleep(1000);
             Console.WriteLine("0. 다음\n");
         }
@@ -181,7 +185,6 @@ public class Battle
             case 0:
                 GameManager gameManager = new GameManager();
                 gameManager.MainMenu();
-                player.BeforeExp = player.AfterExp;
                 break;
         }
     }
@@ -190,19 +193,29 @@ public class Battle
     {
         bool flagLevelUp;
 
-        if (player.AfterExp > player.LevelUpExp && (player.Level >= 1 && player.Level <= 5))
+        if (player.Exp > player.LevelUpExp && (player.Level >= 1 && player.Level <= 4))
         {
             flagLevelUp = true;
-            player.Level += 1;
             player.Atk += 1;
             player.Def += 1;
 
-            if (player.Level == 2)
+            if (player.Exp >= 10 && player.Exp < 35)
+            {
+                player.Level = 2;
                 player.LevelUpExp = 35;
-            else if (player.Level == 3)
+            }
+            else if (player.Exp >= 35 && player.Exp < 65)
+            {
+                player.Level = 3;
                 player.LevelUpExp = 65;
-            else if (player.Level == 4)
+            }
+            else if (player.Exp >= 65 && player.Exp < 100)
+            {
+                player.Level = 4;
                 player.LevelUpExp = 100;
+            }
+            else if (player.Exp >= 100)
+                player.Level = 5;
         }
         else
             flagLevelUp = false;

@@ -22,16 +22,14 @@ namespace _A05_SpartaDungeonTextRpg
         public float Gold { get; set; }
         public bool IsDead => Hp <= 0;
         // Exp, LevelUpExp 변수 추가
-        public int BeforeExp { get; set; }
-        public int AfterExp { get; set; }
+        public int Exp { get; set; }
         public int LevelUpExp { get; set; }
 
 
         public Player()
         {
             // 초기값
-            BeforeExp = 0;
-            AfterExp = 0;
+            Exp = 0;
             Level = 1;
             Gold = 1500f;
             LevelUpExp = 10;
