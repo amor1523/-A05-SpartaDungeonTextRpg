@@ -65,7 +65,7 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine($"{player.Name} ({player.Job})");
             Console.WriteLine($"공격력 :{player.Atk}");
             Console.WriteLine($"방어력 :{player.Def}");
-            Console.WriteLine($"체력 :{player.HP}");
+            Console.WriteLine($"체력 :{player.Hp}");
             Console.WriteLine($"Gold : {player.Gold} G\n");
             Console.WriteLine("0. 나가기\n");
 

@@ -31,7 +31,7 @@ public class Battle
         Console.WriteLine();
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
-        Console.WriteLine($"HP {player.HP}\n");
+        Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("1. 공격\n");
 
         int input = ConsoleUtility.PromptMenuChoice(1, 1);
@@ -54,7 +54,7 @@ public class Battle
         Console.WriteLine();
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
-        Console.WriteLine($"HP {player.HP}\n");
+        Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("0.취소");
 
         int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
@@ -109,7 +109,7 @@ public class Battle
             Console.WriteLine();
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
             Thread.Sleep(500);
-            Console.WriteLine($"HP {player.HP}\n");
+            Console.WriteLine($"HP {player.Hp}\n");
             Thread.Sleep(1000);
         }
         else
@@ -128,13 +128,13 @@ public class Battle
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리\n");
             Console.WriteLine("던전에서 몬스터를 잡았습니다.");
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
-            Console.WriteLine($"HP (전투 전 HP) -> {player.HP}\n");
+            Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
         }
         else
         {
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "전투 패배\n");
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
-            Console.WriteLine($"HP (전투 전 HP) -> {player.HP}\n");
+            Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
         }
         Console.WriteLine("0. 다음\n");
         int input = ConsoleUtility.PromptMenuChoice(0, 0);
