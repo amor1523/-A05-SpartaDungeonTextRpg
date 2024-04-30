@@ -1,23 +1,5 @@
 ﻿namespace _A05_SpartaDungeonTextRpg
 {
-    // 몬스터 실행용 클래스 입니다 나중에 삭제!!
-    internal class Monster
-    {
-        public string Name { get; }
-        public int Level { get; }
-        public int Atk { get; }
-        public int Hp { get; }
-        
-
-        public Monster(string name, int level, int atk, int hp)
-        {
-            Name = name;
-            Level = level;
-            Atk = atk;
-            Hp = hp;
-        }
-    }
-
     public class GameManager
     {
         private Player player;
@@ -31,7 +13,6 @@
         private void InitializeGame()
         {
             player = new Player("Chad", "전사", 1, 10, 5, 100, 1500f);
-            monster = new Monster("미니언", 2, 5, 12);
         }
 
 
