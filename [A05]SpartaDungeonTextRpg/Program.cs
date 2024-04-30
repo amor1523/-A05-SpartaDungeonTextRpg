@@ -24,11 +24,11 @@ namespace SpartaDungeonTextRpg
 
         private void InitializeGame()
         {
-            player = new Player("Chad", "전사", 1, 10, 5, 100, 1500f);
+            player = new Player("Chad", "전사", 1, 50, 5, 100, 1500f);
             monsters = new List<Monster>(); // 몬스터 리스트 초기화
 
             // 몬스터 생성 및 추가
-            Monster monster = new Monster(0, "고블린", 1, 20, 35, 20, 50);
+            Monster monster = new Monster();
             monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
             monster.GenerateMonster(); // 몬스터 생성
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
