@@ -18,12 +18,7 @@ namespace SpartaDungeonTextRpg
         private void InitializeGame()
         {
             player = new Player("Chad", "전사", 1, 10, 5, 100, 1500f);
-            monsters = new List<Monster>(); // 몬스터 리스트 초기화
-            Random rand = new Random();
-            // 테스트를 위한 미니언 몬스터 추가
-            monsters.Add(new Monster("미니언", 1, 5, 12));
-            monsters.Add(new Monster("골리앗", 31, 7, 12));
-            monsters.Add(new Monster("대포", 41, 10, 12));
+        }
 
         }
 
