@@ -1,32 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace _A05_SpartaDungeonTextRpg
 {
-    internal class Player
+    public class Player
     {
         public string Name { get; }
         public string Job { get; }
         public int Level { get; }
         public int Atk { get; }
         public int Def { get; }
-        public int Hp { get; }
+        public int HP { get; set; }
         public float Gold { get; set; }
+        public bool IsDead => HP <= 0;
 
-        public Player(string name, string job, int level, int atk, int def, int hp, float gold)
+        public Player(string name, string job, int level, int attack, int defense, int health, float gold)
         {
             Name = name;
             Job = job;
             Level = level;
-            Atk = atk;
-            Def = def;
-            Hp = hp;
+            Atk = attack;
+            Def = defense;
+            HP = health;
             Gold = gold;
         }
+        public void TakeDamage(int damage)
+        {
+            HP -= damage;
+            if (HP < 0)
+                HP = 0;
+        }
     }
+
 }
+
+
+
