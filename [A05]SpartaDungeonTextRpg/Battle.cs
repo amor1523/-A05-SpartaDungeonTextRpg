@@ -17,17 +17,21 @@ public class Battle
     {
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
+        
         for (int i = 0; i < monsters.Count; i++)
         {
             if (!monsters[i].IsDead)
             {
                 Console.WriteLine($"Lv.{monsters[i].Level} {monsters[i].Name} HP {(monsters[i].IsDead ? "Dead" : monsters[i].Hp.ToString())}");
+               
             }
             else
             {
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"Lv.{monsters[i].Level} {monsters[i].Name} HP Dead");
             }
+            
         }
+      
         Console.WriteLine();
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
@@ -47,25 +51,31 @@ public class Battle
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         Thread.Sleep(500);
-        for (int i = 0; i < monsters.Count; i++)
+        //살아있는 몬스터를 리스트에 저장 
+        List<Monster> aliveMonsters = monsters.Where(m => !m.IsDead).ToList();
+        for (int i = 0; i < aliveMonsters.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
+            Console.WriteLine($"{i + 1}. Lv.{aliveMonsters[i].Level} {aliveMonsters[i].Name} HP {aliveMonsters[i].Hp}");
         }
+
         Console.WriteLine();
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
         Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("0.취소");
 
-        int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
+        int input = ConsoleUtility.PromptMenuChoice(0, aliveMonsters.Count);
         if (input == 0)
         {
             Console.Clear();
             BattleMenu();
         }
-
-        Monster selectedMonster = monsters[input - 1];
-        int damageDealt = player.Atk;
+        int baseDamage = player.Atk;
+        int missDamage = (int)Math.Ceiling(baseDamage *0.1);
+        int minDamage = baseDamage - missDamage;
+        int maxDamage = baseDamage + missDamage;
+        int damageDealt = random.Next(minDamage,maxDamage);
+        Monster selectedMonster = aliveMonsters[input - 1];
         selectedMonster.TakeDamage(damageDealt);
         Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]");
         Thread.Sleep(1000);
@@ -84,17 +94,27 @@ public class Battle
                 Console.Clear();
                 EnemyAttack(monster);
             }
-            // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
-            if (!player.IsDead)
+
+            // 모든 몬스터가 죽었을 때 승리 처리
+            if (monsters.All(m => m.IsDead))
             {
-                BattleMenu();
+                BattleResult(true);
             }
             else
             {
-                BattleResult(false);
+                // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
+                if (!player.IsDead)
+                {
+                    BattleMenu();
+                }
+                else
+                {
+                    BattleResult(false);
+                }
             }
         }
     }
+
     public void EnemyAttack(Monster targetMonster)
     {   //공격할 몬스터가  살아있는지 확인
         if (!targetMonster.IsDead)
@@ -112,10 +132,7 @@ public class Battle
             Console.WriteLine($"HP {player.Hp}\n");
             Thread.Sleep(1000);
         }
-        else
-        {
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"{targetMonster.Name} 은/는 이미 죽었습니다.\n");
-        }
+       
 
     }
 
@@ -126,7 +143,7 @@ public class Battle
         if (victory)
         {
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리\n");
-            Console.WriteLine("던전에서 몬스터를 잡았습니다.");
+            Console.WriteLine("던전에서 몬스터를 {0}마리 잡았습니다.",monsters.Count);
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
             Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
         }
