@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
+using _A05_SpartaDungeonTextRpg;
 namespace _A05_SpartaDungeonTextRpg
 {
-    internal class Player
-    {
+    public class Player
+    {   
+        Random rand  = new Random();
         public string Name { get; }
         public string Job { get; }
 
@@ -19,6 +14,7 @@ namespace _A05_SpartaDungeonTextRpg
         public int Def { get; set; }
         public int Hp { get; }
         public float Gold { get; set; }
+        public bool IsDead => HP <= 0;
 
         // Exp, LevelUpExp 변수 추가
         public int Before_Exp { get; set; }
@@ -30,9 +26,9 @@ namespace _A05_SpartaDungeonTextRpg
             Name = name;
             Job = job;
             Level = level;
-            Atk = atk;
-            Def = def;
-            Hp = hp;
+            Atk = attack;
+            Def = defense;
+            HP = health;
             Gold = gold;
 
             // 초기값
@@ -40,5 +36,18 @@ namespace _A05_SpartaDungeonTextRpg
             After_Exp = 0;
             LevelUpExp = 10;
         }
+        public void TakeDamage(int damage)
+        {
+            HP -= damage;
+            if (HP < 0)
+                HP = 0;
+        }
+      
+
     }
 }
+    
+
+
+
+
