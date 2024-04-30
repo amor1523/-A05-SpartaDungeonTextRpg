@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\OneDrive\\바탕 화면\\TextRpg\\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj": {}
+    "D:\\GitHub\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\OneDrive\\바탕 화면\\TextRpg\\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj": {
+    "D:\\GitHub\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\OneDrive\\바탕 화면\\TextRpg\\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj",
+        "projectUniqueName": "D:\\GitHub\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj",
         "projectName": "[A05]SpartaDungeonTextRpg",
-        "projectPath": "C:\\Users\\user\\OneDrive\\바탕 화면\\TextRpg\\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj",
+        "projectPath": "D:\\GitHub\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\OneDrive\\바탕 화면\\TextRpg\\-A05-SpartaDungeonTextRpg-lgh_Dungeon-Result\\[A05]SpartaDungeonTextRpg\\obj\\",
+        "outputPath": "D:\\GitHub\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
