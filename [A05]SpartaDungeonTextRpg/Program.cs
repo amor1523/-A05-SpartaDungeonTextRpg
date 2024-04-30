@@ -7,7 +7,7 @@ namespace SpartaDungeonTextRpg
 {
     public class GameManager
     {
-        Dictionary<Job, string> dict_Job = new Dictionary<Job, string>()
+        Dictionary<Job, string> dict = new Dictionary<Job, string>() // 플레이어 직업 딕셔너리
             {
                 {Job.Knight, "전사" },
                 {Job.Mage, "마법사" },
@@ -109,7 +109,7 @@ namespace SpartaDungeonTextRpg
             ConsoleUtility.ShowTitle("[상태보기]");
             Console.WriteLine("캐릭터의 정보를 표시합니다.\n");
             Console.WriteLine($"Lv. {player.Level}");
-            Console.WriteLine($"{player.Name} ({dict_Job[player.Job]})");
+            Console.WriteLine($"{player.Name} ({dict[player.Job]})");
             Console.WriteLine($"공격력 :{player.Atk}");
             Console.WriteLine($"방어력 :{player.Def}");
             Console.WriteLine($"체력 :{player.HP}");
@@ -142,7 +142,7 @@ namespace SpartaDungeonTextRpg
             }
             Console.WriteLine();
             Console.WriteLine("[내정보]");
-            Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
+            Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
             Console.WriteLine($"HP {player.HP}\n");
             Console.WriteLine("1. 공격\n");
 
@@ -165,7 +165,7 @@ namespace SpartaDungeonTextRpg
             }
             Console.WriteLine();
             Console.WriteLine("[내정보]");
-            Console.WriteLine($"Lv.{player.Level}  {player.Name} ({player.Job})");
+            Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
             Console.WriteLine($"HP {player.HP}\n");
             Console.WriteLine("0.취소");
 
