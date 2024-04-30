@@ -1,14 +1,9 @@
-﻿using System.Reflection.Emit;
-using System;
-
-namespace _A05_SpartaDungeonTextRpg
+﻿namespace _A05_SpartaDungeonTextRpg
 {
     public class GameManager
     {
         private Player player;
-        private List<Monster> monstersData; // 몬스터 데이터 리스트
-        private List<Monster> CreatedMonster { get; set; } // 몬스터 랜덤 생성 리스트
-        Random random = new Random(); // 랜덤 변수 추가를 위해 사용
+        private Monster monster;
 
         public GameManager()
         {
@@ -17,14 +12,10 @@ namespace _A05_SpartaDungeonTextRpg
 
         private void InitializeGame()
         {
-            int Level = random.Next(1,4);
             player = new Player("Chad", "전사", 1, 10, 5, 100, 1500f);
-            monstersData = new List<Monster>();
-            monstersData.Add(new Monster(0, "고블린", Level, 20 + Level * 2 + random.Next(-1, 2), 35 + Level * 5 + random.Next(-1, 2), 20 + Level * 2 + random.Next(-1, 2), 50 + Level * 2, false)); // 몬스터 데이터 입력
-            monstersData.Add(new Monster(1, "늑대", Level, 15 + Level * 2 + random.Next(-1, 2), 20 + Level * 5 + random.Next(-1, 2), 18 + Level * 2 + random.Next(-1, 2), 40 + Level * 2, false)); // 레벨에 따른 스탯 변경, 스탯에 랜덤값 입력
-            monstersData.Add(new Monster(2, "박쥐", Level, 20 + Level * 2 + random.Next(-1, 2), 15 + Level * 3 + random.Next(-1, 2), 18 + Level * 2 + random.Next(-1, 2), 35 + Level * 2, false));
-            monstersData.Add(new Monster(3, "거미", Level, 10 + Level * 2 + random.Next(-1, 2), 10 + Level * 3 + random.Next(-1, 2), 10 + Level * 2 + random.Next(-1, 2), 15 + Level * 2, false));
         }
+
+
         public void MainMenu()
         {
             Console.Clear();
@@ -33,15 +24,18 @@ namespace _A05_SpartaDungeonTextRpg
             Console.WriteLine("1. 상태보기");
             Console.WriteLine("2. 전투시작");
             Console.WriteLine();
+
             int input = ConsoleUtility.PromptMenuChoice(1, 2);
             switch (input)
             {
                 case 1:
                     StatusMenu();
                     break;
+
                 case 2:
                     BattleMenu();
                     break;
+
             }
         }
 
@@ -249,18 +243,6 @@ namespace _A05_SpartaDungeonTextRpg
                     MainMenu();
                     break;
             }
-        }
-
-        int monsterNumber = 3; //총 세 마리 생성
-        Monster m;
-        public void GenerateMonster() //몬스터 생성 메서드
-        {
-            for (int i = 0; i < monsterNumber; i++)
-            {
-                Monster monsterinfo = monstersData[random.Next(0, 4)];
-                m = new Monster(monsterinfo.Id, monsterinfo.Name, monsterinfo.Level, monsterinfo.Atk, monsterinfo.Hp, monsterinfo.RewardGold, monsterinfo.RewardExp);
-            }
-            CreatedMonster.Add(m); // 리스트에 입력
         }
 
     }
