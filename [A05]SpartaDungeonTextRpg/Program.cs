@@ -8,6 +8,8 @@ namespace SpartaDungeonTextRpg
 {
     public class GameManager
     {
+        public bool GamePlay = true;
+
         Dictionary<Job, string> dict= new Dictionary<Job, string>() // 직업출력 딕셔너리
         {
             {Job.Knight, "전사"},
@@ -18,6 +20,7 @@ namespace SpartaDungeonTextRpg
         private List<Monster> monsters;
         private Random random = new Random();
         private Battle battle;
+        private Item item = new Item();
 
         public GameManager()
         {
@@ -37,6 +40,8 @@ namespace SpartaDungeonTextRpg
             monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
             monster.GenerateMonster(); // 몬스터 생성
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
+
+            item.GetItem();
         }
 
         private void PlayerName()
@@ -91,9 +96,12 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("이제 전투를 시작할 수 있습니다.\n");
             Console.WriteLine("1. 상태보기");
             Console.WriteLine("2. 전투시작");
+            Console.WriteLine("3. 인벤토리");
+            Console.WriteLine("4. 상점");
+            Console.WriteLine("5. 게임종료");
             Console.WriteLine();
 
-            int input = ConsoleUtility.PromptMenuChoice(1, 2);
+            int input = ConsoleUtility.PromptMenuChoice(1, 5);
             switch (input)
             {
                 case 1:
@@ -102,6 +110,19 @@ namespace SpartaDungeonTextRpg
 
                 case 2:
                     battle.BattleMenu();
+                    break;
+
+                case 3:
+                    item.Inventory();
+                    break;
+
+                case 4:
+                    item.Shop();
+                    break;
+
+                case 5:
+                    GamePlay = false;
+                    Console.WriteLine("게임을 종료합니다.");
                     break;
             }
         }
@@ -133,11 +154,11 @@ namespace SpartaDungeonTextRpg
 
     public class Program
     {
+        public static GameManager gameManager = new GameManager();
         public static void Main(string[] args)
         {
-            while (true)
+            while (gameManager.GamePlay)
             {
-                GameManager gameManager = new GameManager();
                 gameManager.MainMenu();
             }
         }
