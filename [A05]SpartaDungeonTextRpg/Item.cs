@@ -1,6 +1,7 @@
 ﻿using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
 using System;
+using System.Runtime.CompilerServices;
 public class Item
 {
     private Player player = new Player();
@@ -93,25 +94,29 @@ public class Item
             int index = 1;
             foreach (var item in InventoryIndex)
             {
-                if (!item.FlagEquip)
+                if (item.FlagEquip)
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write($"- {index} ");
+                if (item.FlagEquip)
                 {
-                    if (item.Id < 1000 && item.Id >= 1)
-                        Console.WriteLine($"- {index} {item.Name}        || 방어력 + {item.DefensivePower}        || 장비설명 : {item.Explain}");
-                    else if (item.Id > 1000 && item.Id < 2000)
-                        Console.WriteLine($"- {index} {item.Name}        || 공격력 + {item.AttackPower}        || 장비설명 : {item.Explain}");
-                    else
-                        Console.WriteLine(" 아이템 ID 오류");
+                    Console.Write("[E]");
+                    Console.Write(ConsoleUtility.PadRightForMixedText(item.Name, 12));
                 }
                 else
-                {
-                    if (item.Id < 1000 && item.Id >= 1)
-                        ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", $"- {index} [E] {item.Name}        || 방어력 + {item.DefensivePower}        || 장비설명 : {item.Explain}");
-                    else if (item.Id > 1000 && item.Id < 2000)
-                        ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", $"- {index} [E] {item.Name}        || 공격력 + {item.AttackPower}        || 장비설명 : {item.Explain}");
-                    else
-                        Console.WriteLine(" 아이템 ID 오류");
-                }
+                    Console.Write(ConsoleUtility.PadRightForMixedText(item.Name, 12));
+
+                Console.Write(" | ");
+
+                if (item.AttackPower != 0)
+                    Console.Write($"공격력 {(item.AttackPower >= 0 ? "+" : "")}{item.AttackPower} ");
+                if (item.DefensivePower != 0)
+                    Console.Write($"방어력 {(item.DefensivePower >= 0 ? "+" : "")}{item.DefensivePower} ");
+
+                Console.Write(" | ");
+
+                Console.WriteLine(item.Explain);
                 index++;
+                Console.ResetColor();
             }
         }
         else
@@ -156,43 +161,35 @@ public class Item
             int index = 1;
             foreach (var item in ItemIndex)
             {
-                if (!FlagShopBuy)
+                if(item.FlagBuy)
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("- ");
+                if (FlagShopBuy)
                 {
-                    if (!item.FlagBuy)
-                    {
-                        if (item.Id < 1000 && item.Id >= 1)
-                            Console.WriteLine($"- {item.Name}        || 방어력 + {item.DefensivePower}        || 장비설명 : {item.Explain}        || {item.Gold} G");
-                        else if (item.Id > 1000 && item.Id < 2000)
-                            Console.WriteLine($"- {item.Name}        || 공격력 + {item.AttackPower}        || 장비설명 : {item.Explain}        || {item.Gold} G");
-                        else
-                            Console.WriteLine(" 아이템 ID 오류 ");
-                    }
-                    else
-                    {
-                        if (item.Id < 1000 && item.Id >= 1)
-                            ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"- {item.Name}        || 방어력 + {item.DefensivePower}        || 장비설명 : {item.Explain}        || 구매완료");
-                        else if (item.Id > 1000 && item.Id < 2000)
-                            ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"- {item.Name}        || 공격력 + {item.AttackPower}        || 장비설명 : {item.Explain}        || 구매완료");
-                    }
+                    Console.Write($"{index} ");
                 }
+                Console.Write(ConsoleUtility.PadRightForMixedText(item.Name, 15));
+
+                Console.Write(" | ");
+
+                if (item.AttackPower != 0)
+                    Console.Write($"공격력 {(item.AttackPower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.AttackPower.ToString(), 3)} ");
+                if (item.DefensivePower != 0)
+                    Console.Write($"방어력 {(item.DefensivePower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.DefensivePower.ToString(), 3)} ");
+
+                Console.Write(" | ");
+
+                Console.Write(ConsoleUtility.PadRightForMixedText(item.Explain, 55));
+
+                Console.Write(" | ");
+
+                if (!item.FlagBuy)
+                    Console.WriteLine(ConsoleUtility.PadRightForMixedText(item.Gold.ToString() + " G", 5));
                 else
-                {
-                    if (!item.FlagBuy)
-                    {
-                        if (item.Id < 1000 && item.Id >= 1)
-                            Console.WriteLine($"- {index} {item.Name}        || 방어력 + {item.DefensivePower}        || 장비설명 : {item.Explain}        || {item.Gold} G");
-                        else if (item.Id > 1000 && item.Id < 2000)
-                            Console.WriteLine($"- {index} {item.Name}        || 공격력 + {item.AttackPower}        || 장비설명 : {item.Explain}        || {item.Gold} G");
-                    }
-                    else
-                    {
-                        if (item.Id < 1000 && item.Id >= 1)
-                            ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"- {index} {item.Name}        || 방어력 + {item.DefensivePower}        || 장비설명 : {item.Explain}        || 구매완료");
-                        else if (item.Id > 1000 && item.Id < 2000)
-                            ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"- {index} {item.Name}        || 공격력 + {item.AttackPower}        || 장비설명 : {item.Explain}        || 구매완료");
-                    }
-                    index++;
-                }
+                    Console.WriteLine(ConsoleUtility.PadRightForMixedText("구매완료", 5));
+
+                index++;
+                Console.ResetColor();
             }
         }
 
@@ -234,7 +231,8 @@ public class Item
                     if (!selectItem.FlagBuy)
                     {
                         selectItem.BuyItem(player);
-                        InventoryIndex.Add(selectItem);
+                        if(selectItem.FlagBuy)
+                            InventoryIndex.Add(selectItem);
                         Thread.Sleep(1000);
                         Shop();
                     }
