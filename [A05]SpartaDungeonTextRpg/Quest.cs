@@ -33,7 +33,7 @@ namespace _A05_SpartaDungeonTextRpg
             for (int i = 0; i < max; i++)
             {
                 Quest questinfo = questData[i];
-                if (questinfo.ClearQuest == false)
+                if (questinfo.ClearQuest == false) //클리어한 퀘스트는 목록에서 삭제
                 {
                     questList.Add(questinfo);
                 }
@@ -42,18 +42,18 @@ namespace _A05_SpartaDungeonTextRpg
 
         public void QuestList(List<Quest> questData) // 퀘스트 리스트 출력
         {
-            Quest0 quest0 = new Quest0();
+            Quest0 quest0 = new Quest0(); //퀘스트 선택에 따른 클래스 호출을 위한 선언
             Quest1 quest1 = new Quest1();
             Quest2 quest2 = new Quest2();
             int i;
             Console.Clear();
-            setactiveQuests(questData);
+            setactiveQuests(questData); // 갱신 된 퀘스트 데이터를 새로 받아옴
             Console.WriteLine("Quest!\n"); // 퀘스트 텍스트 색상 변경 필요
             for( i = 0;i < questList.Count;i++)
             {
                 if (questList[i].AcceptQuest == true)
                 {
-                    Console.WriteLine($"-수락중-{i + 1}. {questList[i].Title}");
+                    Console.WriteLine($"-수락중-{i + 1}. {questList[i].Title}"); // 퀘스트 수락중이라면 앞에 수락중 표시
                 }
                 else
                 {
@@ -62,11 +62,11 @@ namespace _A05_SpartaDungeonTextRpg
             }
             if(questList.Count == 0)
             {
-                Console.WriteLine("현재 받을 수 있는퀘스트가 없습니다.");
+                Console.WriteLine("현재 받을 수 있는퀘스트가 없습니다."); // 퀘스트를 전부 클리어하면 출력 될 메세지
             }
             Console.WriteLine($"{i+1}. 나가기");
-            input = ConsoleUtility.PromptMenuChoice(1, i+1);
-            if(input < i+1)
+            input = ConsoleUtility.PromptMenuChoice(1, i+1); 
+            if(input < i+1) // 받아 온 키 입력값 기준으로 퀘스트 텍스트로 이동
             {
                 Quest quest = questData[input - 1];
                 switch (questList[input - 1].Number)
@@ -117,7 +117,7 @@ namespace _A05_SpartaDungeonTextRpg
 
         public void Boolcondition(List<Quest> questData, int i) //퀘스트 조건 충족 조건 발동
         {
-            if (Count == GoalCount)
+            if (Count == GoalCount) // 카운트가 목표 카운트와 같다면 퀘스트 클리어 텍스트 출력 / 
             {
                 QuestClear(questData, i);
             }
@@ -127,7 +127,7 @@ namespace _A05_SpartaDungeonTextRpg
             }
         }
 
-        public void QuestClear(List<Quest> questData, int i) // 퀘스트 클리어 했을 경우 발동하는 
+        public void QuestClear(List<Quest> questData, int i) // 퀘스트 클리어 했을 경우 나오는 텍스트
         {
             Console.WriteLine("1. 보상 받기");
             Console.WriteLine("2. 돌아가기");
@@ -137,7 +137,7 @@ namespace _A05_SpartaDungeonTextRpg
                 case 1:
                     questData[i].ClearQuest = true;
                     questData[i].AcceptQuest = false;
-                    //아이템,골드,경험치 추가 필요
+                    //보상 추가 필요
                     QuestList(questData);
                     break;
                 case 2:
@@ -146,7 +146,7 @@ namespace _A05_SpartaDungeonTextRpg
             }
         }
 
-        public void BoolQuestAccept(List<Quest> questData, int i)
+        public void BoolQuestAccept(List<Quest> questData, int i) //퀘스트를 클리어하지 않은 경우
         {
             switch (questData[i].AcceptQuest)
             {
