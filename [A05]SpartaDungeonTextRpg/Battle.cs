@@ -13,11 +13,13 @@ public class Battle
     private Player player;
     private List<Monster> monsters;
     private Random random = new Random();
+    private GameManager gameManager;
 
-    public Battle(Player player, List<Monster> monsters)
+    public Battle(Player player, List<Monster> monsters, GameManager gameManager)
     {
         this.player = player;
         this.monsters = monsters;
+        this.gameManager = gameManager;
     }
     public void BattleMenu()
     {
@@ -254,14 +256,14 @@ public class Battle
             Thread.Sleep(1000);
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
             Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
+            Console.WriteLine("0. 다음\n");
         }
-        Console.WriteLine("0. 다음\n");
+        
         int input = ConsoleUtility.PromptMenuChoice(0, 0);
         switch (input)
         {
             case 0:
-                GameManager gameManager = new GameManager();
-                gameManager.MainMenu();
+               gameManager.MainMenu();
                 player.BeforeExp = player.AfterExp;
                 break;
         }

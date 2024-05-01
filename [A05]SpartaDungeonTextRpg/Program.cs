@@ -24,7 +24,7 @@ namespace SpartaDungeonTextRpg
             InitializeGame();
             PlayerName();
             PlayerJob();
-            battle = new Battle(player, monsters);
+            battle = new Battle(player, monsters, this);
         }
 
         private void InitializeGame()
@@ -80,7 +80,7 @@ namespace SpartaDungeonTextRpg
                     break;
 
             }
-            battle = new Battle(player, monsters);
+            battle = new Battle(player, monsters, this);
             MainMenu();
         }
 
