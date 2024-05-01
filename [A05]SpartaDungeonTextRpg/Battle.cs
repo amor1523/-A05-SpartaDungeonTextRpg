@@ -58,8 +58,7 @@ public class Battle
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         Thread.Sleep(500);
-        //살아있는 몬스터를 리스트에 저장 
-       
+
         for (int i = 0; i < monsters.Count; i++)
         {
             Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
@@ -71,17 +70,15 @@ public class Battle
         Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("0.취소");
 
-
         int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
         if (input == 0)
         {
             Console.Clear();
             BattleMenu();
-                return;
+            return;
         }
         // 선택한 몬스터 인덱스
         int deadMonsterIdx = input - 1;
-
         // 공격할 몬스터
         Monster selectedMonster = monsters[deadMonsterIdx];
 
@@ -95,31 +92,78 @@ public class Battle
         }
 
         int baseDamage = player.Atk;
-        int missDamage = (int)Math.Ceiling(baseDamage * 0.1);
-        int minDamage = baseDamage - missDamage;
-        int maxDamage = baseDamage + missDamage;
+        int errorDamage = (int)Math.Ceiling(baseDamage * 0.1);
+        int minDamage = baseDamage - errorDamage;
+        int maxDamage = baseDamage + errorDamage;
         int damageDealt = random.Next(minDamage, maxDamage);
 
-        // 치명타 여부를 결정하기 위한 확률 15퍼
-        int critChance = 15;
 
-        // 랜덤한 확률을 생성하여 치명타 여부 결정
-        bool isCritical = random.Next(100) < critChance;
-
-        // 치명타 데미지 계산
-        int critDamage = (int)(damageDealt * 1.6); // 치명타 데미지는 일반 데미지의 1.6배로 가정
-        
-      
-        selectedMonster.TakeDamage(damageDealt);
-        // 치명타가 발생하면 추가 데미지 적용
-        if (isCritical)
+        //회피 확률
+        int missChance = 10;
+        //  회피확률 생산
+        bool isMiss = random.Next(100) < missChance;
+        //회피 발생하면 데미지 0으로 적용
+        if (isMiss)
         {
-            damageDealt += critDamage;
-            Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]- 치명타 공격!!");
+            Console.Clear();
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
+            Console.WriteLine($"{player.Name} 의 공격!");
+            Thread.Sleep(500);
+            damageDealt = 0;
+            Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 공격했지만 아무일도  일어나지 않았습니다.\n");
+            Thread.Sleep(1000);
+            Console.WriteLine("0.다음");
+            int input1 = ConsoleUtility.PromptMenuChoice(0, 0);
+            if (input1 == 0)
+            {
+                // 몬스터들이 플레이어를 한 번씩 공격
+                foreach (Monster monster in this.monsters)
+                {
+                    Console.Clear();
+                    EnemyAttack(monster);
+                }
+
+                // 모든 몬스터가 죽었을 때 승리 처리
+                if (this.monsters.All(m => m.IsDead))
+                {
+                    BattleResult(true);
+                }
+                else
+                {
+                    // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
+                    if (!player.IsDead)
+                    {
+                        BattleMenu();
+                    }
+                    else
+                    {
+                        BattleResult(false);
+                    }
+                }
+            }
         }
         else
         {
-            Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]");
+            // 치명타 여부를 결정하기 위한 확률 15퍼
+            int critChance = 65;
+            // 랜덤한 확률을 생성하여 치명타 여부 결정
+            bool isCritical = random.Next(100) < critChance;
+            // 치명타 데미지 계산
+            int critDamage = (int)(damageDealt * 1.6); // 치명타 데미지는 일반 데미지의 1.6배로 가정
+                                                       // 치명타가 발생하면 추가 데미지 적용
+            if (isCritical)
+            {
+                Console.Clear();
+                Console.WriteLine($"{player.Name} 의 공격!");
+                Thread.Sleep(500);
+                damageDealt += critDamage;
+                Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]- 치명타 공격!!");
+            }
+            else
+            {
+                Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]");
+            }
+            selectedMonster.TakeDamage(damageDealt);
         }
         Thread.Sleep(1000);
         Console.WriteLine();
@@ -158,7 +202,7 @@ public class Battle
         }
     }
 
-    public void EnemyAttack(Monster targetMonster)
+        public void EnemyAttack(Monster targetMonster)
     {   //공격할 몬스터가  살아있는지 확인
         if (!targetMonster.IsDead)
         {
