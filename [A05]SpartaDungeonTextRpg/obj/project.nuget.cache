@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "NSmE0eg7gopJSSd3Yj6Brt86Tjj5D1hNMaZSRBqI3hUNBoot5Kb4mMamFJhTk7zkH67P41Md+unZqAREc9Jwvg==",
+  "dgSpecHash": "bPMo8ZIZQM5+/zjBj/46x1h0XTSHSXLx8TqHCLbGPtWp9YKvwbwaPUzaLZn4evY+Z/QT2Da5j9W/GC4iq+2tSQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jch44_o6ip9cm\\Desktop\\C#shop\\TextRpg\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\PC\\source\\repos\\-A05-SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg\\[A05]SpartaDungeonTextRpg.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\PC\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

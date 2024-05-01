@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace SpartaDungeonTextRpg
 {
@@ -25,8 +26,7 @@ namespace SpartaDungeonTextRpg
         public GameManager()
         {
             InitializeGame();
-            PlayerName();
-            PlayerJob();
+            JsonSerialize.LoadData(this);
             battle = new Battle(player, monsters, this);
         }
 
@@ -44,15 +44,16 @@ namespace SpartaDungeonTextRpg
             item.GetItem();
         }
 
-        private void PlayerName()
+        public void PlayerName()
         {
             Console.Clear();
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
-            Console.Write("원하시는 이름을 성정해주세요\n>> ");
+            Console.Write("원하시는 이름을 설정해주세요\n>> ");
             player.Name = Console.ReadLine();
+            PlayerJob();
         }
 
-        private void PlayerJob()
+        public void PlayerJob()
         {
             Console.Clear();
             Console.WriteLine("던전에 들어가기 전 당신의 직업을 선택해주세요.");
@@ -85,8 +86,7 @@ namespace SpartaDungeonTextRpg
                     break;
 
             }
-            battle = new Battle(player, monsters, this);
-            MainMenu();
+
         }
 
         public void MainMenu()
@@ -99,16 +99,21 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("3. 인벤토리");
             Console.WriteLine("4. 상점");
             Console.WriteLine("5. 게임종료");
+            Console.WriteLine("0. 저장하기");
             Console.WriteLine();
 
-            int input = ConsoleUtility.PromptMenuChoice(1, 5);
+            int input = ConsoleUtility.PromptMenuChoice(0, 5);
             switch (input)
             {
+                case 0:
+                    JsonSerialize.SaveData();
+                    break;
                 case 1:
                     StatusMenu();
                     break;
 
                 case 2:
+                    battle = new Battle(player, monsters, this);
                     battle.BattleMenu();
                     break;
 

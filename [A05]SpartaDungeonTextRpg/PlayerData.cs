@@ -6,7 +6,49 @@ using System.Threading.Tasks;
 
 namespace _A05_SpartaDungeonTextRpg
 {
-    internal class PlayerData
+
+    // 필요한 정보를 저장
+    public class PlayerData
     {
+        public string Name;
+        public Job Job;
+        public int Level;
+        public int Atk;
+        public int Def;
+        public int Hp;
+        public int Mp;
+        public float Gold;
+        public int Exp;
+        public int LevelUpExp;
+
+        public PlayerData(Player player)
+        {
+            player = new Player();
+            Name = player.Name;
+            Job = player.Job;
+            Level = player.Level;
+            Atk = player.Atk;
+            Def = player.Def;
+            Hp = player.Hp;
+            Mp = player.Mp;
+            Gold = player.Gold;
+            Exp = player.Exp;
+            LevelUpExp = player.LevelUpExp;
+        } 
+        
+    }
+
+    public class ItemData
+    {
+        public bool FlagBuy;
+        public bool FlagEquip;
+
+        public ItemData(Item item)
+        {
+            item  = new Item();
+            FlagBuy = item.FlagBuy;
+            FlagEquip = item.FlagEquip;
+        }
+
     }
 }
