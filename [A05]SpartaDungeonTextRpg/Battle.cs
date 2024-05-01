@@ -14,12 +14,14 @@ public class Battle
     private List<Monster> monsters;
     private Random random = new Random();
     private GameManager gameManager;
+    private int beforeHp;
 
     public Battle(Player player, List<Monster> monsters, GameManager gameManager)
     {
         this.player = player;
         this.monsters = monsters;
         this.gameManager = gameManager;
+        beforeHp = player.Hp;
     }
     public void BattleMenu()
     {
@@ -56,7 +58,7 @@ public class Battle
     }
     public void PlayerAttack()
     {
-
+        
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         Thread.Sleep(500);
@@ -204,7 +206,7 @@ public class Battle
         }
     }
 
-        public void EnemyAttack(Monster targetMonster)
+    public void EnemyAttack(Monster targetMonster)
     {   //공격할 몬스터가  살아있는지 확인
         if (!targetMonster.IsDead)
         {
@@ -242,7 +244,7 @@ public class Battle
                 Console.WriteLine($"Lv.{player.Level - 1} {player.Name} -> {player.Level} {player.Name}");
 
             Thread.Sleep(1000);
-            Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
+            Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
             Thread.Sleep(1000);
             Console.WriteLine($"exp {player.BeforeExp} -> {player.AfterExp}\n");
             Thread.Sleep(1000);
@@ -255,15 +257,15 @@ public class Battle
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "전투 패배\n");
             Thread.Sleep(1000);
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
-            Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
+            Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
             Console.WriteLine("0. 다음\n");
         }
-        
+
         int input = ConsoleUtility.PromptMenuChoice(0, 0);
         switch (input)
         {
             case 0:
-               gameManager.MainMenu();
+                gameManager.MainMenu();
                 player.BeforeExp = player.AfterExp;
                 break;
         }
