@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
 using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
 public class Battle
@@ -14,13 +15,15 @@ public class Battle
     private List<Monster> monsters;
     private Random random = new Random();
     private GameManager gameManager;
+    private Skill skill;
     private int beforeHp;
 
-    public Battle(Player player, List<Monster> monsters, GameManager gameManager)
+    public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill)
     {
         this.player = player;
         this.monsters = monsters;
         this.gameManager = gameManager;
+        this.skill = skill;
         beforeHp = player.Hp;
     }
     public void BattleMenu()
@@ -46,14 +49,97 @@ public class Battle
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
         Console.WriteLine($"HP {player.Hp}\n");
-        Console.WriteLine("1. 공격\n");
+        Console.WriteLine("1. 일반 공격");
+        Console.WriteLine("2. 스킬 사용");
 
-        int input = ConsoleUtility.PromptMenuChoice(1, 1);
+        int input = ConsoleUtility.PromptMenuChoice(1, 2);
         switch (input)
         {
             case 1:
                 PlayerAttack();
                 break;
+            case 2:
+                SkillAttack();
+                break;
+        }
+    }
+    public  void SkillAttack()
+    {
+        Console.Clear();
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
+        Thread.Sleep(500);
+
+        for (int i = 0; i < monsters.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("[내정보]");
+        Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
+        Console.WriteLine($"HP {player.Hp}\n");
+        Console.WriteLine("0.취소");
+
+        int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
+        if (input == 0)
+        {
+            Console.Clear();
+            BattleMenu();
+            return;
+        }
+        // 선택한 몬스터 인덱스
+        int deadMonsterIdx = input - 1;
+        // 공격할 몬스터
+        Monster selectedMonster = monsters[deadMonsterIdx];
+
+        // 선택한 몬스터가 이미 죽은 상태인지 확인
+        if (selectedMonster.IsDead)
+        {
+            Console.WriteLine("잘못된 입력입니다.\n");
+            Thread.Sleep(1000);
+            SkillAttack(); // 다시 공격 메뉴로 돌아감
+            return;
+        }
+
+        skill.UseSkill();
+
+
+        Thread.Sleep(1000);
+        Console.WriteLine();
+        Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name}");
+        Thread.Sleep(500);
+        Console.WriteLine($"HP {selectedMonster.Hp}\n");
+        Thread.Sleep(1000);
+        Console.WriteLine("0.다음");
+        int inputs = ConsoleUtility.PromptMenuChoice(0, 0);
+        if (inputs == 0)
+        {
+            // 몬스터들이 플레이어를 한 번씩 공격
+            foreach (Monster monster in this.monsters)
+            {
+                Console.Clear();
+                EnemyAttack(monster);
+            }
+
+            // 모든 몬스터가 죽었을 때 승리 처리
+            if (this.monsters.All(m => m.IsDead))
+            {
+                foreach (var monster in monsters)
+                    player.Exp += monster.RewardExp;
+                BattleResult(true);
+            }
+            else
+            {
+                // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
+                if (!player.IsDead)
+                {
+                    BattleMenu();
+                }
+                else
+                {
+                    BattleResult(false);
+                }
+            }
         }
     }
     public void PlayerAttack()
@@ -189,6 +275,8 @@ public class Battle
             // 모든 몬스터가 죽었을 때 승리 처리
             if (this.monsters.All(m => m.IsDead))
             {
+                foreach (var monster in monsters)
+                    player.Exp += monster.RewardExp;
                 BattleResult(true);
             }
             else
@@ -230,6 +318,8 @@ public class Battle
     public void BattleResult(bool victory)
     {
         // 레벨업 유무 확인
+        int playerLevel = player.Level;
+        int playerExp = player.LevelUpExp;
         bool flagLevelUp = LevelUp();
 
         Console.Clear();
@@ -241,14 +331,14 @@ public class Battle
             if (!flagLevelUp)
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
             else
-                Console.WriteLine($"Lv.{player.Level - 1} {player.Name} -> {player.Level} {player.Name}");
+                Console.WriteLine($"Lv.{playerLevel} {player.Name} -> Lv. {player.Level} {player.Name}");
 
             Thread.Sleep(1000);
             Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
             Thread.Sleep(1000);
-            Console.WriteLine($"exp {player.BeforeExp} -> {player.AfterExp}\n");
+            Console.WriteLine($"exp {playerExp} -> {player.Exp}\n");
             Thread.Sleep(1000);
-            Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.AfterExp}\n");
+            Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
             Thread.Sleep(1000);
             Console.WriteLine("0. 다음\n");
         }
@@ -266,7 +356,6 @@ public class Battle
         {
             case 0:
                 gameManager.MainMenu();
-                player.BeforeExp = player.AfterExp;
                 break;
         }
     }
@@ -275,19 +364,29 @@ public class Battle
     {
         bool flagLevelUp;
 
-        if (player.AfterExp > player.LevelUpExp && (player.Level >= 1 && player.Level <= 5))
+        if (player.Exp > player.LevelUpExp && (player.Level >= 1 && player.Level <= 4))
         {
             flagLevelUp = true;
-            player.Level += 1;
             player.Atk += 1;
             player.Def += 1;
 
-            if (player.Level == 2)
+            if (player.Exp >= 10 && player.Exp < 35)
+            {
+                player.Level = 2;
                 player.LevelUpExp = 35;
-            else if (player.Level == 3)
+            }
+            else if (player.Exp >= 35 && player.Exp < 65)
+            {
+                player.Level = 3;
                 player.LevelUpExp = 65;
-            else if (player.Level == 4)
+            }
+            else if (player.Exp >= 65 && player.Exp < 100)
+            {
+                player.Level = 4;
                 player.LevelUpExp = 100;
+            }
+            else if (player.Exp >= 100)
+                player.Level = 5;
         }
         else
             flagLevelUp = false;

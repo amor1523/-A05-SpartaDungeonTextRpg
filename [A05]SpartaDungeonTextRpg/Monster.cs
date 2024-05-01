@@ -7,7 +7,7 @@ namespace _A05_SpartaDungeonTextRpg
     {
         public List<Monster> MonsterData = new List<Monster>(); // 몬스터 정보
         public List<Monster> CreatedMonster = new List<Monster>(); // 몬스터 랜덤 생성 리스트
-        public Random random = new Random();
+        private Random random = new Random();
 
         public void Monsters(int level) // 몬스터 데이터 입력
         {
