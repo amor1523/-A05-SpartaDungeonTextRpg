@@ -82,7 +82,6 @@ namespace SpartaDungeonTextRpg
                     player.Hp = 80;
                     player.Mp = 100;
                     skill = new MageSkill("파이어 볼", 35, 40, 1);
-
                     break;
                 case 3:
                     player.Job = Job.Archer;
@@ -91,7 +90,6 @@ namespace SpartaDungeonTextRpg
                     player.Hp = 90;
                     player.Mp = 40;
                     skill = new ArcherSkill("트리플 샷", 25, 30, 1);
-
                     break;
 
             }

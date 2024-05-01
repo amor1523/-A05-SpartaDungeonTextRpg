@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
 public class Battle
@@ -17,6 +18,7 @@ public class Battle
     private GameManager gameManager;
     private Skill skill;
     private int beforeHp;
+    private int beforeMp;
 
     public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill)
     {
@@ -25,6 +27,7 @@ public class Battle
         this.gameManager = gameManager;
         this.skill = skill;
         beforeHp = player.Hp;
+        beforeMp = player.Mp;
     }
     public void BattleMenu()
     {
@@ -69,26 +72,40 @@ public class Battle
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         Thread.Sleep(500);
 
+        Console.WriteLine("전투 중인 몬스터들:");
+
         for (int i = 0; i < monsters.Count; i++)
         {
             Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
+
         }
 
         Console.WriteLine();
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
-        Console.WriteLine($"HP {player.Hp}\n");
-        Console.WriteLine("0.취소");
+        Console.WriteLine($"HP {player.Hp}/{beforeHp} ");
+        Console.WriteLine($"MP {player.Mp}/{beforeMp}\n");
 
-        int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
+        Console.WriteLine("사용가능 스킬\n");
+        Console.WriteLine("0.취소\n");
+        for (int j = 0; j < skill.SkillNum; j++)
+        {
+            Console.WriteLine($"{skill.SkillNum}.{skill.Name}은 적에게 {skill.SkillDamage}를 입힌다.\n");
+        }
+
+        int input = ConsoleUtility.PromptMenuChoice(0, skill.SkillNum);
         if (input == 0)
         {
             Console.Clear();
             BattleMenu();
             return;
         }
+        Console.WriteLine("공격할  몬스터\n");
+        
+
+        int input2 = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
         // 선택한 몬스터 인덱스
-        int deadMonsterIdx = input - 1;
+        int deadMonsterIdx = input2 - 1;
         // 공격할 몬스터
         Monster selectedMonster = monsters[deadMonsterIdx];
 
@@ -101,11 +118,24 @@ public class Battle
             return;
         }
 
+        
+      
+        int usedMana = skill.MpCost;
+        if (player.Mp < usedMana)
+        {
+            Console.WriteLine("마나가 부족하여 스킬을 사용할수없습니다.");
+            Thread.Sleep(1000);
+            SkillAttack();
+        }
         skill.UseSkill();
-
-
+        int damageDealt = skill.SkillDamage;
+        selectedMonster.TakeDamage(damageDealt);
+        player.UseMp(usedMana);
         Thread.Sleep(1000);
+        
+        Console.Clear();
         Console.WriteLine();
+        Console.WriteLine($"{skill.Name}!!!");
         Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name}");
         Thread.Sleep(500);
         Console.WriteLine($"HP {selectedMonster.Hp}\n");

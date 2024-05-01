@@ -8,14 +8,15 @@ public class Skill
     public int MpCost { get; set; }
     public int SkillDamage { get; set; }
     public int SkillNum { get;  }
-    // 기타 스킬 특성 등
-
+    
     public Skill(string name, int mpCost, int skillDamage,  int skillNum)
     {
+
         Name = name;
         MpCost = mpCost;
         SkillDamage = skillDamage;
         SkillNum = skillNum;
+
     }
     public class KnightSkill : Skill
     {
