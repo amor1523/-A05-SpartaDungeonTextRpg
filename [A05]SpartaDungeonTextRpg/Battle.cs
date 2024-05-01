@@ -13,11 +13,15 @@ public class Battle
     private Player player;
     private List<Monster> monsters;
     private Random random = new Random();
+    private GameManager gameManager;
+    private int beforeHp;
 
-    public Battle(Player player, List<Monster> monsters)
+    public Battle(Player player, List<Monster> monsters, GameManager gameManager)
     {
         this.player = player;
         this.monsters = monsters;
+        this.gameManager = gameManager;
+        beforeHp = player.Hp;
     }
     public void BattleMenu()
     {
@@ -54,14 +58,14 @@ public class Battle
     }
     public void PlayerAttack()
     {
+        
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         Thread.Sleep(500);
-        //살아있는 몬스터를 리스트에 저장 
-        List<Monster> aliveMonsters = monsters.Where(m => !m.IsDead).ToList();
-        for (int i = 0; i < aliveMonsters.Count; i++)
+
+        for (int i = 0; i < monsters.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. Lv.{aliveMonsters[i].Level} {aliveMonsters[i].Name} HP {aliveMonsters[i].Hp}");
+            Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
         }
 
         Console.WriteLine();
@@ -70,20 +74,101 @@ public class Battle
         Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("0.취소");
 
-        int input = ConsoleUtility.PromptMenuChoice(0, aliveMonsters.Count);
+        int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
         if (input == 0)
         {
             Console.Clear();
             BattleMenu();
+            return;
         }
+        // 선택한 몬스터 인덱스
+        int deadMonsterIdx = input - 1;
+        // 공격할 몬스터
+        Monster selectedMonster = monsters[deadMonsterIdx];
+
+        // 선택한 몬스터가 이미 죽은 상태인지 확인
+        if (selectedMonster.IsDead)
+        {
+            Console.WriteLine("잘못된 입력입니다.\n");
+            Thread.Sleep(1000);
+            PlayerAttack(); // 다시 공격 메뉴로 돌아감
+            return;
+        }
+
         int baseDamage = player.Atk;
-        int missDamage = (int)Math.Ceiling(baseDamage * 0.1);
-        int minDamage = baseDamage - missDamage;
-        int maxDamage = baseDamage + missDamage;
+        int errorDamage = (int)Math.Ceiling(baseDamage * 0.1);
+        int minDamage = baseDamage - errorDamage;
+        int maxDamage = baseDamage + errorDamage;
         int damageDealt = random.Next(minDamage, maxDamage);
-        Monster selectedMonster = aliveMonsters[input - 1];
-        selectedMonster.TakeDamage(damageDealt);
-        Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]");
+
+
+        //회피 확률
+        int missChance = 10;
+        //  회피확률 생산
+        bool isMiss = random.Next(100) < missChance;
+        //회피 발생하면 데미지 0으로 적용
+        if (isMiss)
+        {
+            Console.Clear();
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
+            Console.WriteLine($"{player.Name} 의 공격!");
+            Thread.Sleep(500);
+            damageDealt = 0;
+            Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 공격했지만 아무일도  일어나지 않았습니다.\n");
+            Thread.Sleep(1000);
+            Console.WriteLine("0.다음");
+            int input1 = ConsoleUtility.PromptMenuChoice(0, 0);
+            if (input1 == 0)
+            {
+                // 몬스터들이 플레이어를 한 번씩 공격
+                foreach (Monster monster in this.monsters)
+                {
+                    Console.Clear();
+                    EnemyAttack(monster);
+                }
+
+                // 모든 몬스터가 죽었을 때 승리 처리
+                if (this.monsters.All(m => m.IsDead))
+                {
+                    BattleResult(true);
+                }
+                else
+                {
+                    // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
+                    if (!player.IsDead)
+                    {
+                        BattleMenu();
+                    }
+                    else
+                    {
+                        BattleResult(false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            // 치명타 여부를 결정하기 위한 확률 15퍼
+            int critChance = 65;
+            // 랜덤한 확률을 생성하여 치명타 여부 결정
+            bool isCritical = random.Next(100) < critChance;
+            // 치명타 데미지 계산
+            int critDamage = (int)(damageDealt * 1.6); // 치명타 데미지는 일반 데미지의 1.6배로 가정
+                                                       // 치명타가 발생하면 추가 데미지 적용
+            if (isCritical)
+            {
+                Console.Clear();
+                Console.WriteLine($"{player.Name} 의 공격!");
+                Thread.Sleep(500);
+                damageDealt += critDamage;
+                Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]- 치명타 공격!!");
+            }
+            else
+            {
+                Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]");
+            }
+            selectedMonster.TakeDamage(damageDealt);
+        }
         Thread.Sleep(1000);
         Console.WriteLine();
         Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name}");
@@ -95,14 +180,14 @@ public class Battle
         if (inputs == 0)
         {
             // 몬스터들이 플레이어를 한 번씩 공격
-            foreach (Monster monster in monsters)
+            foreach (Monster monster in this.monsters)
             {
                 Console.Clear();
                 EnemyAttack(monster);
             }
 
             // 모든 몬스터가 죽었을 때 승리 처리
-            if (monsters.All(m => m.IsDead))
+            if (this.monsters.All(m => m.IsDead))
             {
                 foreach (var monster in monsters)
                     player.Exp += monster.RewardExp;
@@ -163,7 +248,7 @@ public class Battle
                 Console.WriteLine($"Lv.{playerLevel} {player.Name} -> Lv. {player.Level} {player.Name}");
 
             Thread.Sleep(1000);
-            Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
+            Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
             Thread.Sleep(1000);
             Console.WriteLine($"exp {playerExp} -> {player.Exp}\n");
             Thread.Sleep(1000);
@@ -176,14 +261,14 @@ public class Battle
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "전투 패배\n");
             Thread.Sleep(1000);
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
-            Console.WriteLine($"HP (전투 전 HP) -> {player.Hp}\n");
+            Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
+            Console.WriteLine("0. 다음\n");
         }
-        Console.WriteLine("0. 다음\n");
+
         int input = ConsoleUtility.PromptMenuChoice(0, 0);
         switch (input)
         {
             case 0:
-                GameManager gameManager = new GameManager();
                 gameManager.MainMenu();
                 break;
         }
