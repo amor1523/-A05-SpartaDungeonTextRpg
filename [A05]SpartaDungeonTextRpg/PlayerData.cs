@@ -43,18 +43,18 @@ namespace _A05_SpartaDungeonTextRpg
 
     }
 
-    //public class ItemData
-    //{
-    //    public bool FlagShopBuy;
-    //    public bool FlagBuy;
-    //    public bool FlagEquip;
+    public class ItemData
+    {
+        public bool FlagShopBuy;
+        public bool FlagBuy;
+        public bool FlagEquip;
 
-    //    public ItemData(Item item)
-    //   {
-    //        FlagShopBuy = item.FlagShopBuy;
-    //        FlagBuy = item.FlagBuy;
-    //        FlagEquip = item.FlagEquip;
-    //    }
+        public ItemData(Item item)
+        {
+            FlagShopBuy = item.FlagShopBuy;
+            FlagBuy = item.FlagBuy;
+            FlagEquip = item.FlagEquip;
+        }
 
-    //}
+    }
 }

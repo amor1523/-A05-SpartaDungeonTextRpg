@@ -20,7 +20,7 @@ namespace _A05_SpartaDungeonTextRpg
         //public static Player player; //PlayerData에 player가 null로 참조되어서 GameManager에 있는 player 변수로 가져와서 사용해서 삭제함 LoadData에 player변수 추가
         public static Item item;
         private static PlayerData playerData;
-        //private static ItemData itemData;
+        private static ItemData itemData;
 
         public static void SaveData(Player player)
         {
@@ -70,8 +70,7 @@ namespace _A05_SpartaDungeonTextRpg
             {
                 string playerJson = File.ReadAllText(playerFilePlth);
                 playerData = JsonConvert.DeserializeObject<PlayerData>(playerJson); // 역직렬화
-                //player = new Player(playerData); // 플레이어 생성 후 데이터 입력 // 다른 객체에 새로 생성해서 이전 객체에 들어가지 않음
-                player.SetPlayer(playerData);
+                player.SetPlayer(playerData); // SetPlayer 함수로 player에게 값 전달
                 
                 Console.WriteLine("플레이어 정보를 불러왔습니다.");
                 Thread.Sleep(1000);
