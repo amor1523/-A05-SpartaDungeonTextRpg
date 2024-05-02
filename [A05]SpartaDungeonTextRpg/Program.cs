@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using static Skill;
 
+
 namespace SpartaDungeonTextRpg
 {
     public class GameManager
@@ -30,9 +31,8 @@ namespace SpartaDungeonTextRpg
         public GameManager()
         {
             InitializeGame();
-            PlayerName();
-            PlayerJob();
-            battle = new Battle(player, monsters, this);
+            JsonSerialize.LoadData(this, player);
+            battle = new Battle(player, monsters, this, skill);
         }
         
         private void InitializeGame()
@@ -45,8 +45,8 @@ namespace SpartaDungeonTextRpg
             monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
             monster.GenerateMonster(); // 몬스터 생성
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
-
-            item.GetItem();
+            item.GetItem(); // 아이템 추가
+            quest.quests();
         }
 
         public void PlayerName()
@@ -74,7 +74,12 @@ namespace SpartaDungeonTextRpg
                     player.Job = Job.Knight;
                     player.Atk = 10;
                     player.Def = 5;
-                    player.Hp = 1000;    // 100
+                    player.Hp = 100;
+                    player.MaxHp = player.Hp;
+                    player.NonEquipAtk = player.Atk;
+                    player.NonEquipDef = player.Def;
+                    player.Mp = 50;
+                    skill = new KnightSkill("크게휘두르기", 20, 30, 1);
                     break;
 
                 case 2:
@@ -101,8 +106,12 @@ namespace SpartaDungeonTextRpg
                     break;
             }
 
-            }
-            battle = new Battle(player, monsters, this);
+            battle = new Battle(player, monsters, this, skill);
+            potion = new Potion(player);
+            item = new Item(player, potion);
+            potion.GetPotion();
+            item.GetItem();
+            battle = new Battle(player, monsters, this, skill);
             MainMenu();
         }
 
@@ -116,9 +125,14 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("3. 인벤토리");
             Console.WriteLine("4. 상점");
             Console.WriteLine("5. 게임종료");
+            Console.WriteLine("0. 저장하기");
+            Console.WriteLine();
+            Console.WriteLine("5. 물약사용");
+            Console.WriteLine("6. 퀘스트");
+            Console.WriteLine("7. 게임종료");
             Console.WriteLine();
 
-            int input = ConsoleUtility.PromptMenuChoice(1, 5);
+            int input = ConsoleUtility.PromptMenuChoice(0, 7);
             switch (input)
             {
                 case 0:
@@ -129,7 +143,7 @@ namespace SpartaDungeonTextRpg
                     break;
 
                 case 2:
-                    battle = new Battle(player, monsters, this);
+                    battle = new Battle(player, monsters, this, skill);
                     battle.BattleMenu();
                     break;
 
@@ -222,7 +236,6 @@ namespace SpartaDungeonTextRpg
 
     public class Program
     {
-        //public static GameManager gameManager = new GameManager();
         public static void Main(string[] args)
         {
             GameManager gameManager = new GameManager();

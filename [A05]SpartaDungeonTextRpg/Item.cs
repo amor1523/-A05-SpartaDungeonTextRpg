@@ -5,13 +5,12 @@ using System;
 using System.Reflection.Emit;
 public class Item
 {
-    private bool FlagShopBuy = false;
+    public bool FlagShopBuy = false;
     private Player player;
     private Potion potion;
     public List<Item> ItemIndex = new List<Item>();
     public List<Item> InventoryIndex = new List<Item>();
-    private bool FlagShopBuy = false;
-    
+
     public string Name { get; }
     public int Id { get; }
     public int Gold { get; }
@@ -37,7 +36,7 @@ public class Item
     {
         this.player = player;
         this.potion = potion;
-     }
+    }
 
     // 역직렬화 후 Item에게 ItemData를 넘겨주기 위한 메서드
     //public Item(ItemData itemData)
@@ -175,7 +174,7 @@ public class Item
             int index = 1;
             foreach (var item in ItemIndex)
             {
-                if(item.FlagBuy)
+                if (item.FlagBuy)
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.Write("- ");
                 if (FlagShopBuy)
@@ -299,7 +298,7 @@ public class Item
                         {
                             selectPotion.BuyItem(player);
                             if (selectPotion.FlagBuy)
-                                selectPotion.Count += 1 ;
+                                selectPotion.Count += 1;
                             Thread.Sleep(1000);
                             Shop();
                         }

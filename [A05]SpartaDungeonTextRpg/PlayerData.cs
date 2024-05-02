@@ -15,8 +15,11 @@ namespace _A05_SpartaDungeonTextRpg
         public Job Job;
         public int Level;
         public int Atk;
+        public int NonEquipAtk;
         public int Def;
+        public int NonEquipDef;
         public int Hp;
+        public int MaxHp;
         public int Mp;
         public float Gold;
         public int Exp;
@@ -33,8 +36,11 @@ namespace _A05_SpartaDungeonTextRpg
             Job = player.Job;
             Level = player.Level;
             Atk = player.Atk;
+            NonEquipAtk = player.NonEquipAtk;
             Def = player.Def;
+            NonEquipDef = player.NonEquipDef;
             Hp = player.Hp;
+            MaxHp = player.MaxHp;
             Mp = player.Mp;
             Gold = player.Gold;
             Exp = player.Exp;

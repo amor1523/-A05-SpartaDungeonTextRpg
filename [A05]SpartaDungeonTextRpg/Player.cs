@@ -33,8 +33,6 @@ namespace _A05_SpartaDungeonTextRpg
         public Player()
        {
             // 초기값
-            Name = "000";
-            Job = Job.Knight;
             Level = 1;
             Gold = 150000f;
             LevelUpExp = 10;
@@ -65,7 +63,10 @@ namespace _A05_SpartaDungeonTextRpg
             Job = playerData.Job;
             Level = playerData.Level;
             Atk = playerData.Atk;
+            NonEquipAtk = playerData.NonEquipAtk;
             Def = playerData.Def;
+            NonEquipDef = playerData.NonEquipDef;
+            MaxHp = playerData.MaxHp;
             Hp = playerData.Hp;
             Mp = playerData.Mp;
             Gold = playerData.Gold;
@@ -80,8 +81,11 @@ namespace _A05_SpartaDungeonTextRpg
             Job = playerData.Job;
             Level = playerData.Level;
             Atk = playerData.Atk;
+            NonEquipAtk = playerData.NonEquipAtk;
             Def = playerData.Def;
+            NonEquipDef = playerData.NonEquipDef;
             Hp = playerData.Hp;
+            MaxHp = playerData.MaxHp;
             Mp = playerData.Mp;
             Gold = playerData.Gold;
             Exp = playerData.Exp;
