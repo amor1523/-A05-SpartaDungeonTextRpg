@@ -69,7 +69,7 @@ public class Battle
                 break;
         }
     }
-    public  void SkillAttack()
+    public void SkillAttack()
     {
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
@@ -104,7 +104,7 @@ public class Battle
             return;
         }
         Console.WriteLine("공격할  몬스터\n");
-        
+
 
         int input2 = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
         // 선택한 몬스터 인덱스
@@ -121,8 +121,8 @@ public class Battle
             return;
         }
 
-        
-      
+
+
         int usedMana = skill.MpCost;
         if (player.Mp < usedMana)
         {
@@ -135,7 +135,7 @@ public class Battle
         selectedMonster.TakeDamage(damageDealt);
         player.UseMp(usedMana);
         Thread.Sleep(1000);
-        
+
         Console.Clear();
         Console.WriteLine();
         Console.WriteLine($"{skill.Name}!!!");
@@ -177,7 +177,7 @@ public class Battle
     }
     public void PlayerAttack()
     {
-        
+
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         Thread.Sleep(500);
@@ -221,9 +221,9 @@ public class Battle
         int damageDealt = random.Next(minDamage, maxDamage);
 
 
-        //회피 확률
+        // 회피 확률
         int missChance = 10;
-        //  회피확률 생산
+        // 회피확률 생산
         bool isMiss = random.Next(100) < missChance;
         //회피 발생하면 데미지 0으로 적용
         if (isMiss)
@@ -345,8 +345,6 @@ public class Battle
             Console.WriteLine($"HP {player.Hp}\n");
             Thread.Sleep(1000);
         }
-
-
     }
 
     public void BattleResult(bool victory)
@@ -368,16 +366,17 @@ public class Battle
         if (victory)
         {
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리\n");
-            Console.WriteLine("던전에서 몬스터를 잡았습니다.");
+            Console.WriteLine("던전에서 몬스터를 잡았습니다.\n");
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "[캐릭터 정보]");
             if (!flagLevelUp)
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
             else
                 Console.WriteLine($"Lv.{playerLevel} {player.Name} -> Lv. {player.Level} {player.Name}");
 
             Thread.Sleep(1000);
-            Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
+            Console.WriteLine($"HP {beforeHp} -> {player.Hp}");
             Thread.Sleep(1000);
-            Console.WriteLine($"exp {beforeExp} -> {player.Exp}\n");
+            Console.WriteLine($"exp {beforeExp} -> {player.Exp}");
             Thread.Sleep(1000);
             if (player.Level < 5)
                 Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
@@ -414,22 +413,22 @@ public class Battle
             player.Def += 1;
             player.NonEquipDef = player.Def;
 
-            if (player.Exp >= 10 && player.Exp < 35)
+            if (player.Exp >= 200 && player.Exp < 350)
             {
                 player.Level = 2;
-                player.LevelUpExp = 35;
+                player.LevelUpExp = 350;
             }
-            else if (player.Exp >= 35 && player.Exp < 65)
+            else if (player.Exp >= 350 && player.Exp < 500)
             {
                 player.Level = 3;
-                player.LevelUpExp = 65;
+                player.LevelUpExp = 500;
             }
-            else if (player.Exp >= 65 && player.Exp < 100)
+            else if (player.Exp >= 500 && player.Exp < 650)
             {
                 player.Level = 4;
-                player.LevelUpExp = 100;
+                player.LevelUpExp = 650;
             }
-            else if (player.Exp >= 100)
+            else if (player.Exp >= 650)
                 player.Level = 5;
         }
         else

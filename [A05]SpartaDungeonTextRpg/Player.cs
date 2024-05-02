@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace _A05_SpartaDungeonTextRpg
 {
@@ -11,7 +12,7 @@ namespace _A05_SpartaDungeonTextRpg
 
     public class Player
     {   
-        Random rand  = new Random();
+       Random rand  = new Random();
         public string Name { get; set; }
         public Job Job { get; set; }
         // Level Atk Def 레벨업에 따른 수치 변경으로 인해 set 추가
@@ -29,16 +30,12 @@ namespace _A05_SpartaDungeonTextRpg
         public int Exp { get; set; }
         public int LevelUpExp { get; set; }
 
-       
-
-
         public Player()
-        {
+       {
             // 초기값
-            Exp = 0;
             Level = 1;
             Gold = 150000f;
-            LevelUpExp = 10;
+            LevelUpExp = 200;
         }
 
         public void TakeDamage(int damage)
@@ -59,6 +56,41 @@ namespace _A05_SpartaDungeonTextRpg
             
         }
       
+        // 역직렬화 후 Player에게 PlayerData를 넘겨주기 위한 메서드
+        public Player(PlayerData playerData)
+        {
+            Name = playerData.Name;
+            Job = playerData.Job;
+            Level = playerData.Level;
+            Atk = playerData.Atk;
+            NonEquipAtk = playerData.NonEquipAtk;
+            Def = playerData.Def;
+            NonEquipDef = playerData.NonEquipDef;
+            MaxHp = playerData.MaxHp;
+            Hp = playerData.Hp;
+            Mp = playerData.Mp;
+            Gold = playerData.Gold;
+            Exp = playerData.Exp;
+            LevelUpExp = playerData.LevelUpExp;
+        }
+        
+        // LoadData시 사용
+        public void SetPlayer(PlayerData playerData)
+        {
+            Name = playerData.Name;
+            Job = playerData.Job;
+            Level = playerData.Level;
+            Atk = playerData.Atk;
+            NonEquipAtk = playerData.NonEquipAtk;
+            Def = playerData.Def;
+            NonEquipDef = playerData.NonEquipDef;
+            Hp = playerData.Hp;
+            MaxHp = playerData.MaxHp;
+            Mp = playerData.Mp;
+            Gold = playerData.Gold;
+            Exp = playerData.Exp;
+            LevelUpExp = playerData.LevelUpExp;
+        }
 
     }
 }
