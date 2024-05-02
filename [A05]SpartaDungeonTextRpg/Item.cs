@@ -4,7 +4,7 @@ using System;
 using System.Reflection.Emit;
 public class Item
 {
-    private Player player = new Player();
+    private Player player;
     public List<Item> ItemIndex = new List<Item>();
     public List<Item> InventoryIndex = new List<Item>();
     public bool FlagShopBuy = false;

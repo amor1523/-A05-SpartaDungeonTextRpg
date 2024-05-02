@@ -26,6 +26,7 @@ namespace _A05_SpartaDungeonTextRpg
         {
         }
 
+        // SaveData 시 사용
         public PlayerData(Player player)
         {
             Name = player.Name;
