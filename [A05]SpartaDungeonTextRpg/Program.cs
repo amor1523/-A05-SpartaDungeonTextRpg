@@ -105,7 +105,7 @@ namespace SpartaDungeonTextRpg
                     break;
 
             }
-            battle = new Battle(player, monsters, this);
+            battle = new Battle(player, monsters, this, skill);
 
             
             potion = new Potion(player);
@@ -152,7 +152,7 @@ namespace SpartaDungeonTextRpg
                     potion.PotionInventory();
                     break;
                 case 6:
-                    quest.QuestList(quest.questData);
+                    quest.QuestList(Quest.questData);
                     break;
                 case 7:
                     GamePlay = false;

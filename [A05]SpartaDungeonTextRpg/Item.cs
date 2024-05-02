@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
 
@@ -37,7 +38,7 @@ public class Item
         this.potion = potion;
      }
 
-    private void BuyItem(Player player)
+    private void BuyItem(Player player, List<Item> ItemIndex, Quest quest)
     {
         if (!FlagBuy)
         {
@@ -45,6 +46,10 @@ public class Item
             {
                 player.Gold -= Gold;
                 FlagBuy = true;
+                if (ItemIndex[3].FlagBuy == true)
+                {
+                    Quest.questData[0].Count++;
+                }
                 Console.WriteLine("구매를 완료했습니다.");
             }
             else
@@ -263,7 +268,7 @@ public class Item
                     {
                         if (!selectItem.FlagBuy)
                         {
-                            selectItem.BuyItem(player);
+                            selectItem.BuyItem(player, ItemIndex, Quest.quest);
                             if (selectItem.FlagBuy)
                                 InventoryIndex.Add(selectItem);
                             Thread.Sleep(1000);
