@@ -18,8 +18,11 @@ namespace _A05_SpartaDungeonTextRpg
         // Level Atk Def 레벨업에 따른 수치 변경으로 인해 set 추가
         public int Level { get; set; }
         public int Atk { get; set; }
+        public int NonEquipAtk { get; set; }
         public int Def { get; set; }
+        public int NonEquipDef { get; set; }
         public int Hp { get; set; }
+        public int MaxHp { get; set; }
         public int Mp { get; set; }
         public float Gold { get; set; }
         public bool IsDead => Hp <= 0;
@@ -33,12 +36,7 @@ namespace _A05_SpartaDungeonTextRpg
             Name = "000";
             Job = Job.Knight;
             Level = 1;
-            Atk = 0;
-            Def = 0;
-            Hp = 0;
-            Mp = 0;
-            Gold = 1500f;
-            Exp = 0;
+            Gold = 150000f;
             LevelUpExp = 10;
         }
 
@@ -47,6 +45,17 @@ namespace _A05_SpartaDungeonTextRpg
             Hp -= damage;
             if (Hp < 0)
                 Hp = 0;
+        }
+        public void UseMp(int mana)
+        {
+            if (Mp < mana)
+            {
+                Mp = Mp;
+            }
+            else{
+                Mp -= mana;
+            }     
+            
         }
       
         // 역직렬화 후 Player에게 PlayerData를 넘겨주기 위한 메서드

@@ -1,4 +1,6 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
 public class Battle
@@ -14,14 +16,21 @@ public class Battle
     private List<Monster> monsters;
     private Random random = new Random();
     private GameManager gameManager;
+    private Skill skill;
     private int beforeHp;
+    private int beforeExp;
+    private int beforeMp;
 
-    public Battle(Player player, List<Monster> monsters, GameManager gameManager)
+    public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill)
     {
         this.player = player;
         this.monsters = monsters;
         this.gameManager = gameManager;
+        this.skill = skill;
         beforeHp = player.Hp;
+        beforeExp = player.Exp;
+        beforeMp = player.Mp;
+        // 프로그램에 있는 몬스터를 제거하고 여기에 새로운 몬스터를 추가할 수 있습니다.
     }
     public void BattleMenu()
     {
@@ -46,14 +55,124 @@ public class Battle
         Console.WriteLine("[내정보]");
         Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
         Console.WriteLine($"HP {player.Hp}\n");
-        Console.WriteLine("1. 공격\n");
+        Console.WriteLine("1. 일반 공격");
+        Console.WriteLine("2. 스킬 사용");
 
-        int input = ConsoleUtility.PromptMenuChoice(1, 1);
+        int input = ConsoleUtility.PromptMenuChoice(1, 2);
         switch (input)
         {
             case 1:
                 PlayerAttack();
                 break;
+            case 2:
+                SkillAttack();
+                break;
+        }
+    }
+    public  void SkillAttack()
+    {
+        Console.Clear();
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
+        Thread.Sleep(500);
+
+        Console.WriteLine("전투 중인 몬스터들:");
+
+        for (int i = 0; i < monsters.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
+
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("[내정보]");
+        Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
+        Console.WriteLine($"HP {player.Hp}/{beforeHp} ");
+        Console.WriteLine($"MP {player.Mp}/{beforeMp}\n");
+
+        Console.WriteLine("사용가능 스킬\n");
+        Console.WriteLine("0.취소\n");
+        for (int j = 0; j < skill.SkillNum; j++)
+        {
+            Console.WriteLine($"{skill.SkillNum}.{skill.Name}은 적에게 {skill.SkillDamage}를 입힌다.\n");
+        }
+
+        int input = ConsoleUtility.PromptMenuChoice(0, skill.SkillNum);
+        if (input == 0)
+        {
+            Console.Clear();
+            BattleMenu();
+            return;
+        }
+        Console.WriteLine("공격할  몬스터\n");
+        
+
+        int input2 = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
+        // 선택한 몬스터 인덱스
+        int deadMonsterIdx = input2 - 1;
+        // 공격할 몬스터
+        Monster selectedMonster = monsters[deadMonsterIdx];
+
+        // 선택한 몬스터가 이미 죽은 상태인지 확인
+        if (selectedMonster.IsDead)
+        {
+            Console.WriteLine("잘못된 입력입니다.\n");
+            Thread.Sleep(1000);
+            SkillAttack(); // 다시 공격 메뉴로 돌아감
+            return;
+        }
+
+        
+      
+        int usedMana = skill.MpCost;
+        if (player.Mp < usedMana)
+        {
+            Console.WriteLine("마나가 부족하여 스킬을 사용할수없습니다.");
+            Thread.Sleep(1000);
+            SkillAttack();
+        }
+        skill.UseSkill();
+        int damageDealt = skill.SkillDamage;
+        selectedMonster.TakeDamage(damageDealt);
+        player.UseMp(usedMana);
+        Thread.Sleep(1000);
+        
+        Console.Clear();
+        Console.WriteLine();
+        Console.WriteLine($"{skill.Name}!!!");
+        Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name}");
+        Thread.Sleep(500);
+        Console.WriteLine($"HP {selectedMonster.Hp}\n");
+        Thread.Sleep(1000);
+        Console.WriteLine("0.다음");
+        int inputs = ConsoleUtility.PromptMenuChoice(0, 0);
+        if (inputs == 0)
+        {
+            // 몬스터들이 플레이어를 한 번씩 공격
+            foreach (Monster monster in this.monsters)
+            {
+                Console.Clear();
+                EnemyAttack(monster);
+            }
+
+            // 모든 몬스터가 죽었을 때 승리 처리
+            if (this.monsters.All(m => m.IsDead))
+            {
+                foreach (var monster in monsters)
+                    player.Exp += monster.RewardExp;
+                BattleResult(true);
+            }
+            else
+            {
+                // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
+                if (!player.IsDead)
+                {
+                    BattleMenu();
+                }
+                else
+                {
+                    BattleResult(false);
+                }
+            }
         }
     }
     public void PlayerAttack()
@@ -189,6 +308,7 @@ public class Battle
             // 모든 몬스터가 죽었을 때 승리 처리
             if (this.monsters.All(m => m.IsDead))
             {
+                beforeExp = player.Exp;
                 foreach (var monster in monsters)
                     player.Exp += monster.RewardExp;
                 BattleResult(true);
@@ -231,9 +351,16 @@ public class Battle
 
     public void BattleResult(bool victory)
     {
+        monsters.Clear();
+
+        // 여기에 새로운 몬스터를 추가하는 코드를 작성합니다.
+        // 예를 들어, 플레이어 레벨에 따라 다른 몬스터를 추가할 수 있습니다.
+        Monster monster = new Monster();
+        monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
+        monster.GenerateMonster(); // 몬스터 생성
+        monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
         // 레벨업 유무 확인
         int playerLevel = player.Level;
-        int playerExp = player.LevelUpExp;
         bool flagLevelUp = LevelUp();
 
         Console.Clear();
@@ -250,9 +377,10 @@ public class Battle
             Thread.Sleep(1000);
             Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
             Thread.Sleep(1000);
-            Console.WriteLine($"exp {playerExp} -> {player.Exp}\n");
+            Console.WriteLine($"exp {beforeExp} -> {player.Exp}\n");
             Thread.Sleep(1000);
-            Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
+            if (player.Level < 5)
+                Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
             Thread.Sleep(1000);
             Console.WriteLine("0. 다음\n");
         }
@@ -282,7 +410,9 @@ public class Battle
         {
             flagLevelUp = true;
             player.Atk += 1;
+            player.NonEquipAtk = player.Atk;
             player.Def += 1;
+            player.NonEquipDef = player.Def;
 
             if (player.Exp >= 10 && player.Exp < 35)
             {

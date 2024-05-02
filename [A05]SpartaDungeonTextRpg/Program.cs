@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Threading;
-using Newtonsoft.Json;
+using static Skill;
 
 namespace SpartaDungeonTextRpg
 {
@@ -21,15 +22,19 @@ namespace SpartaDungeonTextRpg
         private List<Monster> monsters;
         private Random random = new Random();
         private Battle battle;
-        private Item item = new Item();
+        private Item item;
+        private Potion potion;
+        private Skill skill;
+        private Quest quest = new Quest();
 
         public GameManager()
         {
             InitializeGame();
-            JsonSerialize.LoadData(this, player);
+            PlayerName();
+            PlayerJob();
             battle = new Battle(player, monsters, this);
         }
-
+        
         private void InitializeGame()
         {
             player = new Player();
@@ -40,7 +45,8 @@ namespace SpartaDungeonTextRpg
             monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
             monster.GenerateMonster(); // 몬스터 생성
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
-            item.GetItem(); // 아이템 추가
+
+            item.GetItem();
         }
 
         public void PlayerName()
@@ -68,7 +74,7 @@ namespace SpartaDungeonTextRpg
                     player.Job = Job.Knight;
                     player.Atk = 10;
                     player.Def = 5;
-                    player.Hp = 100;
+                    player.Hp = 1000;    // 100
                     break;
 
                 case 2:
@@ -76,15 +82,28 @@ namespace SpartaDungeonTextRpg
                     player.Atk = 8;
                     player.Def = 3;
                     player.Hp = 80;
+                    player.MaxHp = player.Hp;
+                    player.NonEquipAtk = player.Atk;
+                    player.NonEquipDef = player.Def;
+                    player.Mp = 100;
+                    skill = new MageSkill("파이어 볼", 35, 40, 1);
                     break;
                 case 3:
                     player.Job = Job.Archer;
                     player.Atk = 13;
                     player.Def = 4;
                     player.Hp = 90;
+                    player.MaxHp = player.Hp;
+                    player.NonEquipAtk = player.Atk;
+                    player.NonEquipDef = player.Def;
+                    player.Mp = 40;
+                    skill = new ArcherSkill("트리플 샷", 25, 30, 1);
                     break;
             }
 
+            }
+            battle = new Battle(player, monsters, this);
+            MainMenu();
         }
 
         public void MainMenu()
@@ -97,10 +116,9 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("3. 인벤토리");
             Console.WriteLine("4. 상점");
             Console.WriteLine("5. 게임종료");
-            Console.WriteLine("0. 저장하기");
             Console.WriteLine();
 
-            int input = ConsoleUtility.PromptMenuChoice(0, 5);
+            int input = ConsoleUtility.PromptMenuChoice(1, 5);
             switch (input)
             {
                 case 0:
@@ -122,26 +140,75 @@ namespace SpartaDungeonTextRpg
                 case 4:
                     item.Shop();
                     break;
-
                 case 5:
+                    potion.PotionInventory();
+                    break;
+                case 6:
+                    quest.QuestList(quest.questData);
+                    break;
+                case 7:
                     GamePlay = false;
-                    Console.WriteLine("게임을 종료합니다.");
+                    Console.WriteLine("\n게임을 종료합니다.");
                     break;
             }
         }
 
         public void StatusMenu()
         {
+            player.Atk = player.NonEquipAtk;
+            player.Def = player.NonEquipDef;
+
+            bool flagEquipArmor = false;
+            bool flagEquipWeapon = false;
+
+            int equipArmorPower = 0;
+            int equipWeaponPower = 0;
+
+            int equipAtk = 0;
+            int equipDef = 0;
+
             Console.Clear();
             ConsoleUtility.ShowTitle("[상태보기]");
             Console.WriteLine("캐릭터의 정보를 표시합니다.\n");
             Console.WriteLine($"Lv. {player.Level}");
             Console.WriteLine($"{player.Name} ({dict[player.Job]})");
-            Console.WriteLine($"공격력 : {player.Atk}");
-            Console.WriteLine($"방어력 : {player.Def}");
+
+            if(item.InventoryIndex.Count != 0)
+            {
+                foreach (var equip in item.InventoryIndex)
+                {
+                    if (equip.FlagEquip)
+                    {
+                        if (equip.AttackPower != 0)
+                        {
+                            flagEquipWeapon = true;
+                            equipWeaponPower += equip.AttackPower;
+                        }
+                        if (equip.DefensivePower != 0)
+                        {
+                            flagEquipArmor = true;
+                            equipArmorPower += equip.DefensivePower;
+                        }
+                    }
+                }
+                equipAtk = player.Atk + equipWeaponPower;
+                equipDef = player.Def + equipArmorPower;
+            }
+
+            if (!flagEquipWeapon)
+                Console.WriteLine($"공격력 : {player.Atk}");
+            else
+                Console.WriteLine($"공격력 : {player.Atk} (+{equipWeaponPower})");
+            if(!flagEquipArmor)
+                Console.WriteLine($"방어력 : {player.Def}");
+            else
+                Console.WriteLine($"방어력 : {player.Def} (+{equipArmorPower})");
             Console.WriteLine($"체력 : {player.Hp}");
             Console.WriteLine($"Gold : {player.Gold} G\n");
             Console.WriteLine("0. 나가기\n");
+
+            player.Atk = equipAtk;
+            player.Def = equipDef;
 
             int input = ConsoleUtility.PromptMenuChoice(0, 0);
             switch (input)
@@ -151,8 +218,6 @@ namespace SpartaDungeonTextRpg
                     break;
             }
         }
-
-        
     }
 
     public class Program
@@ -162,6 +227,7 @@ namespace SpartaDungeonTextRpg
         {
             GameManager gameManager = new GameManager();
 
+            while (gameManager.GamePlay)
             while (gameManager.GamePlay)
             {
                 gameManager.MainMenu();
