@@ -52,30 +52,12 @@ namespace _A05_SpartaDungeonTextRpg
             }
             else{
                 Mp -= mana;
-            }     
-            
+            }
+
         }
-      
-        // 역직렬화 후 Player에게 PlayerData를 넘겨주기 위한 메서드
-        public Player(PlayerData playerData)
-        {
-            Name = playerData.Name;
-            Job = playerData.Job;
-            Level = playerData.Level;
-            Atk = playerData.Atk;
-            NonEquipAtk = playerData.NonEquipAtk;
-            Def = playerData.Def;
-            NonEquipDef = playerData.NonEquipDef;
-            MaxHp = playerData.MaxHp;
-            Hp = playerData.Hp;
-            Mp = playerData.Mp;
-            Gold = playerData.Gold;
-            Exp = playerData.Exp;
-            LevelUpExp = playerData.LevelUpExp;
-        }
-        
-        // LoadData시 사용
-        public void SetPlayer(PlayerData playerData)
+
+    // LoadData시 사용
+    public void SetPlayer(PlayerData playerData)
         {
             Name = playerData.Name;
             Job = playerData.Job;

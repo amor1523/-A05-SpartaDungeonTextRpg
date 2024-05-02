@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +18,8 @@ namespace _A05_SpartaDungeonTextRpg
     public class JsonSerialize
     {
         public static GameManager gameManager;
-        //public static Player player; //PlayerData에 player가 null로 참조되어서 GameManager에 있는 player 변수로 가져와서 사용해서 삭제함 LoadData에 player변수 추가
-        public static Item item;
+        //public static Player player; 
+        // public static Item item;
         private static PlayerData playerData;
         private static ItemData itemData;
 
@@ -37,14 +38,15 @@ namespace _A05_SpartaDungeonTextRpg
 
             // 플레이어 데이터 PlayerData에 넣어 전달
             playerData = new PlayerData(player);
-            //itemData = new ItemData(item);
-
+            // itemData = new iteaData(item);
+            
             // 플레이어 데이터 저장
             string playerJson = JsonConvert.SerializeObject(playerData, Formatting.Indented); // 직렬화
-            //string itemJson = JsonConvert.SerializeObject(itemData, Formatting.Indented); 
+            //string itemJson = JsonConvert.SerializeObject(itemData, Formatting.Indented);
+
             File.WriteAllText(filePath, playerJson);
             //File.WriteAllText(itemJson, itemFileName);
-            
+
             Console.WriteLine("저장이 완료되었습니다.");
             Console.WriteLine("메인 메뉴로 돌아갑니다.");
             Thread.Sleep(1000);
@@ -59,7 +61,6 @@ namespace _A05_SpartaDungeonTextRpg
 
             // 불러올 파일명 지정
             string fileName = "playerData.json";
-            //string itemFileName = "itemData.json";
 
             // 데이저 경로 불러오기 (C드라이브, Documents)
             string userDocumentsFolder = Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
