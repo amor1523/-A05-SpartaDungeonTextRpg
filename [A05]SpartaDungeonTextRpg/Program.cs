@@ -45,7 +45,12 @@ namespace SpartaDungeonTextRpg
             monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
             monster.GenerateMonster(); // 몬스터 생성
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
-            item.GetItem(); // 아이템 추가
+
+            potion = new Potion(player);
+            item = new Item(player, potion);
+            potion.GetPotion();
+            item.GetItem();
+            
             quest.quests();
         }
 
@@ -106,12 +111,7 @@ namespace SpartaDungeonTextRpg
                     break;
             }
 
-            battle = new Battle(player, monsters, this, skill);
-            potion = new Potion(player);
-            item = new Item(player, potion);
-            potion.GetPotion();
-            item.GetItem();
-            battle = new Battle(player, monsters, this, skill);
+           
             MainMenu();
         }
 
@@ -124,12 +124,12 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("2. 전투시작");
             Console.WriteLine("3. 인벤토리");
             Console.WriteLine("4. 상점");
-            Console.WriteLine("5. 게임종료");
-            Console.WriteLine("0. 저장하기");
-            Console.WriteLine();
             Console.WriteLine("5. 물약사용");
             Console.WriteLine("6. 퀘스트");
             Console.WriteLine("7. 게임종료");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("0. 저장하기");
             Console.WriteLine();
 
             int input = ConsoleUtility.PromptMenuChoice(0, 7);
