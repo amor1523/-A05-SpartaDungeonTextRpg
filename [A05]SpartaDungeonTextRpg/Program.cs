@@ -32,7 +32,12 @@ namespace SpartaDungeonTextRpg
         {
             InitializeGame();
             JsonSerialize.LoadData(this, player);
-            battle = new Battle(player, monsters, this, skill);
+            potion = new Potion(player);
+            item = new Item(player, potion);
+            potion.GetPotion();
+            item.GetItem();
+            MainMenu();
+            battle = new Battle(player, monsters, this, skill, potion);
         }
 
         private void InitializeGame()
@@ -105,12 +110,6 @@ namespace SpartaDungeonTextRpg
                     skill = new ArcherSkill("트리플 샷", 25, 30, 1);
                     break;
             }
-
-            potion = new Potion(player);
-            item = new Item(player, potion);
-            potion.GetPotion();
-            item.GetItem();
-            MainMenu();
         }
 
         public void MainMenu()
@@ -141,7 +140,7 @@ namespace SpartaDungeonTextRpg
                     break;
 
                 case 2:
-                    battle = new Battle(player, monsters, this, skill);
+                    battle = new Battle(player, monsters, this, skill, potion);
                     battle.BattleMenu();
                     break;
 

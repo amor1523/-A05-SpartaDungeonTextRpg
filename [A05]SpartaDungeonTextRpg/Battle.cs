@@ -13,6 +13,7 @@ public class Battle
         };
 
     private Player player;
+    private Potion potion;
     private List<Monster> monsters;
     private Random random = new Random();
     private GameManager gameManager;
@@ -21,15 +22,17 @@ public class Battle
     private int beforeExp;
     private int beforeMp;
 
-    public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill)
+    public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill, Potion potion)
     {
         this.player = player;
         this.monsters = monsters;
         this.gameManager = gameManager;
         this.skill = skill;
+        this.potion = potion;
         beforeHp = player.Hp;
         beforeExp = player.Exp;
         beforeMp = player.Mp;
+        this.potion = potion;
         // 프로그램에 있는 몬스터를 제거하고 여기에 새로운 몬스터를 추가할 수 있습니다.
     }
     public void BattleMenu()
@@ -367,7 +370,7 @@ public class Battle
         {
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리\n");
             Console.WriteLine("던전에서 몬스터를 잡았습니다.\n");
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "[캐릭터 정보]");
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", "[캐릭터 정보]");
             if (!flagLevelUp)
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
             else
@@ -380,6 +383,9 @@ public class Battle
             Thread.Sleep(1000);
             if (player.Level < 5)
                 Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
+
+            RewardItem();
+
             Thread.Sleep(1000);
             Console.WriteLine("0. 다음\n");
         }
@@ -408,10 +414,8 @@ public class Battle
         if (player.Exp > player.LevelUpExp && (player.Level >= 1 && player.Level <= 4))
         {
             flagLevelUp = true;
-            player.Atk += 1;
-            player.NonEquipAtk = player.Atk;
-            player.Def += 1;
-            player.NonEquipDef = player.Def;
+            player.NonEquipAtk += 1;
+            player.NonEquipDef += 1;
 
             if (player.Exp >= 200 && player.Exp < 350)
             {
@@ -435,5 +439,26 @@ public class Battle
             flagLevelUp = false;
 
         return flagLevelUp;
+    }
+
+    public void RewardItem()
+    {
+        // 포션 보상 여부를 결정하기 위한 확률 15퍼
+        int getPotionChance = 101;
+        int addGold = random.Next(200, 501);
+        // 랜덤한 확률을 생성하여 포션 여부 결정
+        bool isGetPotion = random.Next(100) < getPotionChance;
+
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", "[획득 아이템]");
+
+        Console.WriteLine($"{addGold} Gold");
+        player.Gold += addGold;
+
+        if (isGetPotion)
+        {
+            int addPotion = random.Next(1, 3);
+            potion.PotionIndex[0].Count += addPotion;
+            Console.WriteLine($"{potion.PotionIndex[0].Name} - {addPotion}");
+        }
     }
 }
