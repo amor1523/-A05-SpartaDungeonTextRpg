@@ -382,12 +382,15 @@ public class Battle
             Console.WriteLine($"exp {beforeExp} -> {player.Exp}");
             Thread.Sleep(1000);
             if (player.Level < 5)
-                Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
+            {
+                Console.WriteLine($"LevelUp까지 남은 Exp -> {player.LevelUpExp - player.Exp}\n");
+                Thread.Sleep(1000);
+            }
 
             RewardItem();
 
             Thread.Sleep(1000);
-            Console.WriteLine("0. 다음\n");
+            Console.WriteLine("\n0. 다음");
         }
         else
         {
@@ -443,8 +446,8 @@ public class Battle
 
     public void RewardItem()
     {
-        // 포션 보상 여부를 결정하기 위한 확률 15퍼
-        int getPotionChance = 101;
+        // 포션 보상 여부를 결정하기 위한 확률 50퍼
+        int getPotionChance = 50;
         int addGold = random.Next(200, 501);
         // 랜덤한 확률을 생성하여 포션 여부 결정
         bool isGetPotion = random.Next(100) < getPotionChance;
@@ -452,6 +455,7 @@ public class Battle
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", "[획득 아이템]");
 
         Console.WriteLine($"{addGold} Gold");
+        Thread.Sleep(1000);
         player.Gold += addGold;
 
         if (isGetPotion)
@@ -459,6 +463,7 @@ public class Battle
             int addPotion = random.Next(1, 3);
             potion.PotionIndex[0].Count += addPotion;
             Console.WriteLine($"{potion.PotionIndex[0].Name} - {addPotion}");
+            Thread.Sleep(1000);
         }
     }
 }
