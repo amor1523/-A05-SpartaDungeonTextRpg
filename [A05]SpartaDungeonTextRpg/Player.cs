@@ -64,7 +64,7 @@ namespace _A05_SpartaDungeonTextRpg
             LevelUpExp = playerData.LevelUpExp;
         }
         
-        // 로드기능 작동 시 사용
+        // LoadData시 사용
         public void SetPlayer(PlayerData playerData)
         {
             Name = playerData.Name;

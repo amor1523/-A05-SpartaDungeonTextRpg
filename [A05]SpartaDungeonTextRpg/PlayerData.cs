@@ -24,7 +24,6 @@ namespace _A05_SpartaDungeonTextRpg
 
         public PlayerData()
         {
-
         }
 
         public PlayerData(Player player)
@@ -40,21 +39,6 @@ namespace _A05_SpartaDungeonTextRpg
             Exp = player.Exp;
             LevelUpExp = player.LevelUpExp;
         } 
-        
-        //public void PlayerDataSet(Player player)
-        //{
-        //    Name = player.Name;
-        //    Job = player.Job;
-        //    Level = player.Level;
-        //    Atk = player.Atk;
-        //    Def = player.Def;
-        //    Hp = player.Hp;
-        //    Mp = player.Mp;
-        //    Gold = player.Gold;
-        //    Exp = player.Exp;
-        //    LevelUpExp = player.LevelUpExp;
-        //}
-
 
     }
 
