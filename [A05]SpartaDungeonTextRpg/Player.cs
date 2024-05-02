@@ -17,8 +17,11 @@ namespace _A05_SpartaDungeonTextRpg
         // Level Atk Def 레벨업에 따른 수치 변경으로 인해 set 추가
         public int Level { get; set; }
         public int Atk { get; set; }
+        public int NonEquipAtk { get; set; }
         public int Def { get; set; }
+        public int NonEquipDef { get; set; }
         public int Hp { get; set; }
+        public int MaxHp { get; set; }
         public int Mp { get; set; }
         public float Gold { get; set; }
         public bool IsDead => Hp <= 0;
@@ -34,7 +37,7 @@ namespace _A05_SpartaDungeonTextRpg
             // 초기값
             Exp = 0;
             Level = 1;
-            Gold = 1500f;
+            Gold = 150000f;
             LevelUpExp = 10;
         }
 

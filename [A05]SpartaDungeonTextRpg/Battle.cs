@@ -15,6 +15,7 @@ public class Battle
     private Random random = new Random();
     private GameManager gameManager;
     private int beforeHp;
+    private int beforeExp;
 
     public Battle(Player player, List<Monster> monsters, GameManager gameManager)
     {
@@ -22,6 +23,7 @@ public class Battle
         this.monsters = monsters;
         this.gameManager = gameManager;
         beforeHp = player.Hp;
+        beforeExp = player.Exp;
     }
     public void BattleMenu()
     {
@@ -189,6 +191,7 @@ public class Battle
             // 모든 몬스터가 죽었을 때 승리 처리
             if (this.monsters.All(m => m.IsDead))
             {
+                beforeExp = player.Exp;
                 foreach (var monster in monsters)
                     player.Exp += monster.RewardExp;
                 BattleResult(true);
@@ -233,7 +236,6 @@ public class Battle
     {
         // 레벨업 유무 확인
         int playerLevel = player.Level;
-        int playerExp = player.LevelUpExp;
         bool flagLevelUp = LevelUp();
 
         Console.Clear();
@@ -250,9 +252,10 @@ public class Battle
             Thread.Sleep(1000);
             Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
             Thread.Sleep(1000);
-            Console.WriteLine($"exp {playerExp} -> {player.Exp}\n");
+            Console.WriteLine($"exp {beforeExp} -> {player.Exp}\n");
             Thread.Sleep(1000);
-            Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
+            if (player.Level < 5)
+                Console.WriteLine($"LevelUp 까지 남은 exp -> {player.LevelUpExp - player.Exp}\n");
             Thread.Sleep(1000);
             Console.WriteLine("0. 다음\n");
         }
@@ -282,7 +285,9 @@ public class Battle
         {
             flagLevelUp = true;
             player.Atk += 1;
+            player.NonEquipAtk = player.Atk;
             player.Def += 1;
+            player.NonEquipDef = player.Def;
 
             if (player.Exp >= 10 && player.Exp < 35)
             {
