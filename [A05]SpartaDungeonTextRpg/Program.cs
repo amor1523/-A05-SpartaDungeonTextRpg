@@ -12,7 +12,7 @@ namespace SpartaDungeonTextRpg
     {
         public bool GamePlay = true;
 
-        Dictionary<Job, string> dict= new Dictionary<Job, string>() // 직업출력 딕셔너리
+        Dictionary<Job, string> dict = new Dictionary<Job, string>() // 직업출력 딕셔너리
         {
             {Job.Knight, "전사"},
             {Job.Mage, "마법사"},
@@ -34,7 +34,7 @@ namespace SpartaDungeonTextRpg
             PlayerJob();
             battle = new Battle(player, monsters, this, skill);
         }
-        
+
         private void InitializeGame()
         {
             player = new Player();
@@ -105,9 +105,6 @@ namespace SpartaDungeonTextRpg
                     break;
 
             }
-            battle = new Battle(player, monsters, this);
-
-            
             potion = new Potion(player);
             item = new Item(player, potion);
             potion.GetPotion();
@@ -181,7 +178,7 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine($"Lv. {player.Level}");
             Console.WriteLine($"{player.Name} ({dict[player.Job]})");
 
-            if(item.InventoryIndex.Count != 0)
+            if (item.InventoryIndex.Count != 0)
             {
                 foreach (var equip in item.InventoryIndex)
                 {
@@ -207,7 +204,7 @@ namespace SpartaDungeonTextRpg
                 Console.WriteLine($"공격력 : {player.Atk}");
             else
                 Console.WriteLine($"공격력 : {player.Atk} (+{equipWeaponPower})");
-            if(!flagEquipArmor)
+            if (!flagEquipArmor)
                 Console.WriteLine($"방어력 : {player.Def}");
             else
                 Console.WriteLine($"방어력 : {player.Def} (+{equipArmorPower})");
@@ -234,10 +231,10 @@ namespace SpartaDungeonTextRpg
         public static void Main(string[] args)
         {
             while (gameManager.GamePlay)
-            while (gameManager.GamePlay)
-            {
-                gameManager.MainMenu();
-            }
+                while (gameManager.GamePlay)
+                {
+                    gameManager.MainMenu();
+                }
         }
     }
 }

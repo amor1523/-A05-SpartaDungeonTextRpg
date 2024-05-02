@@ -38,7 +38,7 @@ namespace _A05_SpartaDungeonTextRpg
             Exp = 0;
             Level = 1;
             Gold = 150000f;
-            LevelUpExp = 10;
+            LevelUpExp = 200;
         }
 
         public void TakeDamage(int damage)

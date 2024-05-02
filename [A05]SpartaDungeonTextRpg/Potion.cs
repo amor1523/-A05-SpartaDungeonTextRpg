@@ -56,7 +56,7 @@ public class Potion
 
     public void GetPotion()
     {
-        // 물약 : 2001번 부터 시작
+        // 물약(Id) : 2001번 부터 시작
         PotionIndex.Add(new Potion("체력 회복 물약", 2001, "체력이 30 회복 됩니다.", 500, 0));
         PotionIndex.Add(new Potion("공격력 증가 물약", 2002, "공격력이 10 증가합니다.", 10000, 0));
         PotionIndex.Add(new Potion("방어력 증가 물약", 2003, "방어력이 10 증가합니다.", 10000, 0));
@@ -85,14 +85,14 @@ public class Potion
                     Console.WriteLine($"회복을 완료했습니다.\n 현재 캐릭터의 Hp : {player.Hp} 입니다.");
             }
         }
-        else if(PotionIndex[index].Id == 2002)
+        else if (PotionIndex[index].Id == 2002)
         {
             PotionIndex[index].FlagUse = true;
             player.Atk += 10;
             player.NonEquipAtk = player.Atk;
             Console.WriteLine($"공격력이 증가했습니다.\n 현재 캐릭터의 Atk: {player.Atk} 입니다.");
         }
-        else if(PotionIndex[index].Id == 2003)
+        else if (PotionIndex[index].Id == 2003)
         {
             PotionIndex[index].FlagUse = true;
             player.Def += 10;
@@ -110,7 +110,7 @@ public class Potion
         int count = 0;
 
         if (PotionIndex.Count != 0)
-        { 
+        {
             int index = 1;
             foreach (var potion in PotionIndex)
             {
@@ -186,7 +186,7 @@ public class Potion
                 {
                     if (selectPotion.Count > 0)
                     {
-                        UsePotion(player, input-1);
+                        UsePotion(player, input - 1);
                         if (selectPotion.FlagUse)
                         {
                             selectPotion.Count -= 1;
@@ -196,7 +196,7 @@ public class Potion
                     else
                     {
                         Console.WriteLine("\n선택하신 포션의 수량이 부족합니다.");
-                        
+
                     }
                     Thread.Sleep(1000);
                     PotionInventory();
