@@ -23,6 +23,7 @@ namespace SpartaDungeonTextRpg
         private Battle battle;
         private Item item = new Item();
         private Skill skill;
+        private Quest quest = new Quest();
 
         public GameManager()
         {
@@ -44,6 +45,7 @@ namespace SpartaDungeonTextRpg
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
 
             item.GetItem();
+            quest.quests();
         }
 
         private void PlayerName()
@@ -106,10 +108,11 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("2. 전투시작");
             Console.WriteLine("3. 인벤토리");
             Console.WriteLine("4. 상점");
-            Console.WriteLine("5. 게임종료");
+            Console.WriteLine("5. 퀘스트");
+            Console.WriteLine("6. 게임종료");
             Console.WriteLine();
 
-            int input = ConsoleUtility.PromptMenuChoice(1, 5);
+            int input = ConsoleUtility.PromptMenuChoice(1, 6);
             switch (input)
             {
                 case 1:
@@ -127,8 +130,10 @@ namespace SpartaDungeonTextRpg
                 case 4:
                     item.Shop();
                     break;
-
                 case 5:
+                    quest.QuestList(quest.questData);
+                    break;
+                case 6:
                     GamePlay = false;
                     Console.WriteLine("게임을 종료합니다.");
                     break;
@@ -165,6 +170,7 @@ namespace SpartaDungeonTextRpg
         public static GameManager gameManager = new GameManager();
         public static void Main(string[] args)
         {
+            while (gameManager.GamePlay)
             while (gameManager.GamePlay)
             {
                 gameManager.MainMenu();

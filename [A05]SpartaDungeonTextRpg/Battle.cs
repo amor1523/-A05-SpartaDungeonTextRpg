@@ -28,6 +28,8 @@ public class Battle
         this.skill = skill;
         beforeHp = player.Hp;
         beforeMp = player.Mp;
+        // 프로그램에 있는 몬스터를 제거하고 여기에 새로운 몬스터를 추가할 수 있습니다.
+        
     }
     public void BattleMenu()
     {
@@ -347,6 +349,14 @@ public class Battle
 
     public void BattleResult(bool victory)
     {
+        monsters.Clear();
+
+        // 여기에 새로운 몬스터를 추가하는 코드를 작성합니다.
+        // 예를 들어, 플레이어 레벨에 따라 다른 몬스터를 추가할 수 있습니다.
+        Monster monster = new Monster();
+        monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
+        monster.GenerateMonster(); // 몬스터 생성
+        monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
         // 레벨업 유무 확인
         int playerLevel = player.Level;
         int playerExp = player.LevelUpExp;
