@@ -47,6 +47,17 @@ namespace _A05_SpartaDungeonTextRpg
             if (Hp < 0)
                 Hp = 0;
         }
+        public void UseMp(int mana)
+        {
+            if (Mp < mana)
+            {
+                Mp = Mp;
+            }
+            else{
+                Mp -= mana;
+            }     
+            
+        }
       
 
     }

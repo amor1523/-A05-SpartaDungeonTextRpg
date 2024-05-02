@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using static Skill;
 
 namespace SpartaDungeonTextRpg
 {
@@ -23,13 +24,15 @@ namespace SpartaDungeonTextRpg
         private Battle battle;
         private Item item;
         private Potion potion;
+        private Skill skill;
+        private Quest quest = new Quest();
 
         public GameManager()
         {
             InitializeGame();
             PlayerName();
             PlayerJob();
-            battle = new Battle(player, monsters, this);
+            battle = new Battle(player, monsters, this, skill);
         }
         
         private void InitializeGame()
@@ -42,6 +45,8 @@ namespace SpartaDungeonTextRpg
             monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
             monster.GenerateMonster(); // 몬스터 생성
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
+
+            quest.quests();
         }
 
         private void PlayerName()
@@ -72,6 +77,8 @@ namespace SpartaDungeonTextRpg
                     player.MaxHp = player.Hp;
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
+                    player.Mp = 50;
+                    skill = new KnightSkill("크게휘두르기", 20, 30, 1);
                     break;
 
                 case 2:
@@ -82,6 +89,8 @@ namespace SpartaDungeonTextRpg
                     player.MaxHp = player.Hp;
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
+                    player.Mp = 100;
+                    skill = new MageSkill("파이어 볼", 35, 40, 1);
                     break;
                 case 3:
                     player.Job = Job.Archer;
@@ -91,6 +100,8 @@ namespace SpartaDungeonTextRpg
                     player.MaxHp = player.Hp;
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
+                    player.Mp = 40;
+                    skill = new ArcherSkill("트리플 샷", 25, 30, 1);
                     break;
 
             }
@@ -101,6 +112,7 @@ namespace SpartaDungeonTextRpg
             item = new Item(player, potion);
             potion.GetPotion();
             item.GetItem();
+            battle = new Battle(player, monsters, this, skill);
             MainMenu();
         }
 
@@ -114,10 +126,11 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("3. 인벤토리");
             Console.WriteLine("4. 상점");
             Console.WriteLine("5. 물약사용");
-            Console.WriteLine("6. 게임종료");
+            Console.WriteLine("6. 퀘스트");
+            Console.WriteLine("7. 게임종료");
             Console.WriteLine();
 
-            int input = ConsoleUtility.PromptMenuChoice(1, 6);
+            int input = ConsoleUtility.PromptMenuChoice(1, 7);
             switch (input)
             {
                 case 1:
@@ -135,12 +148,13 @@ namespace SpartaDungeonTextRpg
                 case 4:
                     item.Shop();
                     break;
-
                 case 5:
                     potion.PotionInventory();
                     break;
-
                 case 6:
+                    quest.QuestList(quest.questData);
+                    break;
+                case 7:
                     GamePlay = false;
                     Console.WriteLine("\n게임을 종료합니다.");
                     break;
@@ -219,6 +233,7 @@ namespace SpartaDungeonTextRpg
         public static GameManager gameManager = new GameManager();
         public static void Main(string[] args)
         {
+            while (gameManager.GamePlay)
             while (gameManager.GamePlay)
             {
                 gameManager.MainMenu();
