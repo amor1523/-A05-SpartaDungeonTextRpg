@@ -88,21 +88,22 @@ public class Potion
         else if (PotionIndex[index].Id == 2002)
         {
             PotionIndex[index].FlagUse = true;
-            player.Atk += 10;
-            player.NonEquipAtk = player.Atk;
-            Console.WriteLine($"공격력이 증가했습니다.\n 현재 캐릭터의 Atk: {player.Atk} 입니다.");
+            player.NonEquipAtk += 10;
+            Console.WriteLine($"공격력이 증가했습니다.\n 현재 캐릭터의 Atk: {player.NonEquipAtk} 입니다.");
         }
         else if (PotionIndex[index].Id == 2003)
         {
             PotionIndex[index].FlagUse = true;
-            player.Def += 10;
-            player.NonEquipDef = player.Def;
-            Console.WriteLine($"방어력 증가했습니다.\n 현재 캐릭터의 Def: {player.Def} 입니다.");
+            player.NonEquipDef += 10;
+            Console.WriteLine($"방어력 증가했습니다.\n 현재 캐릭터의 Def: {player.NonEquipDef} 입니다.");
         }
     }
 
     public void PotionInventory()
     {
+        player.Atk = player.NonEquipAtk;
+        player.Def = player.NonEquipDef;
+
         Console.Clear();
         Console.WriteLine("인벤토리- 포션");
         Console.WriteLine("보유 중인 포션을 사용할 수 있습니다.\n");
