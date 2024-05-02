@@ -26,7 +26,7 @@ namespace SpartaDungeonTextRpg
         public GameManager()
         {
             InitializeGame();
-            JsonSerialize.LoadData(this);
+            JsonSerialize.LoadData(this, player);
             battle = new Battle(player, monsters, this);
         }
 
@@ -40,8 +40,7 @@ namespace SpartaDungeonTextRpg
             monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
             monster.GenerateMonster(); // 몬스터 생성
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
-
-            item.GetItem();
+            item.GetItem(); // 아이템 추가
         }
 
         public void PlayerName()
@@ -67,9 +66,9 @@ namespace SpartaDungeonTextRpg
             {
                 case 1:
                     player.Job = Job.Knight;
-                    player.Atk = 100;   // 10
+                    player.Atk = 10;
                     player.Def = 5;
-                    player.Hp = 1000;    // 100
+                    player.Hp = 100;
                     break;
 
                 case 2:
@@ -84,7 +83,6 @@ namespace SpartaDungeonTextRpg
                     player.Def = 4;
                     player.Hp = 90;
                     break;
-
             }
 
         }
@@ -106,7 +104,7 @@ namespace SpartaDungeonTextRpg
             switch (input)
             {
                 case 0:
-                    JsonSerialize.SaveData();
+                    JsonSerialize.SaveData(player);
                     break;
                 case 1:
                     StatusMenu();
@@ -159,9 +157,11 @@ namespace SpartaDungeonTextRpg
 
     public class Program
     {
-        public static GameManager gameManager = new GameManager();
+        //public static GameManager gameManager = new GameManager();
         public static void Main(string[] args)
         {
+            GameManager gameManager = new GameManager();
+
             while (gameManager.GamePlay)
             {
                 gameManager.MainMenu();

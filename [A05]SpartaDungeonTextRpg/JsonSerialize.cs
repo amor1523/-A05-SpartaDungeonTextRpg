@@ -17,33 +17,33 @@ namespace _A05_SpartaDungeonTextRpg
     public class JsonSerialize
     {
         public static GameManager gameManager;
-        private static Player player;
-        private static Item item;
+        //public static Player player; //PlayerData에 player가 null로 참조되어서 GameManager에 있는 player 변수로 가져와서 사용해서 삭제함 LoadData에 player변수 추가
+        public static Item item;
         private static PlayerData playerData;
-        private static ItemData itemData;
+        //private static ItemData itemData;
 
-        public static void SaveData()
+        public static void SaveData(Player player)
         {
             Console.Clear();
 
             // 저장할 파일명 지정
             string fileName = "playerData.json";
-            string itemFileName = "itemData.json";
+            //string itemFileName = "itemData.json";
 
             // 데이터 경로 저장 (C드라이브, Documents)
             string userDocumentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string filePath = Path.Combine(userDocumentsFolder, fileName);
-            string itemfilePath = Path.Combine(userDocumentsFolder, itemFileName);
+            //string itemfilePath = Path.Combine(userDocumentsFolder, itemFileName);
 
             // 플레이어 데이터 PlayerData에 넣어 전달
             playerData = new PlayerData(player);
-            itemData = new ItemData(item);
+            //itemData = new ItemData(item);
 
             // 플레이어 데이터 저장
             string playerJson = JsonConvert.SerializeObject(playerData, Formatting.Indented); // 직렬화
-            string itemJson = JsonConvert.SerializeObject(itemData, Formatting.Indented); 
+            //string itemJson = JsonConvert.SerializeObject(itemData, Formatting.Indented); 
             File.WriteAllText(filePath, playerJson);
-            File.WriteAllText(itemJson, itemFileName);
+            //File.WriteAllText(itemJson, itemFileName);
             
             Console.WriteLine("저장이 완료되었습니다.");
             Console.WriteLine("메인 메뉴로 돌아갑니다.");
@@ -51,7 +51,7 @@ namespace _A05_SpartaDungeonTextRpg
             gameManager.MainMenu();
         }
 
-        public static void LoadData(GameManager gm)
+        public static void LoadData(GameManager gm, Player player)
         {
             gameManager = gm;
 
@@ -59,7 +59,7 @@ namespace _A05_SpartaDungeonTextRpg
 
             // 불러올 파일명 지정
             string fileName = "playerData.json";
-            string itemFileName = "itemData.json";
+            //string itemFileName = "itemData.json";
 
             // 데이저 경로 불러오기 (C드라이브, Documents)
             string userDocumentsFolder = Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
@@ -70,45 +70,44 @@ namespace _A05_SpartaDungeonTextRpg
             {
                 string playerJson = File.ReadAllText(playerFilePlth);
                 playerData = JsonConvert.DeserializeObject<PlayerData>(playerJson); // 역직렬화
+                //player = new Player(playerData); // 플레이어 생성 후 데이터 입력 // 다른 객체에 새로 생성해서 이전 객체에 들어가지 않음
+                player.SetPlayer(playerData);
+                
                 Console.WriteLine("플레이어 정보를 불러왔습니다.");
-
-                player = new Player(playerData); // 플레이어 생성 후 데이터 입력
                 Thread.Sleep(1000);
             }
             else
             {
                 Console.WriteLine("저장된 플레이어 데이터가 없습니다.");
                 Thread.Sleep(1000);
-                player = new Player();
                 gameManager.PlayerName(); // 이름, 직업 설정
             }
 
             // 아이템 데이터 로드
-            string itemFilePath = Path.Combine(userDocumentsFolder,itemFileName);
-            if (File.Exists(itemFilePath))
-            {
-                string itemJson = File.ReadAllText(itemFilePath);
-                itemData = JsonConvert.DeserializeObject<ItemData>(itemJson); // 역직렬화
-                Console.WriteLine("아이템 데이터를 불러왔습니다.");
-                Thread.Sleep(1000);
+            //string itemFilePath = Path.Combine(userDocumentsFolder,itemFileName);
+            //if (File.Exists(itemFilePath))
+            //{
+            //    string itemJson = File.ReadAllText(itemFilePath);
+            //    itemData = JsonConvert.DeserializeObject<ItemData>(itemJson); // 역직렬화
+            //    Item item = new Item(itemData); // 아이템 리스트 생성 후 데이터 입력
 
-                // 아이템 리스트 생성 후 데이터 입력
+            //    Console.WriteLine("아이템 데이터를 불러왔습니다.");
+            //    Thread.Sleep(1000);
 
-                gameManager.MainMenu();
-            }
-            else
-            {
-                Console.Clear();
-                Console.WriteLine("저장된 아이템 데이터가 없습니다.");
-                Thread.Sleep(1000);
-                Console.WriteLine("모험가용 가방을 얻었습니다.");
-                Thread.Sleep(1000);
-                Console.WriteLine("상점에 새로운 물건들이 들어옵니다.");
-                Thread.Sleep(2000);
-                // 빈 아이템 리스트 생성
+            //    gameManager.MainMenu();
+            //}
+            //else
+            //{
+            //    Console.Clear();
+            //    Console.WriteLine("저장된 아이템 데이터가 없습니다.");
+            //    Thread.Sleep(1000);
+            //    Console.WriteLine("모험가용 가방을 얻었습니다.");
+            //    Thread.Sleep(1000);
+            //    Console.WriteLine("상점에 새로운 물건들이 들어옵니다.");
+            //    Thread.Sleep(2000);
 
-                gameManager.MainMenu();
-            }
+            // gameManager.MainMenu();
+            //}
         }
     }
 }

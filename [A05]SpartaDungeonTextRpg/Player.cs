@@ -12,7 +12,7 @@ namespace _A05_SpartaDungeonTextRpg
 
     public class Player
     {   
-        Random rand  = new Random();
+       Random rand  = new Random();
         public string Name { get; set; }
         public Job Job { get; set; }
         // Level Atk Def 레벨업에 따른 수치 변경으로 인해 set 추가
@@ -28,11 +28,17 @@ namespace _A05_SpartaDungeonTextRpg
         public int LevelUpExp { get; set; }
 
         public Player()
-        {
+       {
             // 초기값
-            Exp = 0;
+            Name = "000";
+            Job = Job.Knight;
             Level = 1;
+            Atk = 0;
+            Def = 0;
+            Hp = 0;
+            Mp = 0;
             Gold = 1500f;
+            Exp = 0;
             LevelUpExp = 10;
         }
 
@@ -43,8 +49,23 @@ namespace _A05_SpartaDungeonTextRpg
                 Hp = 0;
         }
       
-        // 역직렬화 후 Player에게 넘겨주기 위한 메서드
+        // 역직렬화 후 Player에게 PlayerData를 넘겨주기 위한 메서드
         public Player(PlayerData playerData)
+        {
+            Name = playerData.Name;
+            Job = playerData.Job;
+            Level = playerData.Level;
+            Atk = playerData.Atk;
+            Def = playerData.Def;
+            Hp = playerData.Hp;
+            Mp = playerData.Mp;
+            Gold = playerData.Gold;
+            Exp = playerData.Exp;
+            LevelUpExp = playerData.LevelUpExp;
+        }
+        
+        // 로드기능 작동 시 사용
+        public void SetPlayer(PlayerData playerData)
         {
             Name = playerData.Name;
             Job = playerData.Job;

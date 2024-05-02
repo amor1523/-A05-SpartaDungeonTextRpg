@@ -1,12 +1,13 @@
 ﻿using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
 using System;
+using System.Reflection.Emit;
 public class Item
 {
     private Player player = new Player();
     public List<Item> ItemIndex = new List<Item>();
     public List<Item> InventoryIndex = new List<Item>();
-    private bool FlagShopBuy = false;
+    public bool FlagShopBuy = false;
     
     public string Name { get; }
     public int Id { get; }
@@ -34,6 +35,16 @@ public class Item
     {
 
     }
+
+    // 역직렬화 후 Item에게 ItemData를 넘겨주기 위한 메서드
+    //public Item(ItemData itemData)
+    //{
+    //    FlagShopBuy = itemData.FlagShopBuy;
+    //    FlagBuy = itemData.FlagBuy;
+    //    FlagEquip = itemData.FlagEquip;
+    //}
+
+
 
     private void BuyItem(Player player)
     {
