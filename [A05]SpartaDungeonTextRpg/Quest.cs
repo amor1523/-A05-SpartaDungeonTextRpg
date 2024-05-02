@@ -15,6 +15,9 @@ namespace _A05_SpartaDungeonTextRpg
     public class Quest
     {
         public static Quest quest = new Quest();
+        public static Quest0 quest0 = new Quest0(); //퀘스트 선택에 따른 클래스 호출을 위한 선언
+        public static Quest1 quest1 = new Quest1(); //퀘스트 선택에 따른 클래스 호출을 위한 선언
+        public static Quest2 quest2 = new Quest2(); //퀘스트 선택에 따른 클래스 호출을 위한 선언
         public static List<Quest> questData = new List<Quest>(); //퀘스트 전체 목록
         public List<Quest> questList = new List<Quest>(); //활성화 퀘스트 목록, 클리어 한 퀘스트는 라인업에서 지우고 리스트 새로 작성 - bool ClearQuest
         int input;
@@ -42,9 +45,6 @@ namespace _A05_SpartaDungeonTextRpg
 
         public void QuestList(List<Quest> questData) // 퀘스트 리스트 출력
         {
-            Quest0 quest0 = new Quest0(); //퀘스트 선택에 따른 클래스 호출을 위한 선언
-            Quest1 quest1 = new Quest1();
-            Quest2 quest2 = new Quest2();
             int i;
             Console.Clear();
             setactiveQuests(questData); // 갱신 된 퀘스트 데이터를 새로 받아옴
@@ -53,7 +53,7 @@ namespace _A05_SpartaDungeonTextRpg
             {
                 if (questList[i].AcceptQuest == true)
                 {
-                    Console.WriteLine($"-수락중-{i + 1}. {questList[i].Title}"); // 퀘스트 수락중이라면 앞에 수락중 표시
+                    Console.WriteLine($"[수락중]{i + 1}. {questList[i].Title}"); // 퀘스트 수락중이라면 앞에 수락중 표시
                 }
                 else
                 {

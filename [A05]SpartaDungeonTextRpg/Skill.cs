@@ -57,6 +57,11 @@ public class Skill
         Console.WriteLine($"플레이어가 {Name}을(를) 사용했습니다.");
         Console.WriteLine($"MP 소모: {MpCost}");
         Console.WriteLine($"스킬 데미지: {SkillDamage}");
+
+        if (Quest.questData[2].Count < Quest2.quest2.GoalCount)
+        {
+            Quest.questData[2].Count++;
+        }
     }
 
 }

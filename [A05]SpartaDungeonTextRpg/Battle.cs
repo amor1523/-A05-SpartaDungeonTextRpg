@@ -345,6 +345,14 @@ public class Battle
             Console.WriteLine($"HP {player.Hp}\n");
             Thread.Sleep(1000);
         }
+        else if (targetMonster.IsDead)
+        {
+            if(targetMonster.Id == 3 && Quest.questData[1].Count < Quest1.quest1.GoalCount && targetMonster.QuestCount == false )
+            {
+                Quest.questData[1].Count++;
+                targetMonster.QuestCount = true;
+            }
+        }
     }
 
     public void BattleResult(bool victory)

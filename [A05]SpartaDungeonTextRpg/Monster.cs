@@ -11,10 +11,10 @@ namespace _A05_SpartaDungeonTextRpg
 
         public void Monsters(int level) // 몬스터 데이터 입력
         {
-            MonsterData.Add(new Monster(0, "고블린", level, 20 + level * 2 + random.Next(-1, 2), 35 + level * 5 + random.Next(-1, 2), 20 + level * 2 + random.Next(-1, 2), 50 + level * 2, false));
-            MonsterData.Add(new Monster(1, "늑대", level, 15 + level * 2 + random.Next(-1, 2), 20 + level * 5 + random.Next(-1, 2), 18 + level * 2 + random.Next(-1, 2), 40 + level * 2, false));
-            MonsterData.Add(new Monster(2, "박쥐", level, 20 + level * 2 + random.Next(-1, 2), 15 + level * 3 + random.Next(-1, 2), 18 + level * 2 + random.Next(-1, 2), 35 + level * 2, false));
-            MonsterData.Add(new Monster(3, "거미", level, 10 + level * 2 + random.Next(-1, 2), 10 + level * 3 + random.Next(-1, 2), 10 + level * 2 + random.Next(-1, 2), 15 + level * 2, false));
+            MonsterData.Add(new Monster(0, "고블린", level, 20 + level * 2 + random.Next(-1, 2), 35 + level * 5 + random.Next(-1, 2), 20 + level * 2 + random.Next(-1, 2), 50 + level * 2, false, false));
+            MonsterData.Add(new Monster(1, "늑대", level, 15 + level * 2 + random.Next(-1, 2), 20 + level * 5 + random.Next(-1, 2), 18 + level * 2 + random.Next(-1, 2), 40 + level * 2, false, false));
+            MonsterData.Add(new Monster(2, "박쥐", level, 20 + level * 2 + random.Next(-1, 2), 15 + level * 3 + random.Next(-1, 2), 18 + level * 2 + random.Next(-1, 2), 35 + level * 2, false, false));
+            MonsterData.Add(new Monster(3, "거미", level, 10 + level * 2 + random.Next(-1, 2), 10 + level * 3 + random.Next(-1, 2), 10 + level * 2 + random.Next(-1, 2), 15 + level * 2, false, false));
         }
 
         Monster m;
@@ -39,8 +39,9 @@ namespace _A05_SpartaDungeonTextRpg
         public int RewardGold { get; }
         public int RewardExp { get; }
         public bool IsDead => Hp <= 0; // 죽었을 경우 비활성화 하기 위한 bool
+        public bool QuestCount { get; set; }
 
-        public Monster(int id, string name, int level, int atk, int hp, int gold, int exp, bool isDead = false)
+        public Monster(int id, string name, int level, int atk, int hp, int gold, int exp, bool isDead = false, bool questCount = false)
         {
             Id = id;
             Name = name;
@@ -49,7 +50,7 @@ namespace _A05_SpartaDungeonTextRpg
             Hp = hp;
             RewardGold = gold;
             RewardExp = exp;
-
+            QuestCount = questCount;
         }
 
         public Monster()

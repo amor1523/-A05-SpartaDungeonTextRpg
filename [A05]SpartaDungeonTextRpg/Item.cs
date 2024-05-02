@@ -55,7 +55,7 @@ public class Item
             {
                 player.Gold -= Gold;
                 FlagBuy = true;
-                if (ItemIndex[3].FlagBuy == true)
+                if (ItemIndex[3].FlagBuy == true || Quest.questData[0].Count < Quest0.quest0.GoalCount)
                 {
                     Quest.questData[0].Count++;
                 }
