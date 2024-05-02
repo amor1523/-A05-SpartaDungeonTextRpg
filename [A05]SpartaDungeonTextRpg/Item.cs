@@ -1,10 +1,11 @@
 ﻿using System;
 using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
-
+using System;
+using System.Reflection.Emit;
 public class Item
 {
-    private bool FlagShopBuy = false;
+    public bool FlagShopBuy = false;
     private Player player;
     private Potion potion;
     public List<Item> ItemIndex = new List<Item>();
@@ -36,6 +37,14 @@ public class Item
         this.player = player;
         this.potion = potion;
     }
+
+    // 역직렬화 후 Item에게 ItemData를 넘겨주기 위한 메서드
+    //public Item(ItemData itemData)
+    //{
+    //    FlagShopBuy = itemData.FlagShopBuy;
+    //    FlagBuy = itemData.FlagBuy;
+    //    FlagEquip = itemData.FlagEquip;
+    //}
 
     private void BuyItem(Player player)
     {
@@ -181,15 +190,19 @@ public class Item
 
                     if (item.AttackPower != 0)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        if(!item.FlagBuy)
+                            Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write($"공격력 {(item.AttackPower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.AttackPower.ToString(), 5)} ");
-                        Console.ResetColor();
+                        if(!item.FlagBuy)
+                            Console.ResetColor();
                     }
                     if (item.DefensivePower != 0)
                     {
-                        Console.ForegroundColor = ConsoleColor.Blue;
+                        if(!item.FlagBuy)
+                            Console.ForegroundColor = ConsoleColor.Blue;
                         Console.Write($"방어력 {(item.DefensivePower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.DefensivePower.ToString(), 5)} ");
-                        Console.ResetColor();
+                        if(!item.FlagBuy)
+                            Console.ResetColor();
                     }
                     Console.Write(" | ");
 

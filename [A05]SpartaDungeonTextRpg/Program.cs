@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using static Skill;
 
+
 namespace SpartaDungeonTextRpg
 {
     public class GameManager
@@ -30,8 +31,7 @@ namespace SpartaDungeonTextRpg
         public GameManager()
         {
             InitializeGame();
-            PlayerName();
-            PlayerJob();
+            JsonSerialize.LoadData(this, player);
             battle = new Battle(player, monsters, this, skill);
         }
 
@@ -45,19 +45,20 @@ namespace SpartaDungeonTextRpg
             monster.Monsters(player.Level); // 플레이어 레벨에 맞게 몬스터 생성
             monster.GenerateMonster(); // 몬스터 생성
             monsters.AddRange(monster.CreatedMonster); // 생성된 몬스터를 리스트에 추가
-
+            
             quest.quests();
         }
 
-        private void PlayerName()
+        public void PlayerName()
         {
             Console.Clear();
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
-            Console.Write("원하시는 이름을 성정해주세요\n>> ");
+            Console.Write("원하시는 이름을 설정해주세요\n>> ");
             player.Name = Console.ReadLine();
+            PlayerJob();
         }
 
-        private void PlayerJob()
+        public void PlayerJob()
         {
             Console.Clear();
             Console.WriteLine("던전에 들어가기 전 당신의 직업을 선택해주세요.");
@@ -103,13 +104,12 @@ namespace SpartaDungeonTextRpg
                     player.Mp = 40;
                     skill = new ArcherSkill("트리플 샷", 25, 30, 1);
                     break;
-
             }
+
             potion = new Potion(player);
             item = new Item(player, potion);
             potion.GetPotion();
             item.GetItem();
-            battle = new Battle(player, monsters, this, skill);
             MainMenu();
         }
 
@@ -126,15 +126,22 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("6. 퀘스트");
             Console.WriteLine("7. 게임종료");
             Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("0. 저장하기");
+            Console.WriteLine();
 
-            int input = ConsoleUtility.PromptMenuChoice(1, 7);
+            int input = ConsoleUtility.PromptMenuChoice(0, 7);
             switch (input)
             {
+                case 0:
+                    JsonSerialize.SaveData(player);
+                    break;
                 case 1:
                     StatusMenu();
                     break;
 
                 case 2:
+                    battle = new Battle(player, monsters, this, skill);
                     battle.BattleMenu();
                     break;
 
@@ -227,9 +234,10 @@ namespace SpartaDungeonTextRpg
 
     public class Program
     {
-        public static GameManager gameManager = new GameManager();
         public static void Main(string[] args)
         {
+            GameManager gameManager = new GameManager();
+
             while (gameManager.GamePlay)
                 while (gameManager.GamePlay)
                 {
