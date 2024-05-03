@@ -278,6 +278,7 @@ public class Battle
             Console.WriteLine("잘못된 입력입니다.\n");
             Thread.Sleep(1000);
             PlayerAttack(); // 다시 공격 메뉴로 돌아감
+            return;
         }
 
         int baseDamage = player.Atk;
