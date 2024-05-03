@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using _A05_SpartaDungeonTextRpg;
@@ -49,10 +48,9 @@ public class Battle
         Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("1. 일반 공격");
         Console.WriteLine("2. 스킬 사용");
-        Console.WriteLine("3. 포션 사용");
-        Console.WriteLine("4. 도망 치기");
+        Console.WriteLine("3. 도망 치기");
 
-        int input = ConsoleUtility.PromptMenuChoice(1, 4);
+        int input = ConsoleUtility.PromptMenuChoice(1, 3);
         switch (input)
         {
             case 1:
@@ -62,9 +60,6 @@ public class Battle
                 SkillAttack();
                 break;
             case 3:
-                UsePotion();
-                break;
-            case 4:
                 RunAway();
                 break;
         }
@@ -468,57 +463,6 @@ public class Battle
             Thread.Sleep(1000);
         }
     }
-
-    public void UsePotion()
-    {
-        Console.Clear();
-        Console.WriteLine("[포션 목록]");
-        if (potion.PotionIndex[0].Count == 0)
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.Write("- ");
-
-        Console.Write(ConsoleUtility.PadRightForMixedText(potion.PotionIndex[0].Name, 20));
-
-        Console.Write(" | ");
-
-        Console.Write(ConsoleUtility.PadRightForMixedText("보유 개수: " + potion.PotionIndex[0].Count.ToString() + " 개", 15));
-
-        Console.Write(" | ");
-
-        Console.WriteLine(ConsoleUtility.PadRightForMixedText(potion.PotionIndex[0].Explain, 55));
-
-        Console.ResetColor();
-
-        Console.WriteLine("\n1. 사용");
-        Console.WriteLine("0. 나가기");
-
-        int input = ConsoleUtility.PromptMenuChoice(0, 1);
-        switch (input)
-        {
-            case 0:
-                BattleMenu();
-                break;
-            case 1:
-                if (potion.PotionIndex[0].Count > 0)
-                {
-                    potion.UsePotion(player, 0);
-                    if (potion.PotionIndex[0].FlagUse)
-                    {
-                        potion.PotionIndex[0].Count -= 1;
-                        potion.PotionIndex[0].FlagUse = false;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("\n선택하신 포션의 수량이 부족합니다.");
-                }
-
-                Thread.Sleep(1000);
-                UsePotion();
-                break;
-        }
-    }
-
     public void DeadMonster()
     {
         for(int i = 0; i < monsters.Count; i++)
@@ -557,40 +501,63 @@ public class Battle
         }
         
     }
+    public void BossText() 
+    {
+        Console.Clear();
+        Console.WriteLine("보스 스테이지!!!\n");
+        Thread.Sleep(1000);
+        Console.Clear();
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "보스 스테이지는 5레벨이상부터 가능합니다!!!\n");
+        Thread.Sleep(1000);
+        Console.WriteLine("0.마을로 돌아가기");
+        Console.WriteLine("1.보스전 입장!");
+    }
     public void BossStage()
     {
         if (CheckBossStage() == false)
         {
-            Console.Clear();
-            Console.WriteLine("보스 스테이지!!!\n");
-            Console.Clear();
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "보스 스테이지는 5레벨이상부터 가능합니다!!!");
-            Console.WriteLine("0.마을로 돌아가기");
-            int input = ConsoleUtility.PromptMenuChoice(0, 0);
+            Console.Clear(); 
+            BossText();
+            int input = ConsoleUtility.PromptMenuChoice(0, 1);
             switch (input)
             {
                 case 0:
                     gameManager.MainMenu();
                     break;
+                case 1:
+                    Console.WriteLine("레벨이 부족합니다. 입장불가!");
+                    BossStage();
+                    break;
+
             }
         }
-        else
+        else if(CheckBossStage() == true) 
         {
-
-
             Console.Clear();
-            Console.WriteLine("보스 스테이지 시작!");
-            Thread.Sleep(1000);
-
-            // 보스 스테이지에서의 동작 구현
-
-            Console.WriteLine("보스 스테이지 종료!");
-            Thread.Sleep(1000);
+            BossText();
+            int input = ConsoleUtility.PromptMenuChoice(0, 1);
+            switch (input)
+            {
+                case 0:
+                    gameManager.MainMenu();
+                    break;
+                case 1:
+                    BossStage();
+                    break;
+            }
         }
     }
+    public void BossBattle()
+    {
+        Monster.BossMonster boss = new Monster.BossMonster(10, "보스", 10, 50, 200, 1000, 500);
 
+    }
     public bool CheckBossStage()
     {
+
         return player.Level >= 5; // 플레이어 레벨이 5 이상이면 보스 스테이지로 진입
     }
 }
+
+
+  
