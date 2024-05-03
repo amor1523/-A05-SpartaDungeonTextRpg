@@ -32,7 +32,7 @@ namespace SpartaDungeonTextRpg
         public GameManager()
         {
             InitializeGame();
-            JsonSerialize.LoadData(this, player, item, potion);
+            JsonSerialize.LoadData(this, player, item, potion, quest);
             
             MainMenu();
             battle = new Battle(player, monsters, this, skill, potion);
