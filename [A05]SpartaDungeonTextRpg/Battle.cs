@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using _A05_SpartaDungeonTextRpg;
@@ -41,9 +42,18 @@ public class Battle
     {
         Console.WriteLine();
         Console.WriteLine("[내정보]");
-        Console.WriteLine($"Lv.{player.Level}  {player.Name} ({dict[player.Job]})");
-        Console.WriteLine($"HP {player.Hp}/{beforeHp} ");
-        Console.WriteLine($"MP {player.Mp}/{beforeMp}\n");
+
+        Console.Write(ConsoleUtility.PadRightForMixedText($"Lv.{player.Level}", 5));
+        Console.Write(" |  ");
+        Console.WriteLine($"{player.Name} ({dict[player.Job]})");
+
+        Console.Write(ConsoleUtility.PadRightForMixedText("Hp", 5));
+        Console.Write(" |  ");
+        Console.WriteLine($"{player.Hp}/{beforeHp} ");
+
+        Console.Write(ConsoleUtility.PadRightForMixedText("Mp", 5));
+        Console.Write(" |  ");
+        Console.WriteLine($"{player.Mp}/{beforeMp}\n");
     }
 
     public void TextMonsters()
@@ -63,12 +73,13 @@ public class Battle
 
     public void TextAttackResult(int damageDealt, Monster selectedMonster, bool isMiss, bool isCritical)
     {
+        Console.Clear();
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
+        Console.WriteLine($"{player.Name} 의 공격!");
+        Thread.Sleep(500);
+
         if (isMiss)
         {
-            Console.Clear();
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
-            Console.WriteLine($"{player.Name} 의 공격!");
-            Thread.Sleep(500);
             damageDealt = 0;
             Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 공격했지만 아무일도  일어나지 않았습니다.\n");
             Thread.Sleep(1000);
@@ -91,7 +102,7 @@ public class Battle
 
     public void TextEnemyAttack(Monster targetMonster, int damageDealt)
     {
-        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "공격!!\n");
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         Console.WriteLine($"{targetMonster.Name} 의 공격!");
         Thread.Sleep(500);
         player.TakeDamage(damageDealt);
@@ -127,6 +138,11 @@ public class Battle
             // 모든 몬스터가 죽었을 때 승리 처리
             if (this.monsters.All(m => m.IsDead))
             {
+                foreach (var monster in monsters)
+                {
+                    player.Exp += monster.RewardExp;
+                }
+                player.MaxMp += 10;
                 BattleResult(true);
             }
             else
@@ -184,15 +200,14 @@ public class Battle
         TextSkillMenu();
         Console.WriteLine("0.취소\n");
 
-            int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
-            if (input == 0)
-            {
-                BattleMonster = false;
-                BattleMenu();
-                return;
-            }
-            Console.WriteLine("\n[공격할  몬스터]");
-
+        int input = ConsoleUtility.PromptMenuChoice(0, 1);
+        if (input == 0)
+        {
+            BattleMonster = false;
+            BattleMenu();
+            return;
+        }
+        Console.WriteLine("\n[공격할  몬스터]");
 
         int input2 = ConsoleUtility.PromptMenuChoice(1, monsters.Count);
         // 선택한 몬스터 인덱스
@@ -224,8 +239,12 @@ public class Battle
         Thread.Sleep(1000);
 
         Console.Clear();
-        Console.WriteLine();
-        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "${skill.Name}!!!\n");
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", $"Battle!!!\n");
+        Console.WriteLine($"{player.Name} 의 공격!");
+        Thread.Sleep(500);
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", $"{skill.Name}!!!\n");
+        Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]\n");
+        Thread.Sleep(500);
         Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name}");
         Thread.Sleep(500);
         Console.WriteLine($"HP {selectedMonster.Hp}\n");
@@ -273,13 +292,15 @@ public class Battle
         int missChance = 10;
         // 회피확률 생산
         bool isMiss = random.Next(100) < missChance;
+
+        Console.Clear();
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
+        Console.WriteLine($"{player.Name} 의 공격!");
+        Thread.Sleep(500);
+
         //회피 발생하면 데미지 0으로 적용
         if (isMiss)
         {
-            Console.Clear();
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
-            Console.WriteLine($"{player.Name} 의 공격!");
-            Thread.Sleep(500);
             damageDealt = 0;
             Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 공격했지만 아무일도  일어나지 않았습니다.\n");
             Thread.Sleep(1000);
@@ -294,12 +315,9 @@ public class Battle
             // 치명타 데미지 계산
             int critDamage = (int)(damageDealt * 1.6); // 치명타 데미지는 일반 데미지의 1.6배로 가정
                                                        // 치명타가 발생하면 추가 데미지 적용
-            
-            Console.Clear();
+
             if (isCritical)
             {
-                Console.WriteLine($"{player.Name} 의 공격!");
-                Thread.Sleep(500);
                 damageDealt += critDamage;
                 Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]- 치명타 공격!!");
             }
@@ -323,7 +341,7 @@ public class Battle
     {   //공격할 몬스터가  살아있는지 확인
         if (!targetMonster.IsDead)
         {
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "공격!!\n");
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
             Console.WriteLine($"{targetMonster.Name} 의 공격!");
             Thread.Sleep(500);
             int damageDealt = targetMonster.Atk - player.Def;
@@ -373,10 +391,11 @@ public class Battle
                 Console.WriteLine($"Lv.{playerLevel} {player.Name} -> Lv. {player.Level} {player.Name}");
 
             Thread.Sleep(1000);
-            Console.WriteLine($"HP {beforeHp} -> {player.Hp}");
+            Console.WriteLine($"HP {beforeHp} -> {player.Hp} ");
             Thread.Sleep(1000);
-            Console.WriteLine($"MP {player.Mp} -> {player.Mp + 10}");
-            Console.WriteLine($"exp {beforeExp} -> {player.Exp}");
+
+            Console.WriteLine($"MP {beforeMp} -> {player.MaxMp} 증가!");
+            Console.WriteLine($"exp {beforeExp} -> {player.Exp} 증가!");
             Thread.Sleep(1000);
             if (player.Level < 5)
             {
@@ -467,7 +486,6 @@ public class Battle
             int addPotion = random.Next(1, 3);
             potion.PotionIndex[0].Count += addPotion;
             Console.WriteLine($"{potion.PotionIndex[0].Name} - {addPotion}");
-            Thread.Sleep(1000);
         }
     }
     public void DeadMonster()
@@ -493,17 +511,17 @@ public class Battle
     }
     public void  RunAway() 
     {
+        int beforeHp = player.Hp;
         int damage = 5;
         player.TakeDamage(damage);
         Console.Clear();
-        Console.WriteLine("겁을 먹고 도망쳤다.");
+        Console.WriteLine("겁을 먹고 도망쳤다.\n");
         Thread.Sleep(1000);
-        Console.WriteLine($"도망치면서 등에 칼이 꽃혔다. HP [{beforeHp}] -> HP [{player.Hp}]");
+        Console.WriteLine($"도망치면서 등에 칼이 꽃혔다. HP [{beforeHp}] -> HP [{player.Hp}]\n");
         Thread.Sleep(1000);
-        Console.WriteLine("");
-        Console.WriteLine("0.다음.");
+        Console.WriteLine("0.다음\n");
+        Thread.Sleep(1000);
 
-        Thread.Sleep(1000);
         int input = ConsoleUtility.PromptMenuChoice(0, 0);
         switch (input)
         {
