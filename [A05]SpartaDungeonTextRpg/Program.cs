@@ -133,7 +133,7 @@ namespace SpartaDungeonTextRpg
             switch (input)
             {
                 case 0:
-                    JsonSerialize.SaveData(player);
+                    JsonSerialize.SaveData(player, item, potion);
                     break;
                 case 1:
                     StatusMenu();
