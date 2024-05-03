@@ -32,7 +32,7 @@ namespace SpartaDungeonTextRpg
         public GameManager()
         {
             InitializeGame();
-            JsonSerialize.LoadData(this, player);
+            JsonSerialize.LoadData(this, player, item, potion);
             potion = new Potion(player);
             item = new Item(player, potion);
             potion.GetPotion();
@@ -134,7 +134,7 @@ namespace SpartaDungeonTextRpg
             switch (input)
             {
                 case 0:
-                    JsonSerialize.SaveData(player);
+                    JsonSerialize.SaveData(player, item, potion);
                     break;
                 case 1:
                     StatusMenu();

@@ -51,15 +51,34 @@ namespace _A05_SpartaDungeonTextRpg
 
     public class ItemData
     {
-        public bool FlagShopBuy;
-        public bool FlagBuy;
-        public bool FlagEquip;
+        public List<Item> ItemIndex;
+        public List<Item> InventoryIndex; 
+
+        public ItemData()
+        {
+        }
 
         public ItemData(Item item)
         {
-            FlagShopBuy = item.FlagShopBuy;
-            FlagBuy = item.FlagBuy;
-            FlagEquip = item.FlagEquip;
+            ItemIndex = item.ItemIndex;
+            InventoryIndex = item.InventoryIndex;
+        }
+
+    }
+
+    public class PotionData
+    {
+        public List<Potion> PotionIndex;
+
+
+        public PotionData()
+        {
+
+        }
+
+        public PotionData(Potion potion)
+        {
+            PotionIndex = potion.PotionIndex;
         }
 
     }

@@ -4,6 +4,8 @@ using _A05_SpartaDungeonTextRpg;
 using SpartaDungeonTextRpg;
 using System;
 using System.Reflection.Emit;
+
+
 public class Item
 {
     public static Item item = new Item();
@@ -13,14 +15,19 @@ public class Item
     public static List<Item> ItemIndex = new List<Item>();
     public static List<Item> InventoryIndex = new List<Item>();
 
-    public string Name { get; }
-    public int Id { get; }
-    public int Gold { get; }
-    public string Explain { get; }
-    public int DefensivePower { get; }
-    public int AttackPower { get; }
+    public string Name { get; set; }
+    public int Id { get; set; }
+    public int Gold { get; set; }
+    public string Explain { get; set; }
+    public int DefensivePower { get; set; }
+    public int AttackPower { get; set; }
     public bool FlagBuy { get; set; }
     public bool FlagEquip { get; set; }
+
+    public Item()
+    {
+
+    }
 
     public Item(string name, int id, int gold, int defensivepower, int attackpower, string explain)
     {
@@ -45,13 +52,12 @@ public class Item
         this.potion = potion;
     }
 
-    // 역직렬화 후 Item에게 ItemData를 넘겨주기 위한 메서드
-    //public Item(ItemData itemData)
-    //{
-    //    FlagShopBuy = itemData.FlagShopBuy;
-    //    FlagBuy = itemData.FlagBuy;
-    //    FlagEquip = itemData.FlagEquip;
-    //}
+    // 역직렬화 후 Item에게 ItemData를 넘겨주기 위한 메서드 (Load시 사용)
+    public void SetItem(ItemData itemData)
+    {
+        ItemIndex = itemData.ItemIndex;
+        InventoryIndex = itemData.InventoryIndex;
+    }
 
     private void BuyItem(Player player, List<Item> ItemIndex, Quest quest)
     {
