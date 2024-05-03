@@ -11,7 +11,7 @@ public class Battle
             {Job.Mage, "마법사"},
             {Job.Archer, "궁수"}
         };
-
+    public static Battle battle = new Battle();
     private Player player;
     private Potion potion;
     private List<Monster> monsters;
@@ -22,6 +22,10 @@ public class Battle
     private int beforeExp;
     private int beforeMp;
 
+    public Battle()
+    {
+
+    }
     public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill, Potion potion)
     {
         this.player = player;

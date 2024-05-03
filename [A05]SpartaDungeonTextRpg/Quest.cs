@@ -14,6 +14,7 @@ namespace _A05_SpartaDungeonTextRpg
 {
     public class Quest
     {
+        private Player player;
         public static Quest quest = new Quest();
         public static Quest0 quest0 = new Quest0(); //퀘스트 선택에 따른 클래스 호출을 위한 선언
         public static Quest1 quest1 = new Quest1(); //퀘스트 선택에 따른 클래스 호출을 위한 선언
@@ -24,9 +25,9 @@ namespace _A05_SpartaDungeonTextRpg
         public void quests()
         {
             questData.Clear();
-            questData.Add(new Quest(0, "아이템 구매", false, false, 0));
-            questData.Add(new Quest(1, "거미 처치", false, false, 0));
-            questData.Add(new Quest(2, "스킬 사용", false, false, 0));
+            questData.Add(new Quest(0, "아이템 구매", false, false, 0, 50, 20));
+            questData.Add(new Quest(1, "거미 처치", false, false, 0, 100 , 80));
+            questData.Add(new Quest(2, "스킬 사용", false, false, 0, 80, 50));
         }
 
         public void setactiveQuests(List<Quest> questData) // 클리어하지 않은 퀘스트만 리스트에 저장
@@ -43,7 +44,7 @@ namespace _A05_SpartaDungeonTextRpg
             }
         }
 
-        public void QuestList(List<Quest> questData) // 퀘스트 리스트 출력
+        public void QuestList(Player player, List<Quest> questData) // 퀘스트 리스트 출력
         {
             int i;
             Console.Clear();
@@ -64,25 +65,25 @@ namespace _A05_SpartaDungeonTextRpg
             {
                 Console.WriteLine("현재 받을 수 있는퀘스트가 없습니다."); // 퀘스트를 전부 클리어하면 출력 될 메세지
             }
-            Console.WriteLine($"{i+1}. 나가기");
-            input = ConsoleUtility.PromptMenuChoice(1, i+1); 
-            if(input < i+1) // 받아 온 키 입력값 기준으로 퀘스트 텍스트로 이동
+            Console.WriteLine($"0. 나가기");
+            input = ConsoleUtility.PromptMenuChoice(0, i); 
+            if(input < i+1 && input >0) // 받아 온 키 입력값 기준으로 퀘스트 텍스트로 이동
             {
                 Quest quest = questData[input - 1];
                 switch (questList[input - 1].Number)
                 {
                     case 0:
-                        quest0.SelectQuest(questData,0);
+                        quest0.SelectQuest(player, questData,0);
                         break;
                     case 1:
-                        quest1.SelectQuest(questData,1);
+                        quest1.SelectQuest(player, questData,1);
                         break;
                     case 2:
-                        quest2.SelectQuest(questData,2);
+                        quest2.SelectQuest(player, questData,2);
                         break;
                 }
             }
-            else if(input == i+1)
+            else if(input == 0)
             {
                 return;
             }
@@ -105,30 +106,37 @@ namespace _A05_SpartaDungeonTextRpg
 
         }
 
-        public Quest(int number, string title, bool acceptQuest, bool clearQuest, int count)
+        public Quest(Player player)
+        {
+            this.player = player;
+        }
+
+        public Quest(int number, string title, bool acceptQuest, bool clearQuest, int count, int rewardGold, int rewardExp)
         {
             Number = number;
             Title = title;
             AcceptQuest = acceptQuest;
             ClearQuest = clearQuest;
             Count = count;
+            RewardGold = rewardGold;
+            RewardExp = rewardExp;
         }
 
 
 
-        public void Boolcondition(List<Quest> questData, int i) //퀘스트 조건 충족 조건 발동
+        public void Boolcondition(Player player, List<Quest> questData, int i) //퀘스트 조건 충족 조건 발동
         {
             if (questData[i].Count == GoalCount && questData[i].AcceptQuest == true) // 카운트가 목표 카운트와 같다면 퀘스트 클리어 텍스트 출력 / 
             {
-                QuestClear(questData, i);
+                QuestClear(player, questData, i);
             }
             else
             {
-                BoolQuestAccept(questData, i);
+                BoolQuestAccept(player, questData, i);
             }
         }
 
-        public void QuestClear(List<Quest> questData, int i) // 퀘스트 클리어 했을 경우 나오는 텍스트
+        public void QuestClear(Player player, List<Quest> questData, int i) // 퀘스트 클리어 했을 경우 나오는 텍스트
         {
             Console.WriteLine("1. 보상 받기");
             Console.WriteLine("2. 돌아가기");
@@ -138,19 +146,18 @@ namespace _A05_SpartaDungeonTextRpg
                 case 1:
                     questData[i].ClearQuest = true;
                     questData[i].AcceptQuest = false;
-                    if(RewardItem != null)
-                    {
-
-                    }
-                    QuestList(questData);
+                    Reciveitem(i);
+                    ReciveGold(player, i);
+                    ReciveExp(player, i);
+                    QuestList(player, questData);
                     break;
                 case 2:
-                    QuestList(questData);
+                    QuestList(player, questData);
                     break;
             }
         }
 
-        public void BoolQuestAccept(List<Quest> questData, int i) //퀘스트를 클리어하지 않은 경우
+        public void BoolQuestAccept(Player player, List<Quest> questData, int i) //퀘스트를 클리어하지 않은 경우
         {
             switch (questData[i].AcceptQuest)
             {
@@ -169,24 +176,40 @@ namespace _A05_SpartaDungeonTextRpg
             if (questData[i].AcceptQuest == false && input == 1)
             {
                 questData[i].AcceptQuest = true;
-                QuestList(questData);
+                QuestList(player, questData);
             }
             else if ((questData[i].AcceptQuest == false && input == 2) || (questData[i].AcceptQuest == true && input == 0))
             {
-                QuestList(questData);
+                QuestList(player, questData);
             }
+        }
+
+        public void Reciveitem(int i)
+        {
+            if (questData[1].ClearQuest == true)
+            {
+                Item.InventoryIndex.Add(Item.ItemIndex[6]);
+            }
+        }
+        public void ReciveGold(Player player, int i)
+        {
+            player.Gold += questData[i].RewardGold;
+        }
+        public void ReciveExp(Player player, int i)
+        {
+            player.Exp += questData[i].RewardExp;
         }
     }
 
 
     public class Quest0 : Quest
     {
-        public void SelectQuest(List<Quest> questData, int i)
+        public void SelectQuest(Player player, List<Quest> questData, int i)
         {
             Count = 0;
             GoalCount = 1;
-            RewardGold = 5;
-            RewardExp = 2;
+            RewardGold = 50;
+            RewardExp = 20;
             Console.Clear();
             Console.WriteLine("Quest!\n"); // 퀘스트 텍스트 색상 변경 필요
             Console.WriteLine("아이템 구매\n");
@@ -196,19 +219,19 @@ namespace _A05_SpartaDungeonTextRpg
             Console.WriteLine("- 보상");
             Console.WriteLine($"  {RewardGold}G");
             Console.WriteLine($"  {RewardExp}Exp\n");
-            Boolcondition(questData,i);
+            Boolcondition(player, questData,i);
         }
     }
 
     public class Quest1 :Quest
     {
-        public void SelectQuest(List<Quest> questData, int i)
+        public void SelectQuest(Player player, List<Quest> questData, int i)
         {
             //Count = 0;//거미를 잡으면 카운트 ++ 작업 (항상 퀘스트 카운트 증가는 퀘스트가 수락 되어 있다는 조건에서 발동해야함)
             GoalCount = 5;
             RewardItem = "쓸만한 방패";
-            RewardGold = 10;
-            RewardExp = 8;
+            RewardGold = 100;
+            RewardExp = 80;
             AcceptQuest = false;
             ClearQuest = false;
             Console.Clear();
@@ -222,17 +245,17 @@ namespace _A05_SpartaDungeonTextRpg
             Console.WriteLine($"  {RewardItem} X 1");
             Console.WriteLine($"  {RewardGold}G");
             Console.WriteLine($"  {RewardExp}Exp\n");
-            Boolcondition(questData, i);
+            Boolcondition(player, questData, i);
         }
     }
     public class Quest2 : Quest
     {
-        public void SelectQuest(List<Quest> questData, int i)
+        public void SelectQuest(Player player, List<Quest> questData, int i)
         {
             Count = 0;//아무 스킬이나 사용하면 ++ 작업 (항상 퀘스트 카운트 증가는 퀘스트가 수락 되어 있다는 조건에서 발동해야함)
             GoalCount = 1;
-            RewardGold = 8;
-            RewardExp = 5;
+            RewardGold = 80;
+            RewardExp = 50;
             Console.Clear();
             Console.WriteLine("Quest!\n"); // 퀘스트 텍스트 색상 변경 필요
             Console.WriteLine("스킬 사용\n");
@@ -243,7 +266,7 @@ namespace _A05_SpartaDungeonTextRpg
             Console.WriteLine("- 보상");
             Console.WriteLine($"  {RewardGold}G");
             Console.WriteLine($"  {RewardExp}Exp\n");
-            Boolcondition(questData, i);
+            Boolcondition(player, questData, i);
         }
     }
 

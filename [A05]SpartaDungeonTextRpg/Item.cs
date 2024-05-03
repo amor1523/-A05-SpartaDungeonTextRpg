@@ -6,11 +6,12 @@ using System;
 using System.Reflection.Emit;
 public class Item
 {
+    public static Item item = new Item();
     public bool FlagShopBuy = false;
     private Player player;
     private Potion potion;
-    public List<Item> ItemIndex = new List<Item>();
-    public List<Item> InventoryIndex = new List<Item>();
+    public static List<Item> ItemIndex = new List<Item>();
+    public static List<Item> InventoryIndex = new List<Item>();
 
     public string Name { get; }
     public int Id { get; }
@@ -31,6 +32,11 @@ public class Item
         FlagBuy = false;
         FlagEquip = false;
         Explain = explain;
+    }
+
+    public Item()
+    {
+
     }
 
     public Item(Player player, Potion potion)

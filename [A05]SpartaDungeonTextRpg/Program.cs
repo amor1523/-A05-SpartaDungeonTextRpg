@@ -19,6 +19,7 @@ namespace SpartaDungeonTextRpg
             {Job.Mage, "마법사"},
             {Job.Archer, "궁수"}
         };
+        public static GameManager gamemanager;
         private Player player;
         private List<Monster> monsters;
         private Random random = new Random();
@@ -155,7 +156,7 @@ namespace SpartaDungeonTextRpg
                     potion.PotionInventory();
                     break;
                 case 6:
-                    quest.QuestList(Quest.questData);
+                    quest.QuestList(player, Quest.questData);
                     break;
                 case 7:
                     GamePlay = false;
@@ -184,9 +185,9 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine($"Lv. {player.Level}");
             Console.WriteLine($"{player.Name} ({dict[player.Job]})");
 
-            if (item.InventoryIndex.Count != 0)
+            if (Item.InventoryIndex.Count != 0)
             {
-                foreach (var equip in item.InventoryIndex)
+                foreach (var equip in Item.InventoryIndex)
                 {
                     if (equip.FlagEquip)
                     {
