@@ -11,7 +11,7 @@ public class Battle
             {Job.Mage, "마법사"},
             {Job.Archer, "궁수"}
         };
-    public static Battle battle = new Battle();
+
     private Player player;
     private Potion potion;
     private List<Monster> monsters;
@@ -22,10 +22,6 @@ public class Battle
     private int beforeExp;
     private int beforeMp;
 
-    public Battle()
-    {
-
-    }
     public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill, Potion potion)
     {
         this.player = player;
@@ -399,10 +395,13 @@ public class Battle
             Console.WriteLine("0. 다음\n");
         }
 
-        int input = ConsoleUtility.PromptMenuChoice(0, 0);
+        int input = ConsoleUtility.PromptMenuChoice(0, 1);
         switch (input)
         {
             case 0:
+                BossStage();
+                break;
+            case 1:
                 gameManager.MainMenu();
                 break;
         }
@@ -482,10 +481,12 @@ public class Battle
     }
     public void  RunAway() 
     {
+        int damage = 5;
+        player.TakeDamage(damage);
         Console.Clear();
         Console.WriteLine("겁을 먹고 도망쳤다.");
         Thread.Sleep(1000);
-        Console.WriteLine($"도망치면서 등에 칼이 꽃혔다. HP [{player.Hp}] -> HP [{player.Hp - 5}]");
+        Console.WriteLine($"도망치면서 등에 칼이 꽃혔다. HP [{beforeHp}] -> HP [{player.Hp}]");
         Thread.Sleep(1000);
         Console.WriteLine("");
         Console.WriteLine("0.다음.");
@@ -498,5 +499,42 @@ public class Battle
                 gameManager.MainMenu();
                 break;
         }
+        
+    }
+    public void BossStage()
+    {
+        if (CheckBossStage() == false)
+        {
+            Console.Clear();
+            Console.WriteLine("보스 스테이지!!!\n");
+            Console.Clear();
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "보스 스테이지는 5레벨이상부터 가능합니다!!!");
+            Console.WriteLine("0.마을로 돌아가기");
+            int input = ConsoleUtility.PromptMenuChoice(0, 0);
+            switch (input)
+            {
+                case 0:
+                    gameManager.MainMenu();
+                    break;
+            }
+        }
+        else
+        {
+
+
+            Console.Clear();
+            Console.WriteLine("보스 스테이지 시작!");
+            Thread.Sleep(1000);
+
+            // 보스 스테이지에서의 동작 구현
+
+            Console.WriteLine("보스 스테이지 종료!");
+            Thread.Sleep(1000);
+        }
+    }
+
+    public bool CheckBossStage()
+    {
+        return player.Level >= 5; // 플레이어 레벨이 5 이상이면 보스 스테이지로 진입
     }
 }
