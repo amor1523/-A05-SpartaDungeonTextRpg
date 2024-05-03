@@ -21,6 +21,7 @@ namespace _A05_SpartaDungeonTextRpg
         public int Hp;
         public int MaxHp;
         public int Mp;
+        public int MaxMp;
         public float Gold;
         public int Exp;
         public int LevelUpExp;
@@ -42,6 +43,7 @@ namespace _A05_SpartaDungeonTextRpg
             Hp = player.Hp;
             MaxHp = player.MaxHp;
             Mp = player.Mp;
+            MaxMp = player.MaxMp;
             Gold = player.Gold;
             Exp = player.Exp;
             LevelUpExp = player.LevelUpExp;

@@ -24,6 +24,7 @@ namespace _A05_SpartaDungeonTextRpg
         public int Hp { get; set; }
         public int MaxHp { get; set; }
         public int Mp { get; set; }
+        public int MaxMp { get; set; }
         public float Gold { get; set; }
         public bool IsDead => Hp <= 0;
         // Exp, LevelUpExp 변수 추가
@@ -69,6 +70,7 @@ namespace _A05_SpartaDungeonTextRpg
             Hp = playerData.Hp;
             MaxHp = playerData.MaxHp;
             Mp = playerData.Mp;
+            MaxMp = playerData.MaxHp;
             Gold = playerData.Gold;
             Exp = playerData.Exp;
             LevelUpExp = playerData.LevelUpExp;
