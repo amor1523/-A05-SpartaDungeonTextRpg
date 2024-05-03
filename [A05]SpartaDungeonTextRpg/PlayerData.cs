@@ -60,8 +60,8 @@ namespace _A05_SpartaDungeonTextRpg
 
         public ItemData(Item item)
         {
-            ItemIndex = item.ItemIndex;
-            InventoryIndex = item.InventoryIndex;
+            ItemIndex = Item.ItemIndex;
+            InventoryIndex = Item.InventoryIndex;
         }
 
     }

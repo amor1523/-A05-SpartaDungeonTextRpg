@@ -41,11 +41,6 @@ public class Item
         Explain = explain;
     }
 
-    public Item()
-    {
-
-    }
-
     public Item(Player player, Potion potion)
     {
         this.player = player;
@@ -67,7 +62,7 @@ public class Item
             {
                 player.Gold -= Gold;
                 FlagBuy = true;
-                if (ItemIndex[3].FlagBuy == true || Quest.questData[0].Count < Quest0.quest0.GoalCount)
+                if (ItemIndex[3].FlagBuy == true && Quest.questData[0].Count < Quest0.quest0.GoalCount)
                 {
                     Quest.questData[0].Count++;
                 }
