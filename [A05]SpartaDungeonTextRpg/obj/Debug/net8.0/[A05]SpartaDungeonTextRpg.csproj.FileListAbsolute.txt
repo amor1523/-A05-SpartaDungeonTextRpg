@@ -80,3 +80,6 @@ D:\GitHub\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\r
 C:\Users\jch44_o6ip9cm\Desktop\C#shop\TextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\jch44_o6ip9cm\Desktop\C#shop\TextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.csproj.AssemblyReference.cache
 C:\Users\jch44_o6ip9cm\Desktop\C#shop\TextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]Spa.523C5C7B.Up2Date
+C:\Unity 14\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Unity 14\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]SpartaDungeonTextRpg.csproj.AssemblyReference.cache
+C:\Unity 14\-A05-SpartaDungeonTextRpg\[A05]SpartaDungeonTextRpg\obj\Debug\net8.0\[A05]Spa.523C5C7B.Up2Date

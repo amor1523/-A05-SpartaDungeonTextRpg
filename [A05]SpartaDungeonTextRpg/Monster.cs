@@ -37,6 +37,7 @@ namespace _A05_SpartaDungeonTextRpg
         public int Level { get; }
         public int Atk { get; set; }
         public int Hp { get; set; }
+        public int MaxHp { get; set; }
         public int RewardGold { get; }
         public int RewardExp { get; }
         public bool IsDead => Hp <= 0; // 죽었을 경우 비활성화 하기 위한 bool
@@ -55,9 +56,11 @@ namespace _A05_SpartaDungeonTextRpg
         }
         public class BossMonster : Monster
         {
-            public BossMonster(int id, string name, int level, int atk, int hp, int gold, int exp, bool isDead = false, bool questCount = false)
+          
+            public BossMonster(int id, string name, int level, int atk, int hp, int maxHp, int gold, int exp, bool isDead = false, bool questCount = false)
                 : base(id, name, level, atk, hp, gold, exp, isDead, questCount)
             {
+                
             }
         }
         public Monster()

@@ -380,6 +380,13 @@ public class Battle
 
             Thread.Sleep(1000);
             Console.WriteLine("\n0. 다음");
+            int input = ConsoleUtility.PromptMenuChoice(0, 0);
+            switch (input)
+            {
+                case 0:
+                    BossStage();
+                    break;            
+            }
         }
         else
         {
@@ -387,19 +394,16 @@ public class Battle
             Thread.Sleep(1000);
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
             Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
-            Console.WriteLine("0. 다음\n");
+            int input = ConsoleUtility.PromptMenuChoice(0, 1);
+            switch (input)
+            {
+                case 0:
+                    gameManager.MainMenu();
+                    break;
+            }
         }
 
-        int input = ConsoleUtility.PromptMenuChoice(0, 1);
-        switch (input)
-        {
-            case 0:
-                BossStage();
-                break;
-            case 1:
-                gameManager.MainMenu();
-                break;
-        }
+      
     }
 
     public bool LevelUp()
@@ -537,22 +541,210 @@ public class Battle
                     gameManager.MainMenu();
                     break;
                 case 1:
-                    BossStage();
+                    BossBattle();
                     break;
             }
         }
     }
     public void BossBattle()
     {
-        Monster.BossMonster boss = new Monster.BossMonster(10, "보스", 10, 50, 200, 1000, 500);
-        Console.WriteLine();
-        Console.WriteLine();
+        
+        Monster.BossMonster boss = new Monster.BossMonster(1, "보스", 10, 50, 200, 200, 1000, 500);
+        
+        
+        
+        TextBattle();
+        TextPlayerInfo();
+        Console.WriteLine($"Lv.{boss.Level} {boss.Name} HP{boss.Hp}\n");
+        
+        bool bossPhaseTwo = false; // 보스의 두 번째 페이즈 여부를 나타내는 변수
 
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.WriteLine("1. 일반 공격");
+        Console.WriteLine("2. 스킬 사용");
+        int input = ConsoleUtility.PromptMenuChoice(1, 2);
+        switch (input)
+        {
+            case 1:
+                Attack(boss);
+                break;
+            case 2:
+                PlayerSkillAttack();
+                break;
+        }
+
+        // 보스의 체력이 50% 이하로 떨어지면 두 번째 페이즈로 진입
+        if ((double)boss.Hp / boss.MaxHp <= 0.5)
+        {
+            bossPhaseTwo = true;
+            Console.WriteLine("보스가 분노합니다! 두 번째 페이즈로 진입합니다.");
+        }
+
+        // 두 번째 페이즈에 진입한 경우
+        if (bossPhaseTwo)
+        {
+            // 보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용
+            Console.WriteLine("보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용합니다!");
+            int damageTime = 20; // 보스의 플레이어에게 입히는 지속 데미지
+            int dot = 3; // 지속 시간 (예: 3턴 동안 지속됨)
+
+            // 보스가 지속 데미지를 입히는 메서드 호출
+            InflictDamageOverTime(damageTime, dot);
+        }
+    }
+    public void InflictDamageOverTime(int damage, int dot)
+    {
+        Console.WriteLine($"플레이어는 {dot}턴 동안 {damage}의 지속 데미지를 입습니다!");
+        for (int i = 0; i < dot; i++)
+        {
+            // 플레이어에게 지속 데미지 입힘
+            player.TakeDamage(damage);
+            // 플레이어의 현재 체력 출력
+            Console.WriteLine($"플레이어의 현재 체력: {player.Hp}");
+            // 1초 대기
+            Thread.Sleep(1000);
+        }
     }
     public bool CheckBossStage()
     {
 
         return player.Level >= 5; // 플레이어 레벨이 5 이상이면 보스 스테이지로 진입
+    }
+    public void Attack(Monster.BossMonster boss)
+    {
+        // 플레이어의 공격력 계산
+        int baseDamage = player.Atk;
+        int errorDamage = (int)Math.Ceiling(baseDamage * 0.1);
+        int minDamage = baseDamage - errorDamage;
+        int maxDamage = baseDamage + errorDamage;
+        int damageDealt = random.Next(minDamage, maxDamage);
+
+        // 회피 확률
+        int missChance = 10;
+        bool isMiss = random.Next(100) < missChance;
+
+        if (isMiss)
+        {
+            Console.WriteLine($"{player.Name}의 공격!");
+            Thread.Sleep(500);
+            damageDealt = 0;
+            Console.WriteLine($"보스를 공격했지만 아무일도 일어나지 않았습니다.\n");
+            Thread.Sleep(1000);
+            PromptForNextAction();
+        }
+        else
+        {
+            // 치명타 확률
+            int critChance = 15;
+            bool isCritical = random.Next(100) < critChance;
+
+            // 치명타 공격 시 데미지 계산
+            int critDamage = (int)(damageDealt * 1.6);
+            if (isCritical)
+            {
+                damageDealt += critDamage;
+                Console.WriteLine($"보스를 맞췄습니다. [데미지 : {damageDealt}] - 치명타 공격!!");
+            }
+            else
+            {
+                Console.WriteLine($"보스를 맞췄습니다. [데미지 : {damageDealt}]");
+            }
+        }
+
+        // 보스에게 데미지 적용
+        boss.TakeDamage(damageDealt);
+
+        if (boss.IsDead)
+        {
+            Console.WriteLine($"보스를 처치하였습니다!");
+            Thread.Sleep(1000);
+            BattleResult(true);
+        }
+        else
+        {
+            // 보스의 공격
+            BossAttack(boss);
+        }
+    }
+
+    public void BossAttack(Monster.BossMonster boss)
+    {
+        int damageDealt = boss.Atk - player.Def;
+        player.TakeDamage(damageDealt);
+        Console.WriteLine($"보스의 공격! {player.Name}을/를 맞췄습니다. [데미지 : {damageDealt}]");
+
+        if (player.IsDead)
+        {
+            Console.WriteLine($"플레이어가 쓰러졌습니다!");
+            Thread.Sleep(1000);
+            BattleResult(false);
+        }
+        int input = ConsoleUtility.PromptMenuChoice(0, 0);
+        if (input == 0)
+        {
+            Console.Clear();
+            BossBattle();
+            return;
+        }
+    }
+    public void PlayerSkillAttack()
+    {
+        TextBattle();
+        TextMonsters();
+        TextPlayerInfo();
+        TextSkillMenu();
+        Console.WriteLine("0.취소");
+
+        int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
+        if (input == 0)
+        {
+            Console.Clear();
+            BossBattle();
+            return;
+        }
+
+        Console.WriteLine("스킬을 사용할 보스를 선택하세요.");
+        int inputBoss = ConsoleUtility.PromptMenuChoice(0, 1);
+        
+        int bossIndex = inputBoss - 1;
+
+       
+        Monster selectedBoss = monsters[bossIndex];
+
+       
+        if (selectedBoss.IsDead)
+        {
+            Console.WriteLine("잘못된 입력입니다.\n");
+            Thread.Sleep(1000);
+            PlayerSkillAttack(); 
+            return;
+        }
+
+        int usedMana = skill.MpCost;
+        if (player.Mp < usedMana)
+        {
+            Console.WriteLine("마나가 부족하여 스킬을 사용할수없습니다.");
+            Thread.Sleep(1000);
+            PlayerSkillAttack();
+            return;
+        }
+
+        skill.UseSkill();
+        int damageDealt = skill.SkillDamage;
+        selectedBoss.TakeDamage(damageDealt);
+        player.UseMp(usedMana);
+        Thread.Sleep(1000);
+
+        Console.Clear();
+        Console.WriteLine();
+        Console.WriteLine($"{skill.Name}!!!");
+        Console.WriteLine($"Lv.{selectedBoss.Level} {selectedBoss.Name}");
+        Thread.Sleep(500);
+        Console.WriteLine($"HP {selectedBoss.Hp}\n");
+        Thread.Sleep(1000);
+
+        PromptForNextAction();
     }
 }
 
