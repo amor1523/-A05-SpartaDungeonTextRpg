@@ -65,7 +65,6 @@ namespace _A05_SpartaDungeonTextRpg
             ItemIndex = Item.ItemIndex;
             InventoryIndex = Item.InventoryIndex;
         }
-
     }
 
     public class PotionData
@@ -82,6 +81,23 @@ namespace _A05_SpartaDungeonTextRpg
         {
             PotionIndex = potion.PotionIndex;
         }
+    }
 
+    public class QuestSave // questData 변수가 존재해서 Save로 변환
+    {
+        public List<Quest> questData;
+        public List<Quest> questList;
+
+
+        public QuestSave()
+        {
+
+        }
+
+        public QuestSave(Quest quest)
+        {
+            questData = Quest.questData;
+            questList = quest.questList;
+        }
     }
 }

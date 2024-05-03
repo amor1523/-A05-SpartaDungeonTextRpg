@@ -122,6 +122,12 @@ namespace _A05_SpartaDungeonTextRpg
             RewardExp = rewardExp;
         }
 
+        // 역직렬화 후 Quest에게 QuestSave를 넘겨주기 위한 메서드 (Load시 사용)
+        public void SetQuest(QuestSave questSave)
+        {
+            questData = questSave.questData;
+            questList = questSave.questList;
+        }
 
 
         public void Boolcondition(Player player, List<Quest> questData, int i) //퀘스트 조건 충족 조건 발동
