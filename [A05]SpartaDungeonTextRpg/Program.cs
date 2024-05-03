@@ -32,7 +32,7 @@ namespace SpartaDungeonTextRpg
         public GameManager()
         {
             InitializeGame();
-            JsonSerialize.LoadData(this, player, item, potion, quest);
+            JsonSerialize.LoadData(this, player, item, potion);
             
             MainMenu();
             battle = new Battle(player, monsters, this, skill, potion);
@@ -47,6 +47,19 @@ namespace SpartaDungeonTextRpg
             item = new Item(player, potion);
             potion.GetPotion();
             item.GetItem();
+
+            switch (player.Job)
+            {
+                case Job.Knight:
+                    skill = new KnightSkill("크게휘두르기", 20, 30, 1);
+                    break;
+                case Job.Mage:
+                    skill = new MageSkill("파이어 볼", 35, 40, 1);
+                    break;
+                case Job.Archer:
+                    skill = new ArcherSkill("트리플 샷", 25, 30, 1);
+                    break;
+            }
 
             // 몬스터 생성 및 추가
             Monster monster = new Monster();
@@ -87,7 +100,6 @@ namespace SpartaDungeonTextRpg
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
                     player.Mp = 50;
-                    skill = new KnightSkill("크게휘두르기", 20, 30, 1);
                     break;
 
                 case 2:
@@ -99,7 +111,6 @@ namespace SpartaDungeonTextRpg
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
                     player.Mp = 100;
-                    skill = new MageSkill("파이어 볼", 35, 40, 1);
                     break;
                 case 3:
                     player.Job = Job.Archer;
@@ -110,7 +121,6 @@ namespace SpartaDungeonTextRpg
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
                     player.Mp = 40;
-                    skill = new ArcherSkill("트리플 샷", 25, 30, 1);
                     break;
             }
         }
@@ -231,8 +241,7 @@ namespace SpartaDungeonTextRpg
             switch (input)
             {
                 case 0:
-                    MainMenu();
-                    break;
+                    return;
             }
         }
     }

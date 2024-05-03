@@ -16,7 +16,7 @@ namespace _A05_SpartaDungeonTextRpg
             MonsterData.Add(new Monster(2, "박쥐", level, 15 + level + random.Next(-1, 2), 15 + level * 1 + random.Next(-1, 2), 70 + level * 2 + random.Next(-1, 2), 20 + level * 2, false, false));
             MonsterData.Add(new Monster(3, "거미", level, 8 + level + random.Next(-1, 2), 10 + level + random.Next(-1, 2), 50 + level * 2 + random.Next(-1, 2), 10 + level * 2, false, false));
             MonsterData.Add(new Monster(4, "오크", level, 18 + level + random.Next(-1, 3), 35 + level * 2 + random.Next(-1, 2), 150 + level * 2 + random.Next(-1, 2), 50 + level * 2, false, false));
-            MonsterData.Add(new Monster(5, "위습", level, 15 + level + random.Next(-1, 3), 18 + level * 2 + random.Next(-1, 2), 60 + level * 2 + random.Next(-1, 2), 40+ level * 2, false, false));
+            MonsterData.Add(new Monster(5, "위습", level, 15 + level + random.Next(-1, 3), 18 + level * 2 + random.Next(-1, 2), 60 + level * 2 + random.Next(-1, 2), 40 + level * 2, false, false));
         }
 
         Monster m;
@@ -66,10 +66,7 @@ namespace _A05_SpartaDungeonTextRpg
             if (Hp < 0)
                 Hp = 0;
         }
-       
+
 
     }
 }
-
-    
-

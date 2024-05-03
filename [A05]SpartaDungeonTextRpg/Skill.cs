@@ -27,7 +27,6 @@ public class Skill
             mpCost = 20;
             skillDamage = 30;
             skillNum = 1;
-            Console.WriteLine($"{skillNum}.{name}은 적에게 {skillDamage}를 입힌다.");
         }
     }
 

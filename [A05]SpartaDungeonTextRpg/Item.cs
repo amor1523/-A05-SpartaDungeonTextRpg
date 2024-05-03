@@ -62,6 +62,10 @@ public class Item
             {
                 player.Gold -= Gold;
                 FlagBuy = true;
+                if (ItemIndex[3].FlagBuy == true && Quest.questData[0].Count < Quest0.quest0.GoalCount)
+                {
+                    Quest.questData[0].Count++;
+                }
                 Console.WriteLine("구매를 완료했습니다.");
             }
             else
@@ -160,10 +164,7 @@ public class Item
                 else
                     selectItem.FlagEquip = false;
                 InventoryEquip();
-            }
-            else
-            {
-                Console.WriteLine("나올 수 있나?1");
+                return;
             }
         }
     }
@@ -317,12 +318,14 @@ public class Item
                                 InventoryIndex.Add(selectItem);
                             Thread.Sleep(1000);
                             Shop();
+                            return;
                         }
                         else
                         {
                             Console.WriteLine("이미 구매한 아이템 입니다.");
                             Thread.Sleep(1000);
                             Shop();
+                            return;
                         }
                     }
                 }
@@ -343,12 +346,14 @@ public class Item
                             }
                             Thread.Sleep(1000);
                             Shop();
+                            return;
                         }
                         else
                         {
                             Console.WriteLine("이미 구매한 아이템 입니다.");
                             Thread.Sleep(1000);
                             Shop();
+                            return;
                         }
                     }
                 }

@@ -44,13 +44,6 @@ public class Potion
         PotionIndex = potionData.PotionIndex;
     }
 
-
-    ~Potion()
-    {
-        Console.WriteLine("생성자 소멸");
-        Thread.Sleep(1000);
-    }
-
     public void BuyItem(Player player)
     {
         if (!FlagBuy)
