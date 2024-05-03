@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using _A05_SpartaDungeonTextRpg;
@@ -13,7 +14,7 @@ public class Battle
             {Job.Mage, "마법사"},
             {Job.Archer, "궁수"}
         };
-
+    private Monster.BossMonster boss;
     private Player player;
     private Potion potion;
     private List<Monster> monsters;
@@ -36,7 +37,7 @@ public class Battle
         beforeExp = player.Exp;
         beforeMp = player.Mp;
         this.potion = potion;
-        // 프로그램에 있는 몬스터를 제거하고 여기에 새로운 몬스터를 추가할 수 있습니다.
+        boss = new Monster.BossMonster(1, "보스", 10, 50, 200, 200, 1000, 500);
     }
     public void TextPlayerInfo()
     {
@@ -579,15 +580,10 @@ public class Battle
     }
     public void BossBattle()
     {
-        
-        Monster.BossMonster boss = new Monster.BossMonster(1, "보스", 10, 50, 200, 200, 1000, 500);
-        
-        
-        
         TextBattle();
         TextPlayerInfo();
         Console.WriteLine($"Lv.{boss.Level} {boss.Name} HP{boss.Hp}\n");
-        
+
         bool bossPhaseTwo = false; // 보스의 두 번째 페이즈 여부를 나타내는 변수
 
         Console.WriteLine();
@@ -598,7 +594,7 @@ public class Battle
         switch (input)
         {
             case 1:
-                Attack(boss);
+                Attack();
                 break;
             case 2:
                 PlayerSkillAttack();
@@ -606,27 +602,32 @@ public class Battle
         }
 
         // 보스의 체력이 50% 이하로 떨어지면 두 번째 페이즈로 진입
-        if ((double)boss.Hp / boss.MaxHp <= 0.5)
+        if (boss.Hp <= 200)
         {
             bossPhaseTwo = true;
             Console.WriteLine("보스가 분노합니다! 두 번째 페이즈로 진입합니다.");
-        }
+            Thread.Sleep(1000);
 
-        // 두 번째 페이즈에 진입한 경우
-        if (bossPhaseTwo)
-        {
+            // 두 번째 페이즈 시작을 알리는 텍스트 출력
+            Console.WriteLine("2번째 페이즈로 진입합니다!");
+            Thread.Sleep(1000);
+
             // 보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용
             Console.WriteLine("보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용합니다!");
             int damageTime = 20; // 보스의 플레이어에게 입히는 지속 데미지
             int dot = 3; // 지속 시간 (예: 3턴 동안 지속됨)
-
+            Thread.Sleep(1000);
             // 보스가 지속 데미지를 입히는 메서드 호출
             InflictDamageOverTime(damageTime, dot);
+
+            // 두 번째 페이즈 동안에도 보스의 공격이 있도록 호출
+            BossAttack();
         }
     }
     public void InflictDamageOverTime(int damage, int dot)
     {
         Console.WriteLine($"플레이어는 {dot}턴 동안 {damage}의 지속 데미지를 입습니다!");
+        Thread.Sleep(1000);
         for (int i = 0; i < dot; i++)
         {
             // 플레이어에게 지속 데미지 입힘
@@ -642,7 +643,7 @@ public class Battle
 
         return player.Level >= 5; // 플레이어 레벨이 5 이상이면 보스 스테이지로 진입
     }
-    public void Attack(Monster.BossMonster boss)
+    public void Attack()
     {
         // 플레이어의 공격력 계산
         int baseDamage = player.Atk;
@@ -662,7 +663,7 @@ public class Battle
             damageDealt = 0;
             Console.WriteLine($"보스를 공격했지만 아무일도 일어나지 않았습니다.\n");
             Thread.Sleep(1000);
-            PromptForNextAction();
+            BossAttack();
         }
         else
         {
@@ -680,6 +681,7 @@ public class Battle
             else
             {
                 Console.WriteLine($"보스를 맞췄습니다. [데미지 : {damageDealt}]");
+                Thread.Sleep(1000);
             }
         }
 
@@ -691,19 +693,23 @@ public class Battle
             Console.WriteLine($"보스를 처치하였습니다!");
             Thread.Sleep(1000);
             BattleResult(true);
+            return;
         }
         else
         {
             // 보스의 공격
-            BossAttack(boss);
+            BossAttack();
+            return;
         }
     }
 
-    public void BossAttack(Monster.BossMonster boss)
+    public void BossAttack()
     {
+        Console.Clear();
         int damageDealt = boss.Atk - player.Def;
         player.TakeDamage(damageDealt);
-        Console.WriteLine($"보스의 공격! {player.Name}을/를 맞췄습니다. [데미지 : {damageDealt}]");
+        Console.WriteLine($"보스의 공격!\n {player.Name}을/를 맞췄습니다. [데미지 : {damageDealt}]");
+        Thread.Sleep(1000);
 
         if (player.IsDead)
         {
@@ -711,47 +717,36 @@ public class Battle
             Thread.Sleep(1000);
             BattleResult(false);
         }
-        int input = ConsoleUtility.PromptMenuChoice(0, 0);
-        if (input == 0)
+        else
         {
-            Console.Clear();
-            BossBattle();
-            return;
+            Console.WriteLine($"0.다음");
+            int input = ConsoleUtility.PromptMenuChoice(0, 0);
+            if (input == 0)
+            {
+                Console.Clear();
+               BossBattle();
+            }
         }
     }
     public void PlayerSkillAttack()
     {
         TextBattle();
-        TextMonsters();
+        Console.WriteLine($"Lv.{boss.Level} {boss.Name} HP{boss.Hp}\n");
         TextPlayerInfo();
         TextSkillMenu();
         Console.WriteLine("0.취소");
 
-        int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
+
+        int input = ConsoleUtility.PromptMenuChoice(0, 1); // 보스 선택 옵션 제거
+
         if (input == 0)
         {
             Console.Clear();
             BossBattle();
             return;
         }
-
-        Console.WriteLine("스킬을 사용할 보스를 선택하세요.");
-        int inputBoss = ConsoleUtility.PromptMenuChoice(0, 1);
-
-        int bossIndex = inputBoss - 1;
-
-
-        Monster selectedBoss = monsters[bossIndex];
-
-
-        if (selectedBoss.IsDead)
-        {
-            Console.WriteLine("잘못된 입력입니다.\n");
-            Thread.Sleep(1000);
-            PlayerSkillAttack();
-            return;
-        }
-
+        // 스킬 사용 대상으로 선택한 보스가 아닌 보스 리스트 중 첫 번째 보스를 대상으로 스킬 사용
+        Monster selectedBoss = boss;
         int usedMana = skill.MpCost;
         if (player.Mp < usedMana)
         {
@@ -775,10 +770,11 @@ public class Battle
         Console.WriteLine($"HP {selectedBoss.Hp}\n");
         Thread.Sleep(1000);
 
-        PromptForNextAction();
+        BossAttack();
     }
 
-public void UsePotion()
+
+    public void UsePotion()
     {
         Console.Clear();
         Console.WriteLine("[포션 목록]");
