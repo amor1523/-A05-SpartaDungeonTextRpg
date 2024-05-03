@@ -101,6 +101,8 @@ namespace _A05_SpartaDungeonTextRpg
                 gameManager.PlayerName(); // 이름, 직업 설정
             }
 
+            Console.Clear();
+
             // 포션 데이터 로드
             string potionFilePath = Path.Combine(userDocumentsFolder, potionFileName);
             if (File.Exists(potionFilePath))
@@ -108,6 +110,14 @@ namespace _A05_SpartaDungeonTextRpg
                 string potionJson = File.ReadAllText(potionFilePath);
                 potionData = JsonConvert.DeserializeObject<PotionData>(potionJson); // 역직렬화
                 potion.SetPotion(potionData); // SetPotion 함수로 값 전달
+                
+                Console.WriteLine("빨간약과 파란약을 챙겼습니다.");
+                Thread.Sleep(1000);
+            }
+            else
+            {
+                Console.WriteLine("물약 제조중...");
+                Thread.Sleep(1000);
             }
 
             // 퀘스트 데이터 로드
@@ -117,6 +127,14 @@ namespace _A05_SpartaDungeonTextRpg
                 string questJson = File.ReadAllText(questFilePath);
                 questSave = JsonConvert.DeserializeObject<QuestSave>(questJson); // 역직렬화
                 quest.SetQuest(questSave); // SetQuest 함수로 값 전달
+
+                Console.WriteLine("의뢰 진행상황을 가져왔습니다.");
+                Thread.Sleep(1000);
+            }
+            else
+            {
+                Console.WriteLine("모험가 협회 신규 의뢰서를 받았습니다.");
+                Thread.Sleep(1000);
             }
 
             //아이템 데이터 로드
@@ -127,14 +145,13 @@ namespace _A05_SpartaDungeonTextRpg
                 itemData = JsonConvert.DeserializeObject<ItemData>(itemJson); // 역직렬화
                 item.SetItem(itemData); // 아이템 리스트 생성 후 데이터 입력
 
-                Console.WriteLine("아이템 데이터를 불러왔습니다.");
+                Console.WriteLine("여관에서 가방을 가져왔습니다.");
                 Thread.Sleep(1000);
 
                 gameManager.MainMenu();
             }
             else
             {
-                Console.Clear();
                 Console.WriteLine("저장된 아이템 데이터가 없습니다.");
                 Thread.Sleep(1000);
                 Console.WriteLine("모험가용 가방을 얻었습니다.");
