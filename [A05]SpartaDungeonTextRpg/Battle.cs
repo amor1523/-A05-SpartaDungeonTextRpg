@@ -149,7 +149,7 @@ public class Battle
                 // 모든 몬스터가 공격한 후에 플레이어가 살아있는지 확인
                 if (!player.IsDead)
                 {
-                    BattleMenu();
+                    return;
                 }
                 else
                 {
@@ -264,7 +264,6 @@ public class Battle
         if (input == 0)
         {
             BattleMonster = false;
-            BattleMenu();
             return;
         }
         // 선택한 몬스터 인덱스
@@ -277,7 +276,7 @@ public class Battle
         {
             Console.WriteLine("잘못된 입력입니다.\n");
             Thread.Sleep(1000);
-            PlayerAttack(); // 다시 공격 메뉴로 돌아감
+            return; // 다시 공격 메뉴로 돌아감
         }
 
         int baseDamage = player.Atk;
@@ -425,7 +424,6 @@ public class Battle
             switch (input)
             {
                 case 0:
-                    gameManager.MainMenu();
                     break;
             }
         }
@@ -552,7 +550,7 @@ public class Battle
             switch (input)
             {
                 case 0:
-                    gameManager.MainMenu();
+                    
                     break;
                 case 1:
                     Console.WriteLine("레벨이 부족합니다. 입장불가!");
@@ -569,7 +567,7 @@ public class Battle
             switch (input)
             {
                 case 0:
-                    gameManager.MainMenu();
+                    
                     break;
                 case 1:
                     BossBattle();
