@@ -392,9 +392,9 @@ public class Battle
             Thread.Sleep(1000);
             Console.WriteLine($"HP {beforeHp} -> {player.Hp} ");
             Thread.Sleep(1000);
-
-            Console.WriteLine($"MP {beforeMp} -> {player.Mp} (+10)증가!");
-            player.Mp += 10;
+            Console.WriteLine($"MP {beforeMp} -> {player.Mp}");
+            if (player.Mp < player.MaxMp)
+                player.Mp += 10;
             Console.WriteLine($"exp {beforeExp} -> {player.Exp} 증가!");
             Thread.Sleep(1000);
             if (player.Level < 5)
