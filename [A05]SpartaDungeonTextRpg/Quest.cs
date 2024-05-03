@@ -155,10 +155,10 @@ namespace _A05_SpartaDungeonTextRpg
                     Reciveitem(i);
                     ReciveGold(player, i);
                     ReciveExp(player, i);
-                    QuestList(player, questData);
+                    //QuestList(player, questData);
                     break;
                 case 2:
-                    QuestList(player, questData);
+                    //QuestList(player, questData);
                     break;
             }
         }
@@ -182,11 +182,11 @@ namespace _A05_SpartaDungeonTextRpg
             if (questData[i].AcceptQuest == false && input == 1)
             {
                 questData[i].AcceptQuest = true;
-                QuestList(player, questData);
+                //QuestList(player, questData);
             }
             else if ((questData[i].AcceptQuest == false && input == 2) || (questData[i].AcceptQuest == true && input == 0))
             {
-                QuestList(player, questData);
+                //QuestList(player, questData);
             }
         }
 

@@ -805,7 +805,6 @@ public void UsePotion()
         switch (input)
         {
             case 0:
-                BattleMenu();
                 break;
             case 1:
                 if (potion.PotionIndex[0].Count > 0)
