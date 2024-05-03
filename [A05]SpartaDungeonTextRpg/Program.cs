@@ -33,10 +33,7 @@ namespace SpartaDungeonTextRpg
         {
             InitializeGame();
             JsonSerialize.LoadData(this, player, item, potion);
-            potion = new Potion(player);
-            item = new Item(player, potion);
-            potion.GetPotion();
-            item.GetItem();
+            
             MainMenu();
             battle = new Battle(player, monsters, this, skill, potion);
         }
@@ -45,6 +42,11 @@ namespace SpartaDungeonTextRpg
         {
             player = new Player();
             monsters = new List<Monster>(); // 몬스터 리스트 초기화
+
+            potion = new Potion(player);
+            item = new Item(player, potion);
+            potion.GetPotion();
+            item.GetItem();
 
             // 몬스터 생성 및 추가
             Monster monster = new Monster();
