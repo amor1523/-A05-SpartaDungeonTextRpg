@@ -96,7 +96,7 @@ namespace SpartaDungeonTextRpg
                     player.MaxHp = player.Hp;
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
-                    player.Mp = 50;
+                    player.Mp = 100;
                     player.MaxMp = player.Mp;
                     break;
 
