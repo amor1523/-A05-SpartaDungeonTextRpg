@@ -90,7 +90,7 @@ namespace SpartaDungeonTextRpg
             {
                 case 1:
                     player.Job = Job.Knight;
-                    player.Atk = 100;
+                    player.Atk = 10;
                     player.Def = 5;
                     player.Hp = 100;
                     player.MaxHp = player.Hp;
@@ -154,7 +154,7 @@ namespace SpartaDungeonTextRpg
 
                 case 2:
                     battle = new Battle(player, monsters, this, skill, potion);
-                    battle.BossStage();
+                    battle.BattleMenu();
                     break;
 
                 case 3:

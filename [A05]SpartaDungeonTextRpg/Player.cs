@@ -34,7 +34,7 @@ namespace _A05_SpartaDungeonTextRpg
         public Player()
        {
             // 초기값
-            Level = 5;
+            Level = 1;
             Gold = 150000f;
             LevelUpExp = 200;
         }
