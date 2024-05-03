@@ -74,10 +74,8 @@ public class Potion
         PotionIndex.Add(new Potion("방어력 증가 물약", 2003, "방어력이 10 증가합니다.", 10000, 0));
     }
 
-    public void UsePotion(Player player, int index)
+    private void UsePotion(Player player, int index)
     {
-        this.player = player;
-
         if (PotionIndex[index].Id == 2001)
         {
             if (player.MaxHp == player.Hp)
