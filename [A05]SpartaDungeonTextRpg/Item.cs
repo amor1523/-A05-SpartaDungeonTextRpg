@@ -164,10 +164,7 @@ public class Item
                 else
                     selectItem.FlagEquip = false;
                 InventoryEquip();
-            }
-            else
-            {
-                Console.WriteLine("나올 수 있나?1");
+                return;
             }
         }
     }
@@ -321,12 +318,14 @@ public class Item
                                 InventoryIndex.Add(selectItem);
                             Thread.Sleep(1000);
                             Shop();
+                            return;
                         }
                         else
                         {
                             Console.WriteLine("이미 구매한 아이템 입니다.");
                             Thread.Sleep(1000);
                             Shop();
+                            return;
                         }
                     }
                 }
@@ -347,12 +346,14 @@ public class Item
                             }
                             Thread.Sleep(1000);
                             Shop();
+                            return;
                         }
                         else
                         {
                             Console.WriteLine("이미 구매한 아이템 입니다.");
                             Thread.Sleep(1000);
                             Shop();
+                            return;
                         }
                     }
                 }

@@ -11,12 +11,13 @@ namespace _A05_SpartaDungeonTextRpg
 
         public void Monsters(int level) // 몬스터 데이터 입력
         {
-            MonsterData.Add(new Monster(0, "고블린", level, 20 + level * 2 + random.Next(-1, 2), 35 + level * 5 + random.Next(-1, 2), 20 + level * 2 + random.Next(-1, 2), 50 + level * 2, false, false));
-            MonsterData.Add(new Monster(1, "늑대", level, 15 + level * 2 + random.Next(-1, 2), 20 + level * 5 + random.Next(-1, 2), 18 + level * 2 + random.Next(-1, 2), 40 + level * 2, false, false));
-            MonsterData.Add(new Monster(2, "박쥐", level, 20 + level * 2 + random.Next(-1, 2), 15 + level * 3 + random.Next(-1, 2), 18 + level * 2 + random.Next(-1, 2), 35 + level * 2, false, false));
-            MonsterData.Add(new Monster(3, "거미", level, 10 + level * 2 + random.Next(-1, 2), 10 + level * 3 + random.Next(-1, 2), 10 + level * 2 + random.Next(-1, 2), 15 + level * 2, false, false));
+            MonsterData.Add(new Monster(0, "고블린", level, 10 + level + random.Next(-1, 2), 30 + level * 2 + random.Next(-1, 2), 100 + level * 2 + random.Next(-1, 2), 40 + level * 2, false, false));
+            MonsterData.Add(new Monster(1, "늑대", level, 12 + level + random.Next(-1, 2), 20 + level * 2 + random.Next(-1, 2), 80 + level * 2 + random.Next(-1, 2), 35 + level * 2, false, false));
+            MonsterData.Add(new Monster(2, "박쥐", level, 15 + level + random.Next(-1, 2), 15 + level * 1 + random.Next(-1, 2), 70 + level * 2 + random.Next(-1, 2), 20 + level * 2, false, false));
+            MonsterData.Add(new Monster(3, "거미", level, 8 + level + random.Next(-1, 2), 10 + level + random.Next(-1, 2), 50 + level * 2 + random.Next(-1, 2), 10 + level * 2, false, false));
+            MonsterData.Add(new Monster(4, "오크", level, 18 + level + random.Next(-1, 3), 35 + level * 2 + random.Next(-1, 2), 150 + level * 2 + random.Next(-1, 2), 50 + level * 2, false, false));
+            MonsterData.Add(new Monster(5, "위습", level, 15 + level + random.Next(-1, 3), 18 + level * 2 + random.Next(-1, 2), 60 + level * 2 + random.Next(-1, 2), 40 + level * 2, false, false));
         }
-   
 
         Monster m;
         public void GenerateMonster() //몬스터 생성 메서드
@@ -53,13 +54,7 @@ namespace _A05_SpartaDungeonTextRpg
             RewardExp = exp;
             QuestCount = questCount;
         }
-        public class BossMonster : Monster
-        {
-            public BossMonster(int id, string name, int level, int atk, int hp, int gold, int exp, bool isDead = false, bool questCount = false)
-                : base(id, name, level, atk, hp, gold, exp, isDead, questCount)
-            {
-            }
-        }
+
         public Monster()
         {
 
@@ -71,10 +66,7 @@ namespace _A05_SpartaDungeonTextRpg
             if (Hp < 0)
                 Hp = 0;
         }
-       
+
 
     }
 }
-
-    
-
