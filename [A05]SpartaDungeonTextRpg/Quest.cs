@@ -206,7 +206,10 @@ namespace _A05_SpartaDungeonTextRpg
     {
         public void SelectQuest(Player player, List<Quest> questData, int i)
         {
-            Count = 0;
+            if (Item.ItemIndex[3].FlagBuy == true && Quest.questData[0].Count < Quest0.quest0.GoalCount)
+            {
+                Quest.questData[0].Count++;
+            }
             GoalCount = 1;
             RewardGold = 50;
             RewardExp = 20;
