@@ -169,7 +169,7 @@ public class Potion
                     if (count == 3)
                     {
                         Console.WriteLine("\n사용 가능한 포션이 없습니다.");
-                        Thread.Sleep(1000);
+                        Thread.Sleep(500);
                     }
                     else
                     {
@@ -206,7 +206,7 @@ public class Potion
                         Console.WriteLine("\n선택하신 포션의 수량이 부족합니다.");
 
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(500);
                     PotionInventory();
                 }
             }

@@ -58,9 +58,9 @@ namespace _A05_SpartaDungeonTextRpg
             File.WriteAllText(potionFilePath, potionJson);
             File.WriteAllText(questFilePath, questJson);
 
-            Console.WriteLine("저장이 완료되었습니다.");
+            Console.WriteLine("저장이 완료되었습니다.\n");
             Console.WriteLine("메인 메뉴로 돌아갑니다.");
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             gameManager.MainMenu();
         }
 
@@ -91,13 +91,13 @@ namespace _A05_SpartaDungeonTextRpg
                 playerData = JsonConvert.DeserializeObject<PlayerData>(playerJson); // 역직렬화
                 player.SetPlayer(playerData); // SetPlayer 함수로 player에게 값 전달
                 
-                Console.WriteLine("플레이어 정보를 불러왔습니다.");
-                Thread.Sleep(1000);
+                Console.WriteLine("플레이어 정보를 불러왔습니다.\n");
+                Thread.Sleep(500);
             }
             else
             {
-                Console.WriteLine("저장된 플레이어 데이터가 없습니다.");
-                Thread.Sleep(1000);
+                Console.WriteLine("저장된 플레이어 데이터가 없습니다.\n");
+                Thread.Sleep(500);
                 gameManager.PlayerName(); // 이름, 직업 설정
             }
 
@@ -111,13 +111,13 @@ namespace _A05_SpartaDungeonTextRpg
                 potionData = JsonConvert.DeserializeObject<PotionData>(potionJson); // 역직렬화
                 potion.SetPotion(potionData); // SetPotion 함수로 값 전달
                 
-                Console.WriteLine("빨간약과 파란약을 챙겼습니다.");
-                Thread.Sleep(1000);
+                Console.WriteLine("빨간약과 파란약을 챙겼습니다.\n");
+                Thread.Sleep(500);
             }
             else
             {
-                Console.WriteLine("물약 제조중...");
-                Thread.Sleep(1000);
+                Console.WriteLine("물약 제조중...\n");
+                Thread.Sleep(500);
             }
 
             // 퀘스트 데이터 로드
@@ -128,13 +128,13 @@ namespace _A05_SpartaDungeonTextRpg
                 questSave = JsonConvert.DeserializeObject<QuestSave>(questJson); // 역직렬화
                 quest.SetQuest(questSave); // SetQuest 함수로 값 전달
 
-                Console.WriteLine("의뢰 진행상황을 가져왔습니다.");
-                Thread.Sleep(1000);
+                Console.WriteLine("의뢰 진행상황을 가져왔습니다.\n");
+                Thread.Sleep(500);
             }
             else
             {
-                Console.WriteLine("모험가 협회 신규 의뢰서를 받았습니다.");
-                Thread.Sleep(1000);
+                Console.WriteLine("모험가 협회 신규 의뢰서를 받았습니다.\n");
+                Thread.Sleep(500);
             }
 
             //아이템 데이터 로드
@@ -145,19 +145,19 @@ namespace _A05_SpartaDungeonTextRpg
                 itemData = JsonConvert.DeserializeObject<ItemData>(itemJson); // 역직렬화
                 item.SetItem(itemData); // 아이템 리스트 생성 후 데이터 입력
 
-                Console.WriteLine("여관에서 가방을 가져왔습니다.");
-                Thread.Sleep(1000);
+                Console.WriteLine("여관에서 가방을 가져왔습니다.\n");
+                Thread.Sleep(500);
 
                 gameManager.MainMenu();
             }
             else
             {
-                Console.WriteLine("저장된 아이템 데이터가 없습니다.");
-                Thread.Sleep(1000);
-                Console.WriteLine("모험가용 가방을 얻었습니다.");
-                Thread.Sleep(1000);
+                Console.WriteLine("저장된 아이템 데이터가 없습니다.\n");
+                Thread.Sleep(500);
+                Console.WriteLine("모험가용 가방을 얻었습니다.\n");
+                Thread.Sleep(500);
                 Console.WriteLine("상점에 새로운 물건들이 들어옵니다.");
-                Thread.Sleep(2000);
+                Thread.Sleep(500);
 
                 gameManager.MainMenu();
             }

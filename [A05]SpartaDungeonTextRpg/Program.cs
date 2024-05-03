@@ -70,7 +70,7 @@ namespace SpartaDungeonTextRpg
         public void PlayerName()
         {
             Console.Clear();
-            Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
+            Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.\n");
             Console.Write("원하시는 이름을 설정해주세요\n>> ");
             player.Name = Console.ReadLine();
             PlayerJob();
@@ -80,10 +80,10 @@ namespace SpartaDungeonTextRpg
         {
             Console.Clear();
             Console.WriteLine("던전에 들어가기 전 당신의 직업을 선택해주세요.");
-            Console.WriteLine("직업마다 기본 스탯과 스킬이 다를 수 있습니다.");
+            Console.WriteLine("직업마다 기본 스탯과 스킬이 다를 수 있습니다.\n");
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", "[1] ", "전사   | Atk: 10, Def: 5, Hp: 100");
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", "[2] ", "마법사 | Atk: 8, Def: 3, Hp: 80");
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", "[3] ", "궁수 | Atk: 13, Def: 4, Hp: 90");
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", "[3] ", "궁수 | Atk: 13, Def: 4, Hp: 90\n");
 
             int input = ConsoleUtility.PromptMenuChoice(1, 3);
             switch (input)
@@ -92,7 +92,7 @@ namespace SpartaDungeonTextRpg
                     player.Job = Job.Knight;
                     player.Atk = 10;
                     player.Def = 5;
-                    player.Hp = 100;
+                    player.Hp = 10;
                     player.MaxHp = player.Hp;
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
@@ -220,23 +220,50 @@ namespace SpartaDungeonTextRpg
             }
 
             if (!flagEquipWeapon)
-                Console.WriteLine($"공격력 : {player.Atk}");
+            {
+                Console.Write(ConsoleUtility.PadRightForMixedText("공격력", 4));
+                Console.WriteLine($" : {player.Atk}");
+            }
             else
-                Console.WriteLine($"공격력 : {player.Atk} (+{equipWeaponPower})");
+            {
+                Console.Write(ConsoleUtility.PadRightForMixedText("공격력", 4));
+                Console.WriteLine($" : {player.Atk} (+{equipWeaponPower})");
+            }
             if (!flagEquipArmor)
-                Console.WriteLine($"방어력 : {player.Def}");
+            {
+                Console.Write(ConsoleUtility.PadRightForMixedText("방어력", 4));
+                Console.WriteLine($" : {player.Def}");
+            }
             else
-                Console.WriteLine($"방어력 : {player.Def} (+{equipArmorPower})");
-            Console.WriteLine($"체력 : {player.Hp} / {player.MaxHp}");
-            Console.WriteLine($"마나 : {player.Mp} / {player.MaxMp}");
-            Console.WriteLine($"Gold : {player.Gold} G");
-            Console.WriteLine($"Exp : {player.Exp}");
+            {
+                Console.Write(ConsoleUtility.PadRightForMixedText("방어력", 4));
+                Console.WriteLine($" : {player.Def} (+{equipArmorPower})");
+            }
+
+            Console.Write(ConsoleUtility.PadRightForMixedText("HP", 6));
+            Console.WriteLine($" : {player.Hp} / {player.MaxHp}");
+
+            Console.Write(ConsoleUtility.PadRightForMixedText("MP", 6));
+            Console.WriteLine($" : {player.Mp} / {player.MaxMp}");
+
+            Console.Write(ConsoleUtility.PadRightForMixedText("Gold", 6));
+            Console.WriteLine($" : {player.Gold} G");
+
+            Console.Write(ConsoleUtility.PadRightForMixedText("Exp", 6));
+            Console.WriteLine($" : {player.Exp}");
+
             Console.WriteLine($"LevelUp까지 남은 Exp -> {player.LevelUpExp - player.Exp}\n");
 
             Console.WriteLine("0. 나가기\n");
 
-            player.Atk = equipAtk;
-            player.Def = equipDef;
+            if (equipAtk > 0)
+                player.Atk = equipAtk;
+            else
+                player.Atk = player.NonEquipAtk;
+            if (equipDef > 0)
+                player.Def = equipDef;
+            else
+                player.Def = player.NonEquipDef;
 
             int input = ConsoleUtility.PromptMenuChoice(0, 0);
             switch (input)

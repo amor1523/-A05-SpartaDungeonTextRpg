@@ -316,14 +316,14 @@ public class Item
                             selectItem.BuyItem(player, ItemIndex, Quest.quest);
                             if (selectItem.FlagBuy)
                                 InventoryIndex.Add(selectItem);
-                            Thread.Sleep(1000);
+                            Thread.Sleep(500);
                             Shop();
                             return;
                         }
                         else
                         {
                             Console.WriteLine("이미 구매한 아이템 입니다.");
-                            Thread.Sleep(1000);
+                            Thread.Sleep(500);
                             Shop();
                             return;
                         }
@@ -344,14 +344,14 @@ public class Item
                                 if (selectPotion.Id == 2001)
                                     selectPotion.FlagBuy = false;
                             }
-                            Thread.Sleep(1000);
+                            Thread.Sleep(500);
                             Shop();
                             return;
                         }
                         else
                         {
                             Console.WriteLine("이미 구매한 아이템 입니다.");
-                            Thread.Sleep(1000);
+                            Thread.Sleep(500);
                             Shop();
                             return;
                         }
