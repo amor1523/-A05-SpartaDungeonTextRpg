@@ -481,10 +481,12 @@ public class Battle
     }
     public void  RunAway() 
     {
+        int damage = 5;
+        player.TakeDamage(damage);
         Console.Clear();
         Console.WriteLine("겁을 먹고 도망쳤다.");
         Thread.Sleep(1000);
-        Console.WriteLine($"도망치면서 등에 칼이 꽃혔다. HP [{player.Hp}] -> HP [{player.Hp - 5}]");
+        Console.WriteLine($"도망치면서 등에 칼이 꽃혔다. HP [{beforeHp}] -> HP [{player.Hp}]");
         Thread.Sleep(1000);
         Console.WriteLine("");
         Console.WriteLine("0.다음.");
@@ -497,6 +499,7 @@ public class Battle
                 gameManager.MainMenu();
                 break;
         }
+        
     }
     public void BossStage()
     {
