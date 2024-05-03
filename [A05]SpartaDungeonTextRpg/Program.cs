@@ -92,11 +92,11 @@ namespace SpartaDungeonTextRpg
                     player.Job = Job.Knight;
                     player.Atk = 10;
                     player.Def = 5;
-                    player.Hp = 10;
+                    player.Hp = 100;
                     player.MaxHp = player.Hp;
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
-                    player.Mp = 100;
+                    player.Mp = 50;
                     player.MaxMp = player.Mp;
                     break;
 
