@@ -39,13 +39,13 @@ namespace _A05_SpartaDungeonTextRpg
             string itemFilePath = Path.Combine(userDocumentsFolder, itemFileName);
             string potionFilePath = Path.Combine(userDocumentsFolder, potionFileName);
 
-            // 플레이어 데이터 PlayerData에 넣어 전달
+            // 데이터들을 각 값에 맞는 곳으로 전달
             playerData = new PlayerData(player);
             itemData = new ItemData(item);
             potionData = new PotionData(potion);
             
-            // 플레이어 데이터 저장
-            string playerJson = JsonConvert.SerializeObject(playerData, Formatting.Indented); // 직렬화
+            // 데이터 저장 (직렬화)
+            string playerJson = JsonConvert.SerializeObject(playerData, Formatting.Indented);
             string itemJson = JsonConvert.SerializeObject(itemData, Formatting.Indented);
             string potionJson = JsonConvert.SerializeObject(potionData, Formatting.Indented);
 
