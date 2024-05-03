@@ -5,16 +5,21 @@ using SpartaDungeonTextRpg;
 public class Potion
 {
     private bool FlagInventoryUse = false;
-    public string Name { get; }
-    public int Id { get; }
-    public string Explain { get; }
-    public int Gold { get; }
+    public string Name { get; set; }
+    public int Id { get; set; }
+    public string Explain { get; set; }
+    public int Gold { get; set; }
     public int Count { get; set; }
     public bool FlagUse { get; set; }
     public bool FlagBuy { get; set; }
 
     private Player player;
     public List<Potion> PotionIndex = new List<Potion>();
+
+    public Potion()
+    {
+
+    }
 
     public Potion(string name, int id, string explain, int gold, int count)
     {
@@ -32,6 +37,13 @@ public class Potion
     {
         this.player = player;
     }
+
+    // 역직렬화 후 PotionData를 넘겨주기 위한 메서드 (Load시 사용)
+    public void SetPotion(PotionData potionData)
+    {
+        PotionIndex = potionData.PotionIndex;
+    }
+
 
     ~Potion()
     {

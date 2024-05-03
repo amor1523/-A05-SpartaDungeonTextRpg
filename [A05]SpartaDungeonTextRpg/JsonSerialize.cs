@@ -18,34 +18,40 @@ namespace _A05_SpartaDungeonTextRpg
     public class JsonSerialize
     {
         public static GameManager gameManager;
-        //public static Player player; 
-        // public static Item item;
-        private static PlayerData playerData;
-        private static ItemData itemData;
+        //private static PlayerData playerData; 전역변수 >> 굳이 전역변수, 정적변수로 선언할 필요가 없다
+        //private static ItemData itemData;
 
-        public static void SaveData(Player player)
+        public static void SaveData(Player player, Item item, Potion potion)
         {
+            ItemData itemData; // 지역변수
+            PlayerData playerData;
+            PotionData potionData;
             Console.Clear();
 
             // 저장할 파일명 지정
             string fileName = "playerData.json";
-            //string itemFileName = "itemData.json";
+            string itemFileName = "itemData.json";
+            string potionFileName = "potionData.json";
 
             // 데이터 경로 저장 (C드라이브, Documents)
             string userDocumentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string filePath = Path.Combine(userDocumentsFolder, fileName);
-            //string itemfilePath = Path.Combine(userDocumentsFolder, itemFileName);
+            string itemFilePath = Path.Combine(userDocumentsFolder, itemFileName);
+            string potionFilePath = Path.Combine(userDocumentsFolder, potionFileName);
 
             // 플레이어 데이터 PlayerData에 넣어 전달
             playerData = new PlayerData(player);
-            // itemData = new iteaData(item);
+            itemData = new ItemData(item);
+            potionData = new PotionData(potion);
             
             // 플레이어 데이터 저장
             string playerJson = JsonConvert.SerializeObject(playerData, Formatting.Indented); // 직렬화
-            //string itemJson = JsonConvert.SerializeObject(itemData, Formatting.Indented);
+            string itemJson = JsonConvert.SerializeObject(itemData, Formatting.Indented);
+            string potionJson = JsonConvert.SerializeObject(potionData, Formatting.Indented);
 
             File.WriteAllText(filePath, playerJson);
-            //File.WriteAllText(itemJson, itemFileName);
+            File.WriteAllText(itemFilePath, itemJson);
+            File.WriteAllText(potionFilePath, potionJson);
 
             Console.WriteLine("저장이 완료되었습니다.");
             Console.WriteLine("메인 메뉴로 돌아갑니다.");
@@ -53,14 +59,19 @@ namespace _A05_SpartaDungeonTextRpg
             gameManager.MainMenu();
         }
 
-        public static void LoadData(GameManager gm, Player player)
+        public static void LoadData(GameManager gm, Player player, Item item, Potion potion)
         {
             gameManager = gm;
+            ItemData itemData;
+            PlayerData playerData;
+            PotionData potionData;
 
             Console.Clear();
 
             // 불러올 파일명 지정
             string fileName = "playerData.json";
+            string itemFileName = "itemData.json";
+            string potionFileName = "potionData.json";
 
             // 데이저 경로 불러오기 (C드라이브, Documents)
             string userDocumentsFolder = Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
@@ -83,31 +94,40 @@ namespace _A05_SpartaDungeonTextRpg
                 gameManager.PlayerName(); // 이름, 직업 설정
             }
 
-            // 아이템 데이터 로드
-            //string itemFilePath = Path.Combine(userDocumentsFolder,itemFileName);
-            //if (File.Exists(itemFilePath))
-            //{
-            //    string itemJson = File.ReadAllText(itemFilePath);
-            //    itemData = JsonConvert.DeserializeObject<ItemData>(itemJson); // 역직렬화
-            //    Item item = new Item(itemData); // 아이템 리스트 생성 후 데이터 입력
+            // 포션 데이터 로드
+            string potionFilePath = Path.Combine(userDocumentsFolder, potionFileName);
+            if (File.Exists(potionFilePath))
+            {
+                string potionJson = File.ReadAllText(potionFilePath);
+                potionData = JsonConvert.DeserializeObject<PotionData>(potionJson); // 역직렬화
+                potion.SetPotion(potionData); // SetPotion 함수로 값 전달
+            }
 
-            //    Console.WriteLine("아이템 데이터를 불러왔습니다.");
-            //    Thread.Sleep(1000);
+            //아이템 데이터 로드
+            string itemFilePath = Path.Combine(userDocumentsFolder, itemFileName);
+            if (File.Exists(itemFilePath))
+            {
+                string itemJson = File.ReadAllText(itemFilePath);
+                itemData = JsonConvert.DeserializeObject<ItemData>(itemJson); // 역직렬화
+                item.SetItem(itemData); // 아이템 리스트 생성 후 데이터 입력
 
-            //    gameManager.MainMenu();
-            //}
-            //else
-            //{
-            //    Console.Clear();
-            //    Console.WriteLine("저장된 아이템 데이터가 없습니다.");
-            //    Thread.Sleep(1000);
-            //    Console.WriteLine("모험가용 가방을 얻었습니다.");
-            //    Thread.Sleep(1000);
-            //    Console.WriteLine("상점에 새로운 물건들이 들어옵니다.");
-            //    Thread.Sleep(2000);
+                Console.WriteLine("아이템 데이터를 불러왔습니다.");
+                Thread.Sleep(1000);
 
-            // gameManager.MainMenu();
-            //}
+                gameManager.MainMenu();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("저장된 아이템 데이터가 없습니다.");
+                Thread.Sleep(1000);
+                Console.WriteLine("모험가용 가방을 얻었습니다.");
+                Thread.Sleep(1000);
+                Console.WriteLine("상점에 새로운 물건들이 들어옵니다.");
+                Thread.Sleep(2000);
+
+                gameManager.MainMenu();
+            }
         }
     }
 }

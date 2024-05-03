@@ -56,8 +56,8 @@ namespace _A05_SpartaDungeonTextRpg
 
         }
 
-    // LoadData시 사용
-    public void SetPlayer(PlayerData playerData)
+        // 역직렬화 후 Player에게 PlayerData를 넘겨주기 위한 메서드 (LoadData시 사용)
+        public void SetPlayer(PlayerData playerData)
         {
             Name = playerData.Name;
             Job = playerData.Job;
