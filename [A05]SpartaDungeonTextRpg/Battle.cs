@@ -40,19 +40,7 @@ public class Battle
         Console.Clear();
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
 
-        for (int i = 0; i < monsters.Count; i++)
-        {
-            if (!monsters[i].IsDead)
-            {
-                Console.WriteLine($"Lv.{monsters[i].Level} {monsters[i].Name} HP {(monsters[i].IsDead ? "Dead" : monsters[i].Hp.ToString())}");
-
-            }
-            else
-            {
-                ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"Lv.{monsters[i].Level} {monsters[i].Name} HP Dead");
-            }
-
-        }
+        DeadMonster();
 
         Console.WriteLine();
         Console.WriteLine("[내정보]");
@@ -60,8 +48,9 @@ public class Battle
         Console.WriteLine($"HP {player.Hp}\n");
         Console.WriteLine("1. 일반 공격");
         Console.WriteLine("2. 스킬 사용");
+        Console.WriteLine("3. 도망 치기");
 
-        int input = ConsoleUtility.PromptMenuChoice(1, 2);
+        int input = ConsoleUtility.PromptMenuChoice(1, 3);
         switch (input)
         {
             case 1:
@@ -69,6 +58,9 @@ public class Battle
                 break;
             case 2:
                 SkillAttack();
+                break;
+            case 3:
+                RunAway();
                 break;
         }
     }
@@ -80,11 +72,7 @@ public class Battle
 
         Console.WriteLine("전투 중인 몬스터들:");
 
-        for (int i = 0; i < monsters.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
-
-        }
+       DeadMonster();
 
         Console.WriteLine();
         Console.WriteLine("[내정보]");
@@ -185,10 +173,7 @@ public class Battle
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
         Thread.Sleep(500);
 
-        for (int i = 0; i < monsters.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. Lv.{monsters[i].Level} {monsters[i].Name} HP {monsters[i].Hp}");
-        }
+        DeadMonster();
 
         Console.WriteLine();
         Console.WriteLine("[내정보]");
@@ -387,6 +372,7 @@ public class Battle
             Thread.Sleep(1000);
             Console.WriteLine($"HP {beforeHp} -> {player.Hp}");
             Thread.Sleep(1000);
+            Console.WriteLine($"MP {player.Mp} -> {player.Mp + 10}");
             Console.WriteLine($"exp {beforeExp} -> {player.Exp}");
             Thread.Sleep(1000);
             if (player.Level < 5)
@@ -472,6 +458,41 @@ public class Battle
             potion.PotionIndex[0].Count += addPotion;
             Console.WriteLine($"{potion.PotionIndex[0].Name} - {addPotion}");
             Thread.Sleep(1000);
+        }
+    }
+    public void DeadMonster()
+    {
+        for(int i = 0; i < monsters.Count; i++)
+        {
+            if (!monsters[i].IsDead)
+            {
+                Console.WriteLine($"Lv.{monsters[i].Level} {monsters[i].Name} HP {(monsters[i].IsDead ? "Dead" : monsters[i].Hp.ToString())}");
+
+            }
+            else
+            {
+                ConsoleUtility.PrintTextHighlights(ConsoleColor.DarkGray, "", $"Lv.{monsters[i].Level} {monsters[i].Name} HP Dead");
+            }
+
+        }
+    }
+    public void  RunAway() 
+    {
+        Console.Clear();
+        Console.WriteLine("겁을 먹고 도망쳤다.");
+        Thread.Sleep(1000);
+        Console.WriteLine($"도망치면서 등에 칼이 꽃혔다. HP [{player.Hp}] -> HP [{player.Hp - 5}]");
+        Thread.Sleep(1000);
+        Console.WriteLine("");
+        Console.WriteLine("0.다음.");
+
+        Thread.Sleep(1000);
+        int input = ConsoleUtility.PromptMenuChoice(0, 0);
+        switch (input)
+        {
+            case 0:
+                gameManager.MainMenu();
+                break;
         }
     }
 }
