@@ -100,6 +100,7 @@ namespace SpartaDungeonTextRpg
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
                     player.Mp = 50;
+                    player.MaxMp = player.Mp;
                     break;
 
                 case 2:
@@ -111,6 +112,7 @@ namespace SpartaDungeonTextRpg
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
                     player.Mp = 100;
+                    player.MaxMp = player.Mp;
                     break;
                 case 3:
                     player.Job = Job.Archer;
@@ -121,6 +123,7 @@ namespace SpartaDungeonTextRpg
                     player.NonEquipAtk = player.Atk;
                     player.NonEquipDef = player.Def;
                     player.Mp = 40;
+                    player.MaxMp = player.Mp;
                     break;
             }
         }
