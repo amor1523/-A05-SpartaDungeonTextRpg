@@ -163,8 +163,6 @@ public class Battle
 
     public void BattleMenu()
     {
-        // 몬스터 생성함수
-        GetMonster();
         TextBattle();
         TextMonsters();
         TextPlayerInfo();
@@ -375,6 +373,9 @@ public class Battle
 
     public void BattleResult(bool victory)
     {
+        // 몬스터 생성함수
+        GetMonster();
+
         // 레벨업 유무 확인
         int playerLevel = player.Level;
         bool flagLevelUp = LevelUp();
@@ -516,6 +517,9 @@ public class Battle
     }
     public void  RunAway() 
     {
+        // 몬스터 생성함수
+        GetMonster();
+
         int beforeHp = player.Hp;
         int damage = 5;
         player.TakeDamage(damage);
