@@ -403,7 +403,12 @@ public class Battle
         if (victory)
         {
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리 !!!\n");
-            Console.WriteLine("던전에서 몬스터를 잡았습니다.\n");
+
+            if (!bossClear)
+                Console.WriteLine("던전에서 몬스터를 잡았습니다.\n");
+            else
+                Console.WriteLine("던전 보스인 레드 드래곤을 잡았습니다!!\n");
+
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", "[캐릭터 정보]");
             if (!flagLevelUp)
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
@@ -676,7 +681,7 @@ public class Battle
         //////////////////////////////////////////////////////////////////////////////// 보스 패턴부분 수정 필요.
         /////////////////////////////////////////////////////////////////////////////// 보스 패턴 시간 기능 추가 필요.
         // 보스의 체력이 50% 이하로 떨어지면 두 번째 페이즈로 진입
-        if (boss.Hp <= 150)
+        if (boss.Hp <= 150 && !bossClear)
         {
             bossPhaseTwo = true;
             Console.WriteLine("보스가 분노합니다! 두 번째 페이즈로 진입합니다.");
