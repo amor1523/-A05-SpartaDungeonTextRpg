@@ -66,10 +66,10 @@ public class Item
                 {
                     Quest.questData[0].Count++;
                 }
-                Console.WriteLine("구매를 완료했습니다.");
+                Console.WriteLine("\n구매를 완료했습니다.");
             }
             else
-                Console.WriteLine("Gold가 부족합니다.");
+                Console.WriteLine("\nGold가 부족합니다.");
         }
     }
 
@@ -134,9 +134,9 @@ public class Item
                 Console.Write(" | ");
 
                 if (item.AttackPower != 0)
-                    Console.Write($"공격력 {(item.AttackPower >= 0 ? "+" : "")}{item.AttackPower} ");
+                    Console.Write($"공격력 {(item.AttackPower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.AttackPower.ToString(), 5)}");
                 if (item.DefensivePower != 0)
-                    Console.Write($"방어력 {(item.DefensivePower >= 0 ? "+" : "")}{item.DefensivePower} ");
+                    Console.Write($"방어력 {(item.DefensivePower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.DefensivePower.ToString(), 5)}");
 
                 Console.Write(" | ");
 
@@ -201,7 +201,7 @@ public class Item
                     {
                         if(!item.FlagBuy)
                             Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write($"공격력 {(item.AttackPower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.AttackPower.ToString(), 5)} ");
+                        Console.Write($"공격력 {(item.AttackPower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.AttackPower.ToString(), 7)}");
                         if(!item.FlagBuy)
                             Console.ResetColor();
                     }
@@ -209,7 +209,7 @@ public class Item
                     {
                         if(!item.FlagBuy)
                             Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.Write($"방어력 {(item.DefensivePower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.DefensivePower.ToString(), 5)} ");
+                        Console.Write($"방어력 {(item.DefensivePower >= 0 ? "+" : "")} {ConsoleUtility.PadRightForMixedText(item.DefensivePower.ToString(), 7)}");
                         if(!item.FlagBuy)
                             Console.ResetColor();
                     }
@@ -250,9 +250,9 @@ public class Item
                 Console.Write(" | ");
 
                 if (item.Id == 2001)
-                    Console.Write(ConsoleUtility.PadRightForMixedText("보유 개수: " + item.Count.ToString() + " 개", 15));
+                    Console.Write(ConsoleUtility.PadRightForMixedText("보유 개수: " + item.Count.ToString() + " 개", 16));
                 else
-                    Console.Write(ConsoleUtility.PadRightForMixedText("", 15));
+                    Console.Write(ConsoleUtility.PadRightForMixedText("", 16));
 
                 Console.Write(" | ");
 
@@ -322,7 +322,7 @@ public class Item
                         }
                         else
                         {
-                            Console.WriteLine("이미 구매한 아이템 입니다.");
+                            Console.WriteLine("\n이미 구매한 아이템 입니다.");
                             Thread.Sleep(500);
                             Shop();
                             return;

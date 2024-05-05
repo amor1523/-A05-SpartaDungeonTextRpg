@@ -70,7 +70,7 @@ namespace _A05_SpartaDungeonTextRpg
             Hp = playerData.Hp;
             MaxHp = playerData.MaxHp;
             Mp = playerData.Mp;
-            MaxMp = playerData.MaxHp;
+            MaxMp = playerData.MaxMp;
             Gold = playerData.Gold;
             Exp = playerData.Exp;
             LevelUpExp = playerData.LevelUpExp;

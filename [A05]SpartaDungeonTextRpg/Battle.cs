@@ -25,6 +25,7 @@ public class Battle
     private int beforeExp;
     private int beforeMp;
     private bool BattleMonster = false;
+    private bool bossClear = false;
 
     public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill, Potion potion)
     {
@@ -37,7 +38,7 @@ public class Battle
         beforeExp = player.Exp;
         beforeMp = player.Mp;
         this.potion = potion;
-        boss = new Monster.BossMonster(1, "보스", 10, 50, 200, 200, 500, 500);
+        boss = new Monster.BossMonster(1, "레드 드래곤 (보스)", 10, 40, 300, 300, 10000, 500);
     }
     public void TextPlayerInfo()
     {
@@ -50,11 +51,11 @@ public class Battle
 
         Console.Write(ConsoleUtility.PadRightForMixedText("Hp", 5));
         Console.Write(" |  ");
-        Console.WriteLine($"{player.Hp}/{beforeHp} ");
+        Console.WriteLine($"{player.Hp}/{player.MaxHp} ");
 
         Console.Write(ConsoleUtility.PadRightForMixedText("Mp", 5));
         Console.Write(" |  ");
-        Console.WriteLine($"{player.Mp}/{beforeMp}\n");
+        Console.WriteLine($"{player.Mp}/{player.MaxMp}\n");
     }
 
     public void TextMonsters()
@@ -68,7 +69,7 @@ public class Battle
         Console.WriteLine("[스킬 목록]");
         for (int j = 0; j < skill.SkillNum; j++)
         {
-            Console.WriteLine($"{skill.SkillNum}.{skill.Name}은 적에게 {skill.SkillDamage}를 입힌다.\n");
+            Console.WriteLine($"{skill.SkillNum}.{skill.Name}은 적에게 {skill.SkillDamage}를 입힌다. (Mp 소요 : {skill.MpCost})\n");
         }
     }
 
@@ -123,9 +124,16 @@ public class Battle
         Thread.Sleep(500);
     }
 
+    public void TextBattleBoss()
+    {
+        Console.Clear();
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "BossStage!!\n");
+        Thread.Sleep(500);
+    }
+
     public void PromptForNextAction()
     {
-        Console.WriteLine("0.다음");
+        Console.WriteLine("0.다음\n");
         int input = ConsoleUtility.PromptMenuChoice(0, 0);
         if (input == 0)
         {
@@ -144,6 +152,7 @@ public class Battle
                     player.Exp += monster.RewardExp;
                 }
                 BattleResult(true);
+                return;
             }
             else
             {
@@ -156,6 +165,7 @@ public class Battle
                 else
                 {
                     BattleResult(false);
+                    return;
                 }
             }
         }
@@ -163,33 +173,38 @@ public class Battle
 
     public void BattleMenu()
     {
-        TextBattle();
-        TextMonsters();
-        TextPlayerInfo();
-
-        Console.WriteLine("1. 일반 공격");
-        Console.WriteLine("2. 스킬 사용");
-        Console.WriteLine("3. 포션 사용");
-        Console.WriteLine("4. 도망 치기\n");
-
-        int input = ConsoleUtility.PromptMenuChoice(1, 4);
-        switch (input)
+        if (player.Level >= 1 && player.Level <= 4)
         {
-            case 1:
-                BattleMonster = true;
-                PlayerAttack();
-                break;
-            case 2:
-                BattleMonster = true;
-                SkillAttack();
-                break;
-            case 3:
-                UsePotion();
-                break;
-            case 4:
-                RunAway();
-                break;
+            TextBattle();
+            TextMonsters();
+            TextPlayerInfo();
+
+            Console.WriteLine("1. 일반 공격");
+            Console.WriteLine("2. 스킬 사용");
+            Console.WriteLine("3. 포션 사용");
+            Console.WriteLine("4. 도망 치기\n");
+
+            int input = ConsoleUtility.PromptMenuChoice(1, 4);
+            switch (input)
+            {
+                case 1:
+                    BattleMonster = true;
+                    PlayerAttack();
+                    break;
+                case 2:
+                    BattleMonster = true;
+                    SkillAttack();
+                    break;
+                case 3:
+                    UsePotion();
+                    break;
+                case 4:
+                    RunAway();
+                    break;
+            }
         }
+        else
+            BossStage();
     }
 
     public void SkillAttack()
@@ -260,7 +275,7 @@ public class Battle
         TextBattle();
         TextMonsters();
         TextPlayerInfo();
-        Console.WriteLine("0.취소");
+        Console.WriteLine("0.취소\n");
 
         int input = ConsoleUtility.PromptMenuChoice(0, monsters.Count);
         if (input == 0)
@@ -276,8 +291,9 @@ public class Battle
         // 선택한 몬스터가 이미 죽은 상태인지 확인
         if (selectedMonster.IsDead)
         {
-            Console.WriteLine("잘못된 입력입니다.\n");
+            Console.WriteLine("\n잘못된 입력입니다.");
             Thread.Sleep(500);
+            BattleMenu();
             return; // 다시 공격 메뉴로 돌아감
         }
 
@@ -303,13 +319,11 @@ public class Battle
         {
             damageDealt = 0;
             Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 공격했지만 아무일도  일어나지 않았습니다.\n");
-            Thread.Sleep(500);
-            PromptForNextAction();
         }
         else
         {
-            // 치명타 여부를 결정하기 위한 확률 15퍼
-            int critChance = 65;
+            // 치명타 여부를 결정하기 위한 확률 30퍼
+            int critChance = 30;
             // 랜덤한 확률을 생성하여 치명타 여부 결정
             bool isCritical = random.Next(100) < critChance;
             // 치명타 데미지 계산
@@ -319,16 +333,15 @@ public class Battle
             if (isCritical)
             {
                 damageDealt += critDamage;
-                Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]- 치명타 공격!!");
+                Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]- 치명타 공격!!\n");
             }
             else
             {
-                Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]");
+                Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]\n");
             }
             selectedMonster.TakeDamage(damageDealt);
         }
         Thread.Sleep(500);
-        Console.WriteLine();
         Console.WriteLine($"Lv.{selectedMonster.Level} {selectedMonster.Name}");
         Thread.Sleep(500);
         Console.WriteLine($"HP {selectedMonster.Hp}\n");
@@ -340,17 +353,25 @@ public class Battle
     public void EnemyAttack(Monster targetMonster)
     {
         int playerHp = player.Hp;
+        int damageDealt = 0;
         //공격할 몬스터가  살아있는지 확인
         if (!targetMonster.IsDead && playerHp > 0)
         {
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "Battle!!\n");
             Console.WriteLine($"{targetMonster.Name} 의 공격!");
             Thread.Sleep(500);
-            int damageDealt = targetMonster.Atk - player.Def;
+            if (targetMonster.Atk-player.Def > 0)
+                damageDealt = targetMonster.Atk - player.Def;
+            else
+                damageDealt = 0;
+
             player.TakeDamage(damageDealt);
-            Console.WriteLine($"Lv.{player.Level} {player.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]");
+
+            if (targetMonster.Atk - player.Def > 0)
+                Console.WriteLine($"Lv.{player.Level} {player.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]");
+            else
+                ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", $"방어력이 너무 높아서 공격이 통하지 않았다..!! [데미지 : {damageDealt}]\n");
             Thread.Sleep(500);
-            Console.WriteLine();
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
             Thread.Sleep(500);
             Console.WriteLine($"HP {player.Hp}\n");
@@ -373,9 +394,6 @@ public class Battle
 
     public void BattleResult(bool victory)
     {
-        // 몬스터 생성함수
-        GetMonster();
-
         // 레벨업 유무 확인
         int playerLevel = player.Level;
         bool flagLevelUp = LevelUp();
@@ -384,29 +402,59 @@ public class Battle
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "전투 결과\n");
         if (victory)
         {
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리\n");
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "전투 승리 !!!\n");
             Console.WriteLine("던전에서 몬스터를 잡았습니다.\n");
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", "[캐릭터 정보]");
             if (!flagLevelUp)
                 Console.WriteLine($"Lv.{player.Level} {player.Name}");
             else
-                Console.WriteLine($"Lv.{playerLevel} {player.Name} -> Lv. {player.Level} {player.Name}");
+                Console.WriteLine($"Lv.{playerLevel} {player.Name} -> Lv.{player.Level} {player.Name}");
 
             Thread.Sleep(500);
-            Console.WriteLine($"HP {beforeHp} -> {player.Hp} ");
+            Console.WriteLine($"HP {beforeHp} -> {player.Hp} {((beforeHp - player.Hp) > 0 ? $"(-{beforeHp-player.Hp})" : "")}");
             Thread.Sleep(500);
-            Console.WriteLine($"MP {beforeMp} -> {player.Mp}");
+            Console.WriteLine($"MP {beforeMp} -> {player.Mp} {((beforeMp - player.Mp) > 0 ? $"(-{beforeMp - player.Mp})" : "")}");
             if (player.Mp < player.MaxMp)
                 player.Mp += 10;
-            Console.WriteLine($"exp {beforeExp} -> {player.Exp} 증가!");
+            Console.WriteLine($"exp {beforeExp} -> {player.Exp} (+{player.Exp - beforeExp})");
             Thread.Sleep(500);
             if (player.Level < 5)
             {
                 Console.WriteLine($"LevelUp까지 남은 Exp -> {player.LevelUpExp - player.Exp}\n");
                 Thread.Sleep(500);
             }
+            else
+                Console.WriteLine();
+
+            if (flagLevelUp)
+            {
+                ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", "[레벨업! 능력치 상승!!]");
+                Console.WriteLine($"MaxHp {player.MaxHp-10} -> {player.MaxHp}");
+                Console.WriteLine($"MaxMp {player.MaxMp - 10} -> {player.MaxMp}");
+                Console.WriteLine($"Atk {player.NonEquipAtk - 1} -> {player.NonEquipAtk}");
+                Console.WriteLine($"Def {player.NonEquipDef - 1} -> {player.NonEquipDef}\n");
+                Console.WriteLine("레벨업으로 플레이어의 HP와 MP가 최대치까지 회복됩니다.\n");
+
+                player.Hp = player.MaxHp;
+                player.Mp = player.MaxMp;
+            }
 
             RewardItem();
+
+            // 보스 클리어시 게임 종료.
+            if (bossClear)
+            {
+                gameManager.GamePlay = false;
+                ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "\n보스를 클리어하여 게임이 종료됩니다.");
+                ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "플레이 해주셔서 감사합니다.");
+
+                Console.WriteLine("\n0. 다음");
+                int endInput = ConsoleUtility.PromptMenuChoice(0, 0);
+                if (endInput == 0)
+                    return;
+            }
+            // 몬스터 생성함수
+            GetMonster();
 
             Thread.Sleep(500);
             Console.WriteLine("\n0. 다음");
@@ -420,34 +468,39 @@ public class Battle
         }
         else
         {
-            ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "전투 패배\n");
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "전투 패배...\n");
             Thread.Sleep(500);
             Console.WriteLine($"Lv.{player.Level} {player.Name}");
             Console.WriteLine($"HP {beforeHp} -> {player.Hp}\n");
 
-            Console.WriteLine("0. 초기화\n");
+            Console.WriteLine("1. 다시 도전!\n");
+            Console.WriteLine("0. 게임 종료..\n");
             int input = ConsoleUtility.PromptMenuChoice(0, 1);
             switch (input)
             {
                 case 0:
+                    gameManager.GamePlay = false;
+                    Console.WriteLine("\n게임을 종료합니다.");
+                    break;
+                case 1:
                     player.Hp = player.MaxHp;
                     player.Mp = player.MaxMp;
                     break;
             }
         }
-
-      
     }
 
     public bool LevelUp()
     {
         bool flagLevelUp;
 
-        if (player.Exp > player.LevelUpExp && (player.Level >= 1 && player.Level <= 4))
+        if (player.Exp >= player.LevelUpExp && (player.Level >= 1 && player.Level <= 4))
         {
             flagLevelUp = true;
             player.NonEquipAtk += 1;
             player.NonEquipDef += 1;
+            player.MaxHp += 10;
+            player.MaxMp += 10;
 
             if (player.Exp >= 200 && player.Exp < 350)
             {
@@ -483,7 +536,7 @@ public class Battle
 
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", "[획득 아이템]");
 
-        Console.WriteLine($"{addGold} Gold");
+        Console.WriteLine($"+ {addGold} Gold");
         Thread.Sleep(500);
         player.Gold += addGold;
 
@@ -491,7 +544,7 @@ public class Battle
         {
             int addPotion = random.Next(1, 3);
             potion.PotionIndex[0].Count += addPotion;
-            Console.WriteLine($"{potion.PotionIndex[0].Name} - {addPotion}");
+            Console.WriteLine($"+ {potion.PotionIndex[0].Name} {addPotion}개");
         }
     }
     public void DeadMonster()
@@ -553,14 +606,15 @@ public class Battle
     
     public void BossText() 
     {
-        Console.Clear();
-        Console.WriteLine("보스 스테이지!!!\n");
+        if (CheckBossStage() == false)
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "보스 스테이지는 5레벨부터 입장 가능합니다! 더 성장해서 도전해보세요..!!\n");
+        if (CheckBossStage() == true)
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "보스 스테이지 입장이 가능합니다!!! 도전하시겠습니까?\n");
         Thread.Sleep(500);
-        Console.Clear();
-        ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "보스 스테이지는 5레벨이상부터 가능합니다!!!\n");
-        Thread.Sleep(500);
-        Console.WriteLine("0.마을로 돌아가기");
-        Console.WriteLine("1.보스전 입장!");
+        Console.WriteLine("0. 마을로 돌아가기\n");
+
+        if(CheckBossStage() == true)
+            Console.WriteLine("1. 보스전 입장!\n");
     }
     public void BossStage()
     {
@@ -568,16 +622,11 @@ public class Battle
         {
             Console.Clear(); 
             BossText();
-            int input = ConsoleUtility.PromptMenuChoice(0, 1);
+            int input = ConsoleUtility.PromptMenuChoice(0, 0);
             switch (input)
             {
                 case 0:
                     break;
-                case 1:
-                    Console.WriteLine("레벨이 부족합니다. 입장불가!");
-                    BossStage();
-                    break;
-
             }
         }
         else if(CheckBossStage() == true) 
@@ -588,7 +637,6 @@ public class Battle
             switch (input)
             {
                 case 0:
-                    
                     break;
                 case 1:
                     BossBattle();
@@ -598,17 +646,20 @@ public class Battle
     }
     public void BossBattle()
     {
-        TextBattle();
+        TextBattleBoss();
+        Console.Write($"Lv.{boss.Level} ");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write($"{boss.Name} ");
+        Console.ResetColor();
+        Console.WriteLine($"HP : {boss.Hp}");
         TextPlayerInfo();
-        Console.WriteLine($"Lv.{boss.Level} {boss.Name} HP{boss.Hp}\n");
 
         bool bossPhaseTwo = false; // 보스의 두 번째 페이즈 여부를 나타내는 변수
 
-        Console.WriteLine();
-        Console.WriteLine();
         Console.WriteLine("1. 일반 공격");
         Console.WriteLine("2. 스킬 사용");
-        int input = ConsoleUtility.PromptMenuChoice(1, 2);
+        Console.WriteLine("3. 포션 사용\n");
+        int input = ConsoleUtility.PromptMenuChoice(1, 3);
         switch (input)
         {
             case 1:
@@ -617,10 +668,15 @@ public class Battle
             case 2:
                 PlayerSkillAttack();
                 break;
+            case 3:
+                UsePotion();
+                break;
         }
 
+        //////////////////////////////////////////////////////////////////////////////// 보스 패턴부분 수정 필요.
+        /////////////////////////////////////////////////////////////////////////////// 보스 패턴 시간 기능 추가 필요.
         // 보스의 체력이 50% 이하로 떨어지면 두 번째 페이즈로 진입
-        if (boss.Hp <= 200)
+        if (boss.Hp <= 150)
         {
             bossPhaseTwo = true;
             Console.WriteLine("보스가 분노합니다! 두 번째 페이즈로 진입합니다.");
@@ -632,19 +688,19 @@ public class Battle
 
             // 보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용
             Console.WriteLine("보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용합니다!");
-            int damageTime = 20; // 보스의 플레이어에게 입히는 지속 데미지
+            int damageTime = 10; // 보스의 플레이어에게 입히는 지속 데미지
             int dot = 3; // 지속 시간 (예: 3턴 동안 지속됨)
             Thread.Sleep(500);
             // 보스가 지속 데미지를 입히는 메서드 호출
             InflictDamageOverTime(damageTime, dot);
 
-            // 두 번째 페이즈 동안에도 보스의 공격이 있도록 호출
-            BossAttack();
+            Console.WriteLine("0. 다음\n");
+            int input2 = ConsoleUtility.PromptMenuChoice(0, 0);
         }
     }
     public void InflictDamageOverTime(int damage, int dot)
     {
-        Console.WriteLine($"플레이어는 {dot}턴 동안 {damage}의 지속 데미지를 입습니다!");
+        Console.WriteLine($"플레이어는 {dot}턴 동안 {damage}의 지속 데미지를 입습니다!\n");
         Thread.Sleep(500);
         for (int i = 0; i < dot; i++)
         {
@@ -658,11 +714,17 @@ public class Battle
     }
     public bool CheckBossStage()
     {
-
         return player.Level >= 5; // 플레이어 레벨이 5 이상이면 보스 스테이지로 진입
     }
     public void Attack()
     {
+        TextBattleBoss();
+        Console.Write($"Lv.{boss.Level} ");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write($"{boss.Name} ");
+        Console.ResetColor();
+        Console.WriteLine($"HP : {boss.Hp}\n");
+
         // 플레이어의 공격력 계산
         int baseDamage = player.Atk;
         int errorDamage = (int)Math.Ceiling(baseDamage * 0.1);
@@ -680,13 +742,11 @@ public class Battle
             Thread.Sleep(500);
             damageDealt = 0;
             Console.WriteLine($"보스를 공격했지만 아무일도 일어나지 않았습니다.\n");
-            Thread.Sleep(500);
-            BossAttack();
         }
         else
         {
             // 치명타 확률
-            int critChance = 15;
+            int critChance = 30;
             bool isCritical = random.Next(100) < critChance;
 
             // 치명타 공격 시 데미지 계산
@@ -694,28 +754,38 @@ public class Battle
             if (isCritical)
             {
                 damageDealt += critDamage;
-                Console.WriteLine($"보스를 맞췄습니다. [데미지 : {damageDealt}] - 치명타 공격!!");
+                Console.WriteLine($"Lv.{boss.Level} {boss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}] - 치명타 공격!!\n");
             }
             else
             {
-                Console.WriteLine($"보스를 맞췄습니다. [데미지 : {damageDealt}]");
-                Thread.Sleep(500);
+                Console.WriteLine($"Lv.{boss.Level} {boss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]\n");
             }
         }
 
         // 보스에게 데미지 적용
         boss.TakeDamage(damageDealt);
 
+        Thread.Sleep(500);
+        Console.WriteLine($"Lv.{boss.Level} {boss.Name}");
+        Thread.Sleep(500);
+        Console.WriteLine($"HP {boss.Hp}\n");
+
         if (boss.IsDead)
         {
+            Thread.Sleep(500);
             Console.WriteLine($"보스를 처치하였습니다!");
             Thread.Sleep(500);
+            bossClear = true;
             BattleResult(true);
             return;
         }
         else
         {
             // 보스의 공격
+            Thread.Sleep(500);
+
+            Console.WriteLine("0. 다음\n");
+            int input = ConsoleUtility.PromptMenuChoice(0, 0);
             BossAttack();
             return;
         }
@@ -723,10 +793,21 @@ public class Battle
 
     public void BossAttack()
     {
-        Console.Clear();
+        TextBattleBoss();
         int damageDealt = boss.Atk - player.Def;
+
+        if (damageDealt > 0)
+            damageDealt = boss.Atk - player.Def;
+        else
+            damageDealt = 0;
+
         player.TakeDamage(damageDealt);
-        Console.WriteLine($"보스의 공격!\n {player.Name}을/를 맞췄습니다. [데미지 : {damageDealt}]");
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", $"{boss.Name}의 공격!!");
+        Thread.Sleep(500);
+        if(damageDealt > 0)
+            Console.WriteLine($"{player.Name}을/를 맞췄습니다. [데미지 : {damageDealt}]\n");
+        else
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", $"방어력이 너무 높아서 공격이 통하지 않았다..!! [데미지 : {damageDealt}]\n");
         Thread.Sleep(500);
 
         if (player.IsDead)
@@ -734,22 +815,28 @@ public class Battle
             Console.WriteLine($"플레이어가 쓰러졌습니다!");
             Thread.Sleep(500);
             BattleResult(false);
+            return;
         }
         else
         {
-            Console.WriteLine($"0.다음");
+            Console.WriteLine($"0.다음\n");
             int input = ConsoleUtility.PromptMenuChoice(0, 0);
             if (input == 0)
             {
                 Console.Clear();
-               BossBattle();
+                BossBattle();
+                return;
             }
         }
     }
     public void PlayerSkillAttack()
     {
-        TextBattle();
-        Console.WriteLine($"Lv.{boss.Level} {boss.Name} HP{boss.Hp}\n");
+        TextBattleBoss();
+        Console.Write($"Lv.{boss.Level} ");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write($"{boss.Name} ");
+        Console.ResetColor();
+        Console.WriteLine($"HP : {boss.Hp}\n");
         TextPlayerInfo();
         TextSkillMenu();
         Console.WriteLine("0.취소");
@@ -780,15 +867,23 @@ public class Battle
         player.UseMp(usedMana);
         Thread.Sleep(500);
 
-        Console.Clear();
-        Console.WriteLine();
-        Console.WriteLine($"{skill.Name}!!!");
+
+        TextBattleBoss();
+        Console.WriteLine($"{player.Name} 의 공격!");
+        Thread.Sleep(500);
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", $"{skill.Name}!!!\n");
+        Console.WriteLine($"Lv.{selectedBoss.Level} {selectedBoss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]\n");
+        Thread.Sleep(500);
         Console.WriteLine($"Lv.{selectedBoss.Level} {selectedBoss.Name}");
         Thread.Sleep(500);
         Console.WriteLine($"HP {selectedBoss.Hp}\n");
         Thread.Sleep(500);
 
+        Console.WriteLine("0. 다음\n");
+        int input2 = ConsoleUtility.PromptMenuChoice(0, 0);
+
         BossAttack();
+        return;
     }
 
 
@@ -819,6 +914,7 @@ public class Battle
         switch (input)
         {
             case 0:
+                BattleMenu();
                 break;
             case 1:
                 if (potion.PotionIndex[0].Count > 0)

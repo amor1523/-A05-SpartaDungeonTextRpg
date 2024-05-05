@@ -131,7 +131,13 @@ namespace SpartaDungeonTextRpg
             Console.WriteLine("스파르타 던전에 오신 여러분 환영합니다.");
             Console.WriteLine("이제 전투를 시작할 수 있습니다.\n");
             Console.WriteLine("1. 상태보기");
-            Console.WriteLine("2. 전투시작");
+            if (player.Level >= 1 && player.Level <= 4)
+                Console.WriteLine($"2. 전투시작 (현재 진행 : {player.Level} Stage)");
+            else
+            {
+                Console.Write($"2. 전투시작 ");
+                ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "(현재 진행 : 보스 Stage!!)");
+            }
             Console.WriteLine("3. 인벤토리");
             Console.WriteLine("4. 상점");
             Console.WriteLine("5. 물약사용");
@@ -221,35 +227,35 @@ namespace SpartaDungeonTextRpg
 
             if (!flagEquipWeapon)
             {
-                Console.Write(ConsoleUtility.PadRightForMixedText("공격력", 4));
+                Console.Write(ConsoleUtility.PadRightForMixedText("공격력", 10));
                 Console.WriteLine($" : {player.Atk}");
             }
             else
             {
-                Console.Write(ConsoleUtility.PadRightForMixedText("공격력", 4));
+                Console.Write(ConsoleUtility.PadRightForMixedText("공격력", 10));
                 Console.WriteLine($" : {player.Atk} (+{equipWeaponPower})");
             }
             if (!flagEquipArmor)
             {
-                Console.Write(ConsoleUtility.PadRightForMixedText("방어력", 4));
+                Console.Write(ConsoleUtility.PadRightForMixedText("방어력", 10));
                 Console.WriteLine($" : {player.Def}");
             }
             else
             {
-                Console.Write(ConsoleUtility.PadRightForMixedText("방어력", 4));
+                Console.Write(ConsoleUtility.PadRightForMixedText("방어력", 10));
                 Console.WriteLine($" : {player.Def} (+{equipArmorPower})");
             }
 
-            Console.Write(ConsoleUtility.PadRightForMixedText("HP", 6));
+            Console.Write(ConsoleUtility.PadRightForMixedText("HP / MAXHP", 10));
             Console.WriteLine($" : {player.Hp} / {player.MaxHp}");
 
-            Console.Write(ConsoleUtility.PadRightForMixedText("MP", 6));
+            Console.Write(ConsoleUtility.PadRightForMixedText("MP / MAXMP", 10));
             Console.WriteLine($" : {player.Mp} / {player.MaxMp}");
 
-            Console.Write(ConsoleUtility.PadRightForMixedText("Gold", 6));
+            Console.Write(ConsoleUtility.PadRightForMixedText("Gold", 10));
             Console.WriteLine($" : {player.Gold} G");
 
-            Console.Write(ConsoleUtility.PadRightForMixedText("Exp", 6));
+            Console.Write(ConsoleUtility.PadRightForMixedText("Exp", 10));
             Console.WriteLine($" : {player.Exp}");
 
             Console.WriteLine($"LevelUp까지 남은 Exp -> {player.LevelUpExp - player.Exp}\n");
