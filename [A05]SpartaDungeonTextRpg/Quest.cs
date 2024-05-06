@@ -50,6 +50,12 @@ namespace _A05_SpartaDungeonTextRpg
             Console.Clear();
             setactiveQuests(questData); // 갱신 된 퀘스트 데이터를 새로 받아옴
 
+            // 낡은검 구매 여부 확인
+            if (Item.ItemIndex[3].FlagBuy == true && Quest.questData[0].Count < Quest0.questData[0].GoalCount)
+            {
+                Quest.questData[0].Count += 1;
+            }
+
             Console.WriteLine("Quest!\n"); // 퀘스트 텍스트 색상 변경 필요
             for( i = 0;i < questList.Count;i++)
             {
@@ -223,12 +229,6 @@ namespace _A05_SpartaDungeonTextRpg
     {
         public void SelectQuest(Player player, List<Quest> questData, int i)
         {
-            // 낡은검 구매 여부 확인
-            if (Item.ItemIndex[3].FlagBuy == true && Quest.questData[i].Count < Quest0.questData[i].GoalCount)
-            {
-                Quest.questData[i].Count += 1;
-            }
-
             Console.Clear();
             Console.WriteLine("Quest!\n"); // 퀘스트 텍스트 색상 변경 필요
             Console.WriteLine("아이템 구매\n");

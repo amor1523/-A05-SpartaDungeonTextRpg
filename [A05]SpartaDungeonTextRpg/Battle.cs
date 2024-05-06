@@ -377,8 +377,8 @@ public class Battle
 
             player.TakeDamage(damageDealt);
 
-            if (targetMonster.Atk - player.Def > 0)
-                Console.WriteLine($"Lv.{player.Level} {player.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]");
+            if (damageDealt > 0)
+                Console.WriteLine($"Lv.{player.Level} {player.Name} 을/를 맞췄습니다. [데미지 : {damageDealt}]\n");
             else
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", $"방어력이 너무 높아서 공격이 통하지 않았다..!! [데미지 : {damageDealt}]\n");
             Thread.Sleep(500);
@@ -431,7 +431,7 @@ public class Battle
             Console.WriteLine($"MP {beforeMp} -> {player.Mp} {((beforeMp - player.Mp) > 0 ? $"(-{beforeMp - player.Mp})" : "")}");
             if (player.Mp < player.MaxMp)
                 player.Mp += 10;
-            Console.WriteLine($"exp {beforeExp} -> {player.Exp} {((beforeExp - player.Exp) > 0 ? $"(+{beforeExp - player.Exp})" : "")}");
+            Console.WriteLine($"exp {beforeExp} -> {player.Exp} {((player.Exp - beforeExp) > 0 ? $"(+{player.Exp - beforeExp})" : "")}");
             Thread.Sleep(500);
             if (player.Level < 5)
             {

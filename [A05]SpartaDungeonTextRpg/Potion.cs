@@ -151,7 +151,7 @@ public class Potion
 
         int input;
         if (!FlagInventoryUse)
-            Console.WriteLine("1. 사용");
+            Console.WriteLine("\n1. 사용");
         Console.WriteLine("0. 나가기\n");
 
         if (!FlagInventoryUse)
