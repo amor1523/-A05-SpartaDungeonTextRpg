@@ -31,7 +31,6 @@ public class Battle
     private bool bossClear = false;
     private bool bossPhaseTwo = false;
     private bool playerAttack = false;
-    private bool timerOperation = false;
     private int bossDotCount = 0;
     private int timerCount = 0;
     private string bossUltimatePlayerInput = "";
@@ -707,7 +706,6 @@ public class Battle
 
         if (!bossPhaseTwo || (bossPhaseTwo && bossDotCount > 0) && !bossClear)
         {
-            playerAttack = true;
             TextPlayerInfo();
 
             Console.WriteLine("1. 일반 공격");
@@ -717,12 +715,15 @@ public class Battle
             switch (input)
             {
                 case 1:
+                    playerAttack = true;
                     Attack();
                     break;
                 case 2:
+                    playerAttack = false;
                     PlayerSkillAttack();
                     break;
                 case 3:
+                    playerAttack = false;
                     UsePotion();
                     break;
             }
@@ -851,16 +852,18 @@ public class Battle
         return result;
     }
 
-    private void BossUltimate()
+    private bool BossUltimate()
     {
         timer.Interval = 500;
         timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
 
-        ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", $"{boss.Name}의 궁극기 시전중 [데미지 : 50]!!\n");
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", $"{boss.Name}의 궁극기 시전중!! [데미지 : 50]\n");
         Thread.Sleep(500);
-        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", $"3초 안에 제시된 숫자를 모두 입력해주세요!");
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", $"4초 안에 제시된 숫자를 모두 입력해주세요!");
         Thread.Sleep(500);
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", $"(콤마, 띄어쓰기 생략 후 입력)\n");
+        Thread.Sleep(500);
+        ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", $"(입력은 한 번만 가능합니다. 신중하게 입력해주세요!)\n");
         Thread.Sleep(500);
         Console.Write("--- ");
         for (int number = 0; number < bossUltimateArray.Length; number++)
@@ -872,9 +875,19 @@ public class Battle
         }
         Console.WriteLine(" ---\n");
         Console.Write(">> ");
-        timerOperation = true;
         timer.Start();
         bossUltimatePlayerInput = Console.ReadLine().ToString();
+
+        if (bossUltimatePlayerInput == bossUltimateComputerInput)
+        {
+            Thread.Sleep(1000);
+            return true;
+        }
+        else
+        {
+            Thread.Sleep(100);
+            return false;
+        }
     }
 
     void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -882,17 +895,20 @@ public class Battle
         timerCount++;
         if (bossUltimatePlayerInput == bossUltimateComputerInput)
         {
-            timerOperation = false;
-            Console.WriteLine("\n 파훼 성공!");
-        }
-        if (timerCount == 5)
-        {
-            timerOperation = false;
-            Console.WriteLine("\n 파훼 실패..");
-        }
-
-        if (!timerOperation)
             timer.Stop();
+            timerCount = 0;
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "\n궁극기 파훼 성공!!!\n");
+            Thread.Sleep(500);
+        }
+        if (timerCount == 7 && bossUltimatePlayerInput != bossUltimateComputerInput)
+        {
+            timer.Stop();
+            timerCount = 0;
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "\n\n궁극기 파훼 실패...");
+            Thread.Sleep(500);
+            ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "\n(입력을 마치지 못하셨다면 엔터키를 눌러주세요.)");
+        }
+            
     }
 
     public void BossAttack()
@@ -902,6 +918,7 @@ public class Battle
 
         // 궁극기 확률
         int ultimateChance = 50;
+        int ultimateDamage = 50;
         bool isUltimate = false;
 
         if (boss.Hp < 200)
@@ -912,15 +929,26 @@ public class Battle
                 int computerInput = 0;
                 for (int number =0; number < bossUltimateArray.Length; number++)
                 {
-                    bossUltimateArray[number] = random.Next(9);
+                    bossUltimateArray[number] = random.Next(1,9);
                 }
                 for (int number = 0; number < bossUltimateArray.Length; number++)
                 {
-                    computerInput += (bossUltimateArray[number] * ComputerInput(10, number));
+                    computerInput += (bossUltimateArray[number] * ComputerInput(10, bossUltimateArray.Length-number-1));
                     bossUltimateComputerInput = computerInput.ToString();
                 }
                 // 궁극기 패턴
-                BossUltimate();
+                if (BossUltimate())
+                {
+                    ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", "궁극기를 파훼하여 아무런 일도 생기지 않았습니다.\n");
+                }
+                else
+                {
+                    damageDealt = ultimateDamage;
+                    player.TakeDamage(damageDealt);
+
+                    ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", $"{boss.Name}의 궁극기!!");
+                    Console.WriteLine($"{player.Name}을/를 맞췄습니다. [데미지 : {damageDealt}]\n");
+                }
             }
         }
 
@@ -935,11 +963,17 @@ public class Battle
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", $"{boss.Name}의 공격!!");
             Thread.Sleep(500);
             if (damageDealt > 0)
+            {
                 Console.WriteLine($"{player.Name}을/를 맞췄습니다. [데미지 : {damageDealt}]\n");
+            }
             else
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Blue, "", $"방어력이 너무 높아서 공격이 통하지 않았다..!! [데미지 : {damageDealt}]\n");
-            Thread.Sleep(500);
         }
+
+        Thread.Sleep(500);
+        Console.WriteLine($"{player.Name}");
+        Thread.Sleep(500);
+        Console.WriteLine($"HP {player.Hp}\n");
 
         if (player.IsDead)
         {
