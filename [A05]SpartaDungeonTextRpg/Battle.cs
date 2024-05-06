@@ -26,6 +26,8 @@ public class Battle
     private int beforeMp;
     private bool BattleMonster = false;
     private bool bossClear = false;
+    private bool bossPhaseTwo = false;
+    private int count = 0;
 
     public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill, Potion potion)
     {
@@ -659,8 +661,6 @@ public class Battle
         Console.WriteLine($"HP : {boss.Hp}");
         TextPlayerInfo();
 
-        bool bossPhaseTwo = false; // 보스의 두 번째 페이즈 여부를 나타내는 변수
-
         Console.WriteLine("1. 일반 공격");
         Console.WriteLine("2. 스킬 사용");
         Console.WriteLine("3. 포션 사용\n");
@@ -702,18 +702,36 @@ public class Battle
             Console.WriteLine("0. 다음\n");
             int input2 = ConsoleUtility.PromptMenuChoice(0, 0);
         }
+        else if (bossPhaseTwo && !bossClear)  // 보스 페이즈 전역 변수로 수정 필요
+        {
+            int damageTime = 10; // 보스의 플레이어에게 입히는 지속 데미지
+            int dot = 3;
+            if (count < dot)
+                InflictDamageOverTime(damageTime, dot);
+            else
+            {
+                bossPhaseTwo = false;
+                return;
+            }
+            Console.WriteLine("0. 다음\n");
+            int input2 = ConsoleUtility.PromptMenuChoice(0, 0);
+        }
     }
     public void InflictDamageOverTime(int damage, int dot)
     {
+        TextBattleBoss();
+
         Console.WriteLine($"플레이어는 {dot}턴 동안 {damage}의 지속 데미지를 입습니다!\n");
+        Console.WriteLine($"플레이어는 {dot-count}턴 뒤 보스의 스킬이 해제됩니다.\n");
         Thread.Sleep(500);
-        for (int i = 0; i < dot; i++)
+
+        if (count < dot)
         {
             // 플레이어에게 지속 데미지 입힘
             player.TakeDamage(damage);
             // 플레이어의 현재 체력 출력
             Console.WriteLine($"플레이어의 현재 체력: {player.Hp}");
-            // 1초 대기
+            count += 1;
             Thread.Sleep(500);
         }
     }
