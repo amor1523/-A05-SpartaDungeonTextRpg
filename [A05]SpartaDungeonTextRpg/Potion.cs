@@ -89,20 +89,20 @@ public class Potion
                     Console.WriteLine($"\n캐릭터의 MaxHp를 {overHp} 만큼 초과하여 최대 체력까지만 회복.");
                 }
                 else
-                    Console.WriteLine($"\n회복을 완료했습니다.\n 현재 캐릭터의 Hp : {player.Hp} 입니다.");
+                    Console.WriteLine($"\n회복을 완료했습니다.\n현재 캐릭터의 Hp : {player.Hp} 입니다.");
             }
         }
         else if (PotionIndex[index].Id == 2002)
         {
             PotionIndex[index].FlagUse = true;
             player.NonEquipAtk += 10;
-            Console.WriteLine($"\n공격력이 증가했습니다.\n 현재 캐릭터의 Atk: {player.NonEquipAtk} 입니다.");
+            Console.WriteLine($"\n공격력이 증가했습니다.\n현재 캐릭터의 Atk: {player.NonEquipAtk} 입니다.");
         }
         else if (PotionIndex[index].Id == 2003)
         {
             PotionIndex[index].FlagUse = true;
             player.NonEquipDef += 10;
-            Console.WriteLine($"\n방어력 증가했습니다.\n 현재 캐릭터의 Def: {player.NonEquipDef} 입니다.");
+            Console.WriteLine($"\n방어력 증가했습니다.\n현재 캐릭터의 Def: {player.NonEquipDef} 입니다.");
         }
     }
 

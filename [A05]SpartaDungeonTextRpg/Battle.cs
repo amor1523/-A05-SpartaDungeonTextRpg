@@ -10,7 +10,6 @@ using System.Timers;
 using System.Threading;
 public class Battle
 {
-    static System.Timers.Timer timer = new System.Timers.Timer();
     Dictionary<Job, string> dict = new Dictionary<Job, string>()
         {
             {Job.Knight, "전사"},
@@ -36,6 +35,7 @@ public class Battle
     private string bossUltimatePlayerInput = "";
     private string bossUltimateComputerInput = "";
     private int[] bossUltimateArray = new int[9];
+    static System.Timers.Timer timer = new System.Timers.Timer();
 
     public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill, Potion potion)
     {
@@ -48,7 +48,7 @@ public class Battle
         beforeExp = player.Exp;
         beforeMp = player.Mp;
         this.potion = potion;
-        boss = new Monster.BossMonster(1, "레드 드래곤 (보스)", 10, 40, 300, 300, 10000, 500);
+        boss = new Monster.BossMonster(1, "레드 드래곤 (보스)", 10, 60, 400, 400, 10000, 500);
     }
     public void TextPlayerInfo()
     {
@@ -431,7 +431,7 @@ public class Battle
             Console.WriteLine($"MP {beforeMp} -> {player.Mp} {((beforeMp - player.Mp) > 0 ? $"(-{beforeMp - player.Mp})" : "")}");
             if (player.Mp < player.MaxMp)
                 player.Mp += 10;
-            Console.WriteLine($"exp {beforeExp} -> {player.Exp} (+{player.Exp - beforeExp})");
+            Console.WriteLine($"exp {beforeExp} -> {player.Exp} {((beforeExp - player.Exp) > 0 ? $"(+{beforeExp - player.Exp})" : "")}");
             Thread.Sleep(500);
             if (player.Level < 5)
             {
@@ -463,7 +463,7 @@ public class Battle
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "\n보스를 클리어하여 게임이 종료됩니다.");
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "플레이 해주셔서 감사합니다.");
 
-                Console.WriteLine("\n0. 다음\n");
+                Console.WriteLine("\n0. 종료\n");
                 int endInput = ConsoleUtility.PromptMenuChoice(0, 0);
                 if (endInput == 0)
                     return;
@@ -678,10 +678,8 @@ public class Battle
             Console.WriteLine($"HP : {boss.Hp}");
         }
 
-        //////////////////////////////////////////////////////////////////////////////// 보스 패턴부분 수정 필요.
-        /////////////////////////////////////////////////////////////////////////////// 보스 패턴 시간 기능 추가 필요.
-        // 보스의 체력이 50% 이하로 떨어지면 두 번째 페이즈로 진입
-        if (boss.Hp <= 200 && !bossPhaseTwo && bossDotCount == 0)
+        // 보스 체력이 250 이하면 2페이즈 실행
+        if (boss.Hp <= 250 && !bossPhaseTwo && bossDotCount == 0)
         {
             playerAttack = false;
             bossPhaseTwo = true;
@@ -702,9 +700,10 @@ public class Battle
             int input2 = ConsoleUtility.PromptMenuChoice(0, 0);
 
             InflictDamageOverTime(damageTime, dot);
+            return;
         }
 
-        if (!bossPhaseTwo || (bossPhaseTwo && bossDotCount > 0) && !bossClear)
+        if (!bossPhaseTwo || (bossPhaseTwo && bossDotCount > 0))
         {
             TextPlayerInfo();
 
@@ -744,22 +743,32 @@ public class Battle
             Console.WriteLine($"플레이어의 현재 체력: {player.Hp}\n");
             bossDotCount += 1;
             Thread.Sleep(500);
-            Console.WriteLine($"플레이어는 {dot - bossDotCount}턴 뒤 보스의 스킬이 해제됩니다.\n");
+            if(bossDotCount < dot)
+                Console.WriteLine($"플레이어는 {dot - bossDotCount}턴 뒤 보스의 스킬이 해제됩니다.\n");
+            else
+            {
+                Console.WriteLine("보스의 스킬이 해제됐습니다.\n");
+                bossPhaseTwo = false;
+            }
             Thread.Sleep(500);
+        }
+
+        if (player.IsDead)
+        {
+            Console.WriteLine($"플레이어가 쓰러졌습니다!");
+            Thread.Sleep(500);
+            BattleResult(false);
+            return;
         }
         else
         {
-            TextBattleBoss();
-            Console.WriteLine("보스의 스킬이 해제됐습니다.\n");
-            bossPhaseTwo = false;
-        }
-
-        Console.WriteLine("0. 다음\n");
-        int input = ConsoleUtility.PromptMenuChoice(0, 0);
-        if (input == 0 && bossDotCount == 1)
-        {
-            BossBattle();
-            return;
+            Console.WriteLine($"0.다음\n");
+            int input = ConsoleUtility.PromptMenuChoice(0, 0);
+            if (input == 0 && bossDotCount == 1)
+            {
+                BossBattle();
+                return;
+            }
         }
     }
     public bool CheckBossStage()
@@ -852,11 +861,8 @@ public class Battle
         return result;
     }
 
-    private bool BossUltimate()
+    public bool BossUltimate()
     {
-        timer.Interval = 500;
-        timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
-
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", $"{boss.Name}의 궁극기 시전중!! [데미지 : 50]\n");
         Thread.Sleep(500);
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", $"4초 안에 제시된 숫자를 모두 입력해주세요!");
@@ -875,7 +881,13 @@ public class Battle
         }
         Console.WriteLine(" ---\n");
         Console.Write(">> ");
+
+        timer = new System.Timers.Timer();
+        timer.Interval = 500;
+        timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
+        timerCount = 0;
         timer.Start();
+
         bossUltimatePlayerInput = Console.ReadLine().ToString();
 
         if (bossUltimatePlayerInput == bossUltimateComputerInput)
@@ -896,14 +908,12 @@ public class Battle
         if (bossUltimatePlayerInput == bossUltimateComputerInput)
         {
             timer.Stop();
-            timerCount = 0;
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Green, "", "\n궁극기 파훼 성공!!!\n");
             Thread.Sleep(500);
         }
         if (timerCount == 7 && bossUltimatePlayerInput != bossUltimateComputerInput)
         {
             timer.Stop();
-            timerCount = 0;
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "\n\n궁극기 파훼 실패...");
             Thread.Sleep(500);
             ConsoleUtility.PrintTextHighlights(ConsoleColor.Red, "", "\n(입력을 마치지 못하셨다면 엔터키를 눌러주세요.)");
@@ -921,7 +931,7 @@ public class Battle
         int ultimateDamage = 50;
         bool isUltimate = false;
 
-        if (boss.Hp < 200)
+        if (boss.Hp < 250)
         {
             isUltimate = random.Next(100) < ultimateChance;
             if (isUltimate)
@@ -954,7 +964,10 @@ public class Battle
 
         if (!isUltimate)
         {
-            damageDealt = boss.Atk - player.Def;
+            
+            int minDamage = boss.Atk - (int)(boss.Atk * 0.1f);
+            int maxDamage = boss.Atk + (int)(boss.Atk * 0.1f);
+            damageDealt = random.Next(minDamage, maxDamage) - player.Def;
 
             if (damageDealt < 0)
                 damageDealt = 0;
@@ -1004,7 +1017,7 @@ public class Battle
         Console.WriteLine($"HP : {boss.Hp}\n");
         TextPlayerInfo();
         TextSkillMenu();
-        Console.WriteLine("0.취소");
+        Console.WriteLine("0.취소\n");
 
 
         int input = ConsoleUtility.PromptMenuChoice(0, 1); // 보스 선택 옵션 제거
