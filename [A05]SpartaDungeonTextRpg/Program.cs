@@ -258,7 +258,8 @@ namespace SpartaDungeonTextRpg
             Console.Write(ConsoleUtility.PadRightForMixedText("Exp", 10));
             Console.WriteLine($" : {player.Exp}");
 
-            Console.WriteLine($"LevelUp까지 남은 Exp -> {player.LevelUpExp - player.Exp}\n");
+            if (player.Level < 5)
+                Console.WriteLine($"LevelUp까지 남은 Exp -> {player.LevelUpExp - player.Exp}\n");
 
             Console.WriteLine("0. 나가기\n");
 

@@ -53,7 +53,7 @@ namespace _A05_SpartaDungeonTextRpg
             Console.WriteLine("Quest!\n"); // 퀘스트 텍스트 색상 변경 필요
             for( i = 0;i < questList.Count;i++)
             {
-                if (questData[i].Count == questData[i].GoalCount && questData[i].AcceptQuest == true)
+                if (questList[i].Count == questList[i].GoalCount && questList[i].AcceptQuest == true)
                 {
                     Console.Write(ConsoleUtility.PadRightForMixedText("[퀘스트 완료] ", 6));
                     Console.WriteLine($"{i + 1}. {questList[i].Title}"); // 퀘스트 완료조건 충족시 퀘스트 완료 표시
@@ -154,7 +154,7 @@ namespace _A05_SpartaDungeonTextRpg
         public void QuestClear(Player player, List<Quest> questData, int i) // 퀘스트 클리어 했을 경우 나오는 텍스트
         {
             Console.WriteLine("1. 보상 받기");
-            Console.WriteLine("2. 돌아가기");
+            Console.WriteLine("2. 돌아가기\n");
             input = ConsoleUtility.PromptMenuChoice(1, 2);
             switch (input)
             {

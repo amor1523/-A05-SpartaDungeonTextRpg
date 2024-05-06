@@ -27,6 +27,7 @@ public class Battle
     private bool BattleMonster = false;
     private bool bossClear = false;
     private bool bossPhaseTwo = false;
+    private bool playerAttack = false;
     private int count = 0;
 
     public Battle(Player player, List<Monster> monsters, GameManager gameManager, Skill skill, Potion potion)
@@ -455,7 +456,7 @@ public class Battle
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "\n보스를 클리어하여 게임이 종료됩니다.");
                 ConsoleUtility.PrintTextHighlights(ConsoleColor.Cyan, "", "플레이 해주셔서 감사합니다.");
 
-                Console.WriteLine("\n0. 다음");
+                Console.WriteLine("\n0. 다음\n");
                 int endInput = ConsoleUtility.PromptMenuChoice(0, 0);
                 if (endInput == 0)
                     return;
@@ -653,86 +654,103 @@ public class Battle
     }
     public void BossBattle()
     {
-        TextBattleBoss();
-        Console.Write($"Lv.{boss.Level} ");
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.Write($"{boss.Name} ");
-        Console.ResetColor();
-        Console.WriteLine($"HP : {boss.Hp}");
-        TextPlayerInfo();
-
-        Console.WriteLine("1. 일반 공격");
-        Console.WriteLine("2. 스킬 사용");
-        Console.WriteLine("3. 포션 사용\n");
-        int input = ConsoleUtility.PromptMenuChoice(1, 3);
-        switch (input)
+        if (bossPhaseTwo && !bossClear && playerAttack)
         {
-            case 1:
-                Attack();
-                break;
-            case 2:
-                PlayerSkillAttack();
-                break;
-            case 3:
-                UsePotion();
-                break;
+            int damageTime = 10; // 보스의 플레이어에게 입히는 지속 데미지
+            int dot = 3;
+            InflictDamageOverTime(damageTime, dot);
+        }
+
+        if (!bossPhaseTwo || (bossPhaseTwo && count > 0))
+        {
+            TextBattleBoss();
+            Console.Write($"Lv.{boss.Level} ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write($"{boss.Name} ");
+            Console.ResetColor();
+            Console.WriteLine($"HP : {boss.Hp}");
         }
 
         //////////////////////////////////////////////////////////////////////////////// 보스 패턴부분 수정 필요.
         /////////////////////////////////////////////////////////////////////////////// 보스 패턴 시간 기능 추가 필요.
         // 보스의 체력이 50% 이하로 떨어지면 두 번째 페이즈로 진입
-        if (boss.Hp <= 150 && !bossClear)
+        if (boss.Hp <= 150 && !bossPhaseTwo && count == 0)
         {
+            playerAttack = false;
             bossPhaseTwo = true;
-            Console.WriteLine("보스가 분노합니다! 두 번째 페이즈로 진입합니다.");
+            Console.WriteLine("\n보스가 분노합니다! 두 번째 페이즈로 진입합니다.\n");
             Thread.Sleep(500);
 
             // 두 번째 페이즈 시작을 알리는 텍스트 출력
-            Console.WriteLine("2번째 페이즈로 진입합니다!");
+            Console.WriteLine("2번째 페이즈로 진입합니다!\n");
             Thread.Sleep(500);
 
             // 보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용
-            Console.WriteLine("보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용합니다!");
+            Console.WriteLine("보스가 플레이어에게 지속 데미지를 입히는 스킬을 사용합니다!\n");
             int damageTime = 10; // 보스의 플레이어에게 입히는 지속 데미지
             int dot = 3; // 지속 시간 (예: 3턴 동안 지속됨)
             Thread.Sleep(500);
-            // 보스가 지속 데미지를 입히는 메서드 호출
-            InflictDamageOverTime(damageTime, dot);
 
             Console.WriteLine("0. 다음\n");
             int input2 = ConsoleUtility.PromptMenuChoice(0, 0);
+
+            InflictDamageOverTime(damageTime, dot);
         }
-        else if (bossPhaseTwo && !bossClear)  // 보스 페이즈 전역 변수로 수정 필요
+
+        if (!bossPhaseTwo || (bossPhaseTwo && count > 0) && !bossClear)
         {
-            int damageTime = 10; // 보스의 플레이어에게 입히는 지속 데미지
-            int dot = 3;
-            if (count < dot)
-                InflictDamageOverTime(damageTime, dot);
-            else
+            playerAttack = true;
+            TextPlayerInfo();
+
+            Console.WriteLine("1. 일반 공격");
+            Console.WriteLine("2. 스킬 사용");
+            Console.WriteLine("3. 포션 사용\n");
+            int input = ConsoleUtility.PromptMenuChoice(1, 3);
+            switch (input)
             {
-                bossPhaseTwo = false;
-                return;
+                case 1:
+                    Attack();
+                    break;
+                case 2:
+                    PlayerSkillAttack();
+                    break;
+                case 3:
+                    UsePotion();
+                    break;
             }
-            Console.WriteLine("0. 다음\n");
-            int input2 = ConsoleUtility.PromptMenuChoice(0, 0);
         }
     }
     public void InflictDamageOverTime(int damage, int dot)
     {
-        TextBattleBoss();
-
-        Console.WriteLine($"플레이어는 {dot}턴 동안 {damage}의 지속 데미지를 입습니다!\n");
-        Console.WriteLine($"플레이어는 {dot-count}턴 뒤 보스의 스킬이 해제됩니다.\n");
-        Thread.Sleep(500);
-
         if (count < dot)
         {
+            TextBattleBoss();
+
+            Console.WriteLine($"플레이어는 {dot}턴 동안 {damage}의 지속 데미지를 입습니다!\n");
+            Thread.Sleep(500);
+
             // 플레이어에게 지속 데미지 입힘
             player.TakeDamage(damage);
             // 플레이어의 현재 체력 출력
-            Console.WriteLine($"플레이어의 현재 체력: {player.Hp}");
+            Console.WriteLine($"플레이어의 현재 체력: {player.Hp}\n");
             count += 1;
             Thread.Sleep(500);
+            Console.WriteLine($"플레이어는 {dot - count}턴 뒤 보스의 스킬이 해제됩니다.\n");
+            Thread.Sleep(500);
+        }
+        else
+        {
+            TextBattleBoss();
+            Console.WriteLine("보스의 스킬이 해제됐습니다.\n");
+            bossPhaseTwo = false;
+        }
+
+        Console.WriteLine("0. 다음\n");
+        int input = ConsoleUtility.PromptMenuChoice(0, 0);
+        if (input == 0 && count == 1)
+        {
+            BossBattle();
+            return;
         }
     }
     public bool CheckBossStage()
@@ -777,11 +795,11 @@ public class Battle
             if (isCritical)
             {
                 damageDealt += critDamage;
-                Console.WriteLine($"Lv.{boss.Level} {boss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}] - 치명타 공격!!\n");
+                Console.WriteLine($"{boss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}] - 치명타 공격!!\n");
             }
             else
             {
-                Console.WriteLine($"Lv.{boss.Level} {boss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]\n");
+                Console.WriteLine($"{boss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]\n");
             }
         }
 
@@ -789,7 +807,7 @@ public class Battle
         boss.TakeDamage(damageDealt);
 
         Thread.Sleep(500);
-        Console.WriteLine($"Lv.{boss.Level} {boss.Name}");
+        Console.WriteLine($"{boss.Name}");
         Thread.Sleep(500);
         Console.WriteLine($"HP {boss.Hp}\n");
 
@@ -895,9 +913,9 @@ public class Battle
         Console.WriteLine($"{player.Name} 의 공격!");
         Thread.Sleep(500);
         ConsoleUtility.PrintTextHighlights(ConsoleColor.Yellow, "", $"{skill.Name}!!!\n");
-        Console.WriteLine($"Lv.{selectedBoss.Level} {selectedBoss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]\n");
+        Console.WriteLine($"{selectedBoss.Name} 을(를) 맞췄습니다. [데미지 : {damageDealt}]\n");
         Thread.Sleep(500);
-        Console.WriteLine($"Lv.{selectedBoss.Level} {selectedBoss.Name}");
+        Console.WriteLine($"{selectedBoss.Name}");
         Thread.Sleep(500);
         Console.WriteLine($"HP {selectedBoss.Hp}\n");
         Thread.Sleep(500);
@@ -931,13 +949,16 @@ public class Battle
         Console.ResetColor();
 
         Console.WriteLine("\n1. 사용");
-        Console.WriteLine("0. 나가기");
+        Console.WriteLine("0. 나가기\n");
 
         int input = ConsoleUtility.PromptMenuChoice(0, 1);
         switch (input)
         {
             case 0:
-                BattleMenu();
+                if (player.Level == 5)
+                    BossBattle();
+                else
+                    BattleMenu();
                 break;
             case 1:
                 if (potion.PotionIndex[0].Count > 0)
