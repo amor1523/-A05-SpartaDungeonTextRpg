@@ -369,7 +369,7 @@ private void InventoryEquip()
     }
 }
 ```
-
+</details>
 </details>
 ### 상점
 - 던전에서 얻은 GOLD로 아이템을 살수있는 공간
