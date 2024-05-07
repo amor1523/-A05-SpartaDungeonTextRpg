@@ -32,3 +32,43 @@
 
 	예시) 1. [Feature] 몬스터 전투 기능
 		  2. [Update] 몬스터 전투 추가 기능
+
+	
+ # A05 오리고지리조 스파르타 던전
+
+ ## 프로젝트 설명
+ ### C#을 이용한 Text RPG 게임
+ #### 팀원소개
+ 
+ <details><summary>팀장 : 이경현 
+</summary>
+	구현기능<br/>     
+	구현기능<br/>
+	구현기능<br/>
+</details>
+
+ <details><summary>팀원 : 정지효A
+</summary>
+	구현기능<br/>     
+	구현기능<br/>
+	구현기능<br/>
+</details>
+
+ <details><summary>팀원 : 이정빈
+</summary>
+	구현기능<br/>     
+	구현기능<br/>
+	구현기능<br/>
+</details>
+
+ <details><summary>팀원 : 김창민 
+</summary>
+	구현기능<br/>       
+	구현기능<br/>
+	구현기능<br/>
+</details>
+
+
+
+
+    
