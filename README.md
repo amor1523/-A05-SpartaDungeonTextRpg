@@ -269,7 +269,7 @@ public void MainMenu()
 
 ![A05_TextRPG (4)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/3b579c60-8dac-4bb9-86f4-82783d3d6e48)
 
-</details>
+
 <details><summary>코드 보기</summary>
 
 ```csharp
@@ -371,6 +371,7 @@ private void InventoryEquip()
 ```
 </details>
 </details>
+
 ### 상점
 - 던전에서 얻은 GOLD로 아이템을 살수있는 공간
 <details><summary></summary>
