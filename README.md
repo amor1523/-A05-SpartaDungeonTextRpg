@@ -34,7 +34,7 @@
 # A05 오리고지리조 스파르타 던전
 
 ## 프로젝트 설명
-### C#을 이용한 Text RPG 게임
+- 스파르타 던전은 텍스트로 구성된 RPG 게임입니다.
 #### 팀원소개
 ##### 각 팀원이 구현한 기능
 
@@ -72,8 +72,12 @@
 
 </details>
 
+## 개발환경 
+-Visual Studio 2022 , C#
+
 ## 게임 화면
 ### 로비
+- 캐릭터의 닉네임을 입력하고 직업을 선택한후 시작화면으로 이동
 <details><summary></summary>
 
 ![인트로 메인화면2](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/beaebcff-fa1b-4483-bff6-4e294a4a8b70)
@@ -144,8 +148,10 @@ public void MainMenu()
 </details>
 
 ### 상태창
+- 현재 캐릭터의 정보 및 능력치를 확인할수있는 공간
+- 아이템을 장착하는 경우 추가된 능력치 확인가능
 <details><summary></summary>
-
+	
 ![A05_TextRPG (5)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/166b1b57-f304-47fc-a267-99c8a241009f)
 <details><summary>코드 보기</summary>
 
@@ -253,6 +259,7 @@ public void MainMenu()
 </details>
 
 ### 인벤토리
+- 상점에서 구입한 아이템이나 던전을 돌고 얻은 보상들을 확인하고 착용할수있는 공간
 <details><summary></summary>
 
 ![A05_TextRPG (1) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/f719d48f-0e64-42d2-b664-950ee774637a)
@@ -262,6 +269,7 @@ public void MainMenu()
 </details>
 
 ### 상점
+- 던전에서 얻은 GOLD로 아이템을 살수있는 공간
 <details><summary></summary>
 
 ![A05_TextRPG (4) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/d247094e-3574-4a65-b3c9-d8e92c2a2ad3)
@@ -269,6 +277,7 @@ public void MainMenu()
 </details>
 
 ### 퀘스트
+- 퀘스트를 받거나 퀘스트를 완료해서 보상을 얻는 공간
 <details><summary></summary>
 
 ![A05_TextRPG (2) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/baf088f1-a4cf-469b-88e8-d3d3f140e8ff)
@@ -276,6 +285,7 @@ public void MainMenu()
 </details>
 
 ### 던전
+- 전투를 시작해서 몬스터들과 싸울수 있는 공간
 <details><summary></summary>
 
 ![A05_TextRPG (3) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/d03f8f76-7af4-4372-8f11-cb0a980175fb)
@@ -285,6 +295,7 @@ public void MainMenu()
 </details>
 
 ### 보스전
+- 일정 레벨에 도달하면 도전할수있는 보스 전투 공간
 <details><summary></summary>
 
 ![A05_TextRPG (2) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/c54b1cf8-9619-43a6-aed4-f469818ce5f5)
