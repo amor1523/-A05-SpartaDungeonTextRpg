@@ -69,8 +69,50 @@
 	보스 스테이지<br/>
 </details>
 
+## 게임 화면
+### 1. 로비
+<details><summary>
+</summary>
+	
+![인트로 메인화면2](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/beaebcff-fa1b-4483-bff6-4e294a4a8b70)
+
+</details>
+
+### 2. 상태창
+<details><summary>
+</summary>
+	
+![A05_TextRPG (5)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/166b1b57-f304-47fc-a267-99c8a241009f)
+
+</details>
+
+### 3. 인벤토리
+<details><summary>
+</summary>
+
+![A05_TextRPG (1) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/f719d48f-0e64-42d2-b664-950ee774637a)
+
+</details>
+
+### 4. 상점
+<details><summary>
+</summary>
+
+![A05_TextRPG (4) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/d247094e-3574-4a65-b3c9-d8e92c2a2ad3)
 
 
+</details>
 
+### 4. 퀘스트
+<details><summary>
+</summary>
 
-    
+![A05_TextRPG (2) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/baf088f1-a4cf-469b-88e8-d3d3f140e8ff)
+</details>
+
+### 5. 던전
+<details><summary>
+</summary>
+
+![A05_TextRPG (3) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/d03f8f76-7af4-4372-8f11-cb0a980175fb)
+</details>
