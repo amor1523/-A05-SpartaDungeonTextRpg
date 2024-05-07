@@ -1,6 +1,3 @@
-﻿A5조 팀프로젝트입니다.
-
-
 [코드컨벤션]
 
 	1. namespace, class, struct : PascalCase
@@ -39,34 +36,39 @@
  ## 프로젝트 설명
  ### C#을 이용한 Text RPG 게임
  #### 팀원소개
+ ##### 각 팀원이 구현한 기능
  
  <details><summary>팀장 : 이경현 
 </summary>
 	구현기능<br/>     
-	구현기능<br/>
-	구현기능<br/>
+	레벨업 기능<br/>
+	보상 추가<br/>
+	아이템 적용<br/>
+	상점 기능<br/>
+<br/>
 </details>
 
  <details><summary>팀원 : 정지효A
 </summary>
-	구현기능<br/>     
-	구현기능<br/>
-	구현기능<br/>
+	캐릭터 생성 기능<br/>     
+	직업 선택 기능<br/>
+	게임 저장하기<br/>
 </details>
 
  <details><summary>팀원 : 이정빈
 </summary>
-	구현기능<br/>     
-	구현기능<br/>
-	구현기능<br/>
+	몬스터 종류 및 보스 추가<br/>     
+	퀘스트 기능<br/>
+	퀘스트 선택과 완료 기능<br/>
 </details>
 
  <details><summary>팀원 : 김창민 
 </summary>
-	구현기능<br/>       
-	구현기능<br/>
-	구현기능<br/>
+	스킬 기능<br/>       
+	전투 기능<br/>
+	보스 스테이지<br/>
 </details>
+
 
 
 
