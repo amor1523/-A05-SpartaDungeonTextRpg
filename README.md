@@ -70,7 +70,7 @@
 </details>
 
 ## 게임 화면
-### 1. 로비
+### 로비
 <details><summary>
 </summary>
 	
@@ -78,7 +78,7 @@
 
 </details>
 
-### 2. 상태창
+### 상태창
 <details><summary>
 </summary>
 	
@@ -86,15 +86,16 @@
 
 </details>
 
-### 3. 인벤토리
+### 인벤토리
 <details><summary>
 </summary>
 
 ![A05_TextRPG (1) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/f719d48f-0e64-42d2-b664-950ee774637a)
 
+![A05_TextRPG (4)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/3b579c60-8dac-4bb9-86f4-82783d3d6e48)
 </details>
 
-### 4. 상점
+### 상점
 <details><summary>
 </summary>
 
@@ -103,16 +104,27 @@
 
 </details>
 
-### 4. 퀘스트
+### 퀘스트
 <details><summary>
 </summary>
 
 ![A05_TextRPG (2) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/baf088f1-a4cf-469b-88e8-d3d3f140e8ff)
 </details>
 
-### 5. 던전
+
+
+### 던전
 <details><summary>
-</summary>
+</summary>	
 
 ![A05_TextRPG (3) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/d03f8f76-7af4-4372-8f11-cb0a980175fb)
+![A05_TextRPG (1) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/196a735d-9002-40f9-b571-f77472efd968)
+</details>
+
+### 보스전
+<details><summary>
+</summary>
+	
+![A05_TextRPG (2) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/c54b1cf8-9619-43a6-aed4-f469818ce5f5)
+![A05_TextRPG (3) (1)](https://github.com/amor1523/-A05-SpartaDungeonTextRpg/assets/167047045/b3961af2-6308-47b9-bc76-056eed6572bf)
 </details>
